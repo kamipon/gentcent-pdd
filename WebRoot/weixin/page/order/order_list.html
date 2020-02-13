@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>我的订单</title>
+	<meta content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=0" name="viewport"/>
+	<meta content="yes" name="apple-mobile-web-app-capable"/>
+	<meta content="black" name="apple-mobile-web-app-status-bar-style"/>
+	<meta content="telephone=no" name="format-detection"/>
+	<link href="css/style.css" rel="stylesheet" type="text/css"/>
+	<link href="../../layer/theme/default/layer.css" rel="stylesheet" type="text/css"/>
+	<script type="text/javascript" src="js/jquery.min.js"></script>
+	<script type="text/javascript" src="js/tab.js"></script>
+	<script src="../../js/layer.js"></script>
+</head>
+<body>
+<section class="aui-flexView">
+	<header class="aui-navBar aui-navBar-fixed">
+		<a href="../membercenter/member_center.html;" class="aui-navBar-item">
+			<i class="icon icon-return"></i>
+		</a>
+		<div class="aui-center">
+			<span class="aui-center-title">我的订单</span>
+		</div>
+	</header>
+	<section class="aui-scrollView">
+		<div class="aui-tab" data-ydui-tab>
+			<ul class="tab-nav">
+				<li class="tab-nav-item" nav="1">
+					<a href="javascript:;">未付款</a>
+				</li>
+				<li class="tab-nav-item" nav="2">
+					<a href="javascript:;">已付款</a>
+				</li>
+				<li class="tab-nav-item" nav="3">
+					<a href="javascript:;">待收货</a>
+				</li>
+				<li class="tab-nav-item" nav="4">
+					<a href="javascript:;">已完成</a>
+				</li>
+				<li class="tab-nav-item" nav="5">
+					<a href="javascript:;">售后</a>
+				</li>
+			</ul>
+			<div class="divHeight"></div>
+			<div class="tab-panel">
+				
+				<!--				未付款-->
+				<div class="tab-panel-item" id="o1_items"></div>
+				
+				<!--				已付款-->
+				<div class="tab-panel-item" id="o2_items"></div>
+				
+				<!--				待收货-->
+				<div class="tab-panel-item" id="o3_items"></div>
+				
+				<!--				已完成-->
+				<div class="tab-panel-item" id="o4_items"></div>
+				
+				<!--				售后-->
+				<div class="tab-panel-item" id="o5_items"></div>
+			</div>
+		</div>
+	</section>
+</section>
+<script>
+    $(function () {
+        var nav = getQueryString("nav") || 1;
+        $("[nav=" + nav + "]").addClass("tab-active");
+        $("#o" + nav + "_items").addClass("tab-active");
+        init_user();
+    });
+
+
+    function init_user() {
+        //用户界面
+        var statusMap = {
+            "-1": "已失效", "0": "未付款", "1": "已付定金（待审核）",
+            "2": "已接单", "3": "备货中", "4": "已确认", "5": "已付尾款（待审核）",
+            "6": "发货", "7": "已确认收货", "8": "交易成功", "10": "已审订金", "11": "已审尾款",
+            "12": "退货中", "13": "已退货", "14": "退款中", "15": "已退款"
+        };
+        $.ajax({
+            url: "/wx_wlorder",
+            type: "get",
+            dataType: "json",
+            success: function (data) {
+                var olist1 = data.olist1;   //未付款
+                var olist2 = data.olist2;   //已付款
+                var olist3 = data.olist3;   //已发货
+                var olist4 = data.olist4;   //已完成
+                var olist5 = data.olist5;   //售后
+
+                //未付款
+                for (var i = 0; i < olist1.length; i++) {
+                    //订单编号
+                    var code = olist1[i].order.code;
+                    //订单状态
+                    var status = "" + olist1[i].order.status;
+                    //购买数量
+                    var num = olist1[i].order.num;
+                    //总价
+                    var total = parseFloat(olist1[i].order.total).toFixed(2);
+                    //时间
+                    var addTime = new Date(olist1[i].order.addTime).format("yyyy-MM-dd hh:mm:ss");
+                    //子订单
+                    var son = olist1[i].son;
+
+                    var html = "<div class=\"tab-item\">\n" +
+                        "<a href=\"javascript:void(0);\" class=\"aui-well-item aui-well-item-clear\">\n" +
+                        "\t<div class=\"aui-well-item-bd\">\n" +
+                        "\t\t<h3>订单ID：" + code + "</h3>\n" +
+                        "\t</div>\n" +
+                        "\t<span class=\"aui-well-wait\">" + statusMap[status] + "</span>\n" +
+                        "</a>\n" +
+                        "<div class=\"aui-mail-product\">\n" +
+                        "\t<a href=\"javascript:void(0);\" class=\"aui-mail-product-item\">\n" +
+                        "\t\t<div class=\"aui-mail-product-item-hd\">\n" +
+                        "\t\t\t<img src=\"" + son.goodsPic + "\" alt=\"\">\n" +
+                        "\t\t</div>\n" +
+                        "\t\t<div class=\"aui-mail-product-item-bd\">\n" +
+                        "\t\t\t<p>" + son.goodsName + "</p>\n" +
+                        "\t\t</div>\n" +
+                        "\t</a>\n" +
+                        "</div>\n" +
+                        "<a href=\"javascript:;\" class=\"aui-mail-payment\">\n" +
+                        "\t<p>\n" +
+                        "\t\t共<em>" + num + "</em>\n" +
+                        "\t\t件商品 总价: ￥<i>" + total + "</i>\n" +
+                        "\t</p>\n" +
+                        "</a>\n" +
+                        "<div class=\"aui-mail-button\">\n";
+                    html += "\t<a href=\"order_item.html?id=" + olist1[i].order.id + "\" class=\"aui-df-color\">查看详情</a>\n";
+                    html += "\t<a href=\"pay.html?id=" + olist1[i].order.id + "\">去支付</a>\n" +
+                        "</div>\n" +
+                        "\t</div>\n" +
+                        "<div class=\"divHeight\"></div>";
+                    $("#o1_items").append(html);
+                }
+                if (olist1.length == 0) {
+                    $("#o1_items").append("<div style='text-align: center;width: 100%;margin-top: 20px;'>暂无订单</div>");
+                }
+
+                //已付款
+                for (var i = 0; i < olist2.length; i++) {
+                    var code = olist2[i].order.code;
+                    var status = "" + olist2[i].order.status;
+                    var num = olist2[i].order.num;
+                    var total = parseFloat(olist2[i].order.total).toFixed(2);
+                    var addTime = new Date(olist2[i].order.addTime).format("yyyy-MM-dd hh:mm:ss");
+                    var son = olist2[i].son;
+                    var html = "<div class=\"tab-item\">\n" +
+                        "<a href=\"javascript:void(0);\" class=\"aui-well-item aui-well-item-clear\">\n" +
+                        "\t<div class=\"aui-well-item-bd\">\n" +
+                        "\t\t<h3>订单ID：" + code + "</h3>\n" +
+                        "\t</div>\n" +
+                        "\t<span class=\"aui-well-wait\">" + statusMap[status] + "</span>\n" +
+                        "</a>\n" +
+                        "<div class=\"aui-mail-product\">\n" +
+                        "\t<a href=\"javascript:void(0);\" class=\"aui-mail-product-item\">\n" +
+                        "\t\t<div class=\"aui-mail-product-item-hd\">\n" +
+                        "\t\t\t<img src=\"" + son.goodsPic + "\" alt=\"\">\n" +
+                        "\t\t</div>\n" +
+                        "\t\t<div class=\"aui-mail-product-item-bd\">\n" +
+                        "\t\t\t<p>" + son.goodsName + "</p>\n" +
+                        "\t\t</div>\n" +
+                        "\t</a>\n" +
+                        "</div>\n" +
+                        "<a href=\"javascript:;\" class=\"aui-mail-payment\">\n" +
+                        "\t<p>\n" +
+                        "\t\t共<em>" + num + "</em>\n" +
+                        "\t\t件商品 实付款: ￥<i>" + total + "</i>\n" +
+                        "\t</p>\n" +
+                        "</a>\n" +
+                        "<div class=\"aui-mail-button\">\n";
+
+                    if (olist2[i].order.status == 3) {
+                        html += "\t<a href=\"order_item.html?id=" + olist2[i].order.id + "\">确认订单</a>\n";
+                    } else if (olist2[i].order.status == 4) {
+                        html += "\t<a href=\"pay2.html?id=" + olist2[i].order.id + "\">支付尾款</a>\n";
+                    } else {
+                        html += "\t<a href=\"order_item.html?id=" + olist2[i].order.id + "\" class=\"aui-df-color\">查看详情</a>\n";
+                    }
+
+                    html += "</div>\n" +
+                        "</div>" +
+                        "<div class=\"divHeight\"></div>";
+                    $("#o2_items").append(html);
+                }
+                if (olist2.length == 0) {
+                    $("#o2_items").append("<div style='text-align: center;width: 100%;margin-top: 20px;'>暂无订单</div>");
+                }
+
+                //已发货
+                for (var i = 0; i < olist3.length; i++) {
+                    var code = olist3[i].order.code;
+                    var status = "" + olist3[i].order.status;
+                    var num = olist3[i].order.num;
+                    var total = parseFloat(olist3[i].order.total).toFixed(2);
+                    var addTime = new Date(olist3[i].order.addTime).format("yyyy-MM-dd hh:mm:ss");
+                    var son = olist3[i].son;
+
+                    var html = "<div class=\"tab-item\">\n";
+                    html += "<a href=\"javascript:void(0);\" class=\"aui-well-item aui-well-item-clear\">\n";
+                    html += "\t<div class=\"aui-well-item-bd\">\n";
+                    html += "\t\t<h3>订单ID：" + code + "</h3>\n";
+                    html += "\t</div>\n";
+                    html += "\t<span class=\"aui-well-wait\">" + statusMap[status] + "</span>\n";
+                    html += "</a>\n";
+                    html += "<div class=\"aui-mail-product\">\n";
+                    html += "\t<a href=\"javascript:void(0);\" class=\"aui-mail-product-item\">\n";
+                    html += "\t\t<div class=\"aui-mail-product-item-hd\">\n";
+                    html += "\t\t\t<img src=\"" + son.goodsPic + "\" alt=\"\">\n";
+                    html += "\t\t</div>\n";
+                    html += "\t\t<div class=\"aui-mail-product-item-bd\">\n";
+                    html += "\t\t\t<p>" + son.goodsName + "</p>\n";
+                    html += "\t\t</div>\n";
+                    html += "\t</a>\n";
+                    html += "</div>\n";
+                    html += "<a href=\"javascript:;\" class=\"aui-mail-payment\">\n";
+                    html += "\t<p>\n";
+                    html += "\t\t共<em>" + num + "</em>\n";
+                    html += "\t\t件商品 总价: ￥<i>" + total + "</i>\n";
+                    html += "\t</p>\n";
+                    html += "</a>\n";
+                    html += "<div class=\"aui-mail-button\">\n";
+                    html += "\t<a href=\"order_item.html?id=" + olist3[i].order.id + "\" class=\"aui-df-color\">查看详情</a>\n";
+                    if(status==6){
+                        html += "\t<a href=\"javascript:ok('" + olist3[i].order.id + "')\">确认收货</a>\n";
+                    }
+                    html += "</div>\n";
+                    html += "\t</div>\n";
+                    html += "<div class=\"divHeight\"></div>";
+                    $("#o3_items").append(html);
+                }
+                if (olist3.length == 0) {
+                    $("#o3_items").append("<div style='text-align: center;width: 100%;margin-top: 20px;'>暂无订单</div>");
+                }
+
+                //已完成
+                for (var i = 0; i < olist4.length; i++) {
+                    var code = olist4[i].order.code;
+                    var status = "" + olist4[i].order.status;
+                    var num = olist4[i].order.num;
+                    var total = parseFloat(olist4[i].order.total).toFixed(2);
+                    var addTime = new Date(olist4[i].order.addTime).format("yyyy-MM-dd hh:mm:ss");
+                    var son = olist4[i].son;
+
+                    var html = "<div class=\"tab-item\">\n" +
+                        "<a href=\"javascript:void(0);\" class=\"aui-well-item aui-well-item-clear\">\n" +
+                        "\t<div class=\"aui-well-item-bd\">\n" +
+                        "\t\t<h3>订单ID：" + code + "</h3>\n" +
+                        "\t</div>\n" +
+                        "\t<span class=\"aui-well-wait\">" + statusMap[status] + "</span>\n" +
+                        "</a>\n" +
+                        "<div class=\"aui-mail-product\">\n" +
+                        "\t<a href=\"javascript:void(0);\" class=\"aui-mail-product-item\">\n" +
+                        "\t\t<div class=\"aui-mail-product-item-hd\">\n" +
+                        "\t\t\t<img src=\"" + son.goodsPic + "\" alt=\"\">\n" +
+                        "\t\t</div>\n" +
+                        "\t\t<div class=\"aui-mail-product-item-bd\">\n" +
+                        "\t\t\t<p>" + son.goodsName + "</p>\n" +
+                        "\t\t</div>\n" +
+                        "\t</a>\n" +
+                        "</div>\n" +
+                        "<a href=\"javascript:;\" class=\"aui-mail-payment\">\n" +
+                        "\t<p>\n" +
+                        "\t\t共<em>" + num + "</em>\n" +
+                        "\t\t件商品 总价: ￥<i>" + total + "</i>\n" +
+                        "\t</p>\n" +
+                        "</a>\n" +
+                        "<div class=\"aui-mail-button\">\n" +
+                        "\t<a href=\"order_item.html?id=" + olist4[i].order.id + "\" class=\"aui-df-color\">查看详情</a>\n" +
+                        "</div>\n" +
+                        "\t</div>\n" +
+                        "<div class=\"divHeight\"></div>";
+                    $("#o4_items").append(html);
+                }
+                if (olist4.length == 0) {
+                    $("#o4_items").append("<div style='text-align: center;width: 100%;margin-top: 20px;'>暂无订单</div>");
+                }
+
+                //售后
+                for (var i = 0; i < olist5.length; i++) {
+                    var code = olist5[i].order.code;
+                    var status = "" + olist5[i].order.status;
+                    var num = olist5[i].order.num;
+                    var total = parseFloat(olist5[i].order.total).toFixed(2);
+                    var addTime = new Date(olist5[i].order.addTime).format("yyyy-MM-dd hh:mm:ss");
+                    var son = olist5[i].son;
+
+                    var html = "<div class=\"tab-item\">\n" +
+                        "<a href=\"javascript:void(0);\" class=\"aui-well-item aui-well-item-clear\">\n" +
+                        "\t<div class=\"aui-well-item-bd\">\n" +
+                        "\t\t<h3>订单ID：" + code + "</h3>\n" +
+                        "\t</div>\n" +
+                        "\t<span class=\"aui-well-wait\">" + statusMap[status] + "</span>\n" +
+                        "</a>\n" +
+                        "<div class=\"aui-mail-product\">\n" +
+                        "\t<a href=\"javascript:void(0);\" class=\"aui-mail-product-item\">\n" +
+                        "\t\t<div class=\"aui-mail-product-item-hd\">\n" +
+                        "\t\t\t<img src=\"" + son.goodsPic + "\" alt=\"\">\n" +
+                        "\t\t</div>\n" +
+                        "\t\t<div class=\"aui-mail-product-item-bd\">\n" +
+                        "\t\t\t<p>" + son.goodsName + "</p>\n" +
+                        "\t\t</div>\n" +
+                        "\t</a>\n" +
+                        "</div>\n" +
+                        "<a href=\"javascript:;\" class=\"aui-mail-payment\">\n" +
+                        "\t<p>\n" +
+                        "\t\t共<em>" + num + "</em>\n" +
+                        "\t\t件商品 总价: ￥<i>" + total + "</i>\n" +
+                        "\t</p>\n" +
+                        "</a>\n" +
+                        "<div class=\"aui-mail-button\">\n" +
+                        "\t<a href=\"order_item.html?id=" + olist5[i].order.id + "\" class=\"aui-df-color\">查看详情</a>\n" +
+                        "</div>\n" +
+                        "\t</div>\n" +
+                        "<div class=\"divHeight\"></div>";
+                    $("#o5_items").append(html);
+                }
+                if (olist5.length == 0) {
+                    $("#o5_items").append("<div style='text-align: center;width: 100%;margin-top: 20px;'>暂无订单</div>");
+                }
+            }
+        });
+    }
+
+    /**
+     * 确认收货
+     */
+    function ok(oid) {
+        layer.confirm('确认收货吗？', {
+            btn: ['确定', '取消'], //按钮
+            title: false,
+            icon: 3,
+            closeBtn: false
+        }, function (i) {
+            $.ajax({
+                url: "/wx_wlorder/ok/" + oid,
+                type: "post",
+                data: {},
+                dataType: "json",
+                success: function (data) {
+                    if (data.flag) {
+                        location.reload();
+                    } else {
+                        layer.msg(data.msg);
+                    }
+                    layer.close(i);
+                }
+            });
+        }, function (i) {
+            layer.close(i);
+        });
+    }
+
+
+    Date.prototype.format = function (fmt) {
+        var o = {
+            "M+": this.getMonth() + 1, //月份
+            "d+": this.getDate(), //日
+            "h+": this.getHours(), //小时
+            "m+": this.getMinutes(), //分
+            "s+": this.getSeconds(), //秒
+            "q+": Math.floor((this.getMonth() + 3) / 3), //季度
+            S: this.getMilliseconds() //毫秒
+        };
+        if (/(y+)/.test(fmt)) {
+            fmt = fmt.replace(
+                RegExp.$1,
+                (this.getFullYear() + "").substr(4 - RegExp.$1.length)
+            );
+        }
+        for (var k in o) {
+            if (new RegExp("(" + k + ")").test(fmt)) {
+                fmt = fmt.replace(
+                    RegExp.$1,
+                    RegExp.$1.length == 1
+                        ? o[k]
+                        : ("00" + o[k]).substr(("" + o[k]).length)
+                );
+            }
+        }
+        return fmt;
+    };
+
+    function getQueryString(name) {
+        var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
+        var reg_rewrite = new RegExp("(^|/)" + name + "/([^/]*)(/|$)", "i");
+        var r = window.location.search.substr(1).match(reg);
+        var q = window.location.pathname.substr(1).match(reg_rewrite);
+        if (r != null) {
+            return unescape(r[2]);
+        } else if (q != null) {
+            return unescape(q[2]);
+        } else {
+            return null;
+        }
+    }
+</script>
+</body>
+</html>

@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>确认订单</title>
+	<meta content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=0" name="viewport"/>
+	<meta content="yes" name="apple-mobile-web-app-capable"/>
+	<meta content="black" name="apple-mobile-web-app-status-bar-style"/>
+	<meta content="telephone=no" name="format-detection"/>
+	<link href="../../css/bootstrap.min.css" rel="stylesheet">
+	<link href="css/style2.css" rel="stylesheet" type="text/css"/>
+	<link href="../membercenter/addGoods.css" rel="stylesheet" type="text/css"/>
+	<style>
+		* {
+			margin: 0;
+			padding: 0;
+		}
+		
+		#addImg input {
+			display: none;
+		}
+		
+		#fileList img {
+			height: 30vw !important;
+			width: 30vw !important;
+		}
+		
+		.thumbnail {
+			margin-bottom: 0;
+			margin-right: 12px;
+			float: left;
+		}
+		
+		.X {
+			position: absolute;
+			top: 10px;
+			right: 64px;
+			z-index: 9;
+			font-size: 18px;
+			color: gray;
+		}
+		
+		.aui-btn-button {
+			background: #f21956;
+			padding: 0 25px;
+			color: #fff;
+			font-size: 14px;
+		}
+		
+		.img {
+			float: left;
+		}
+		
+		.checkBtn {
+			float: left;
+			font-size: 14px;
+			width: 43%;
+			padding: 6px 0;
+			text-align: center;
+			border-radius: 3px;
+		}
+	</style>
+</head>
+<body>
+
+<div id="fileList">
+</div>
+
+<div class="img-farme" style="display: none;">
+	<img style="width: 100%;padding: 5px;">
+</div>
+<div style="height: 10vh;float: left;width: 100vw;"></div>
+
+<footer class="aui-bar-footer" style="position: fixed; bottom: 0; width: 100%;display: none;">
+	<div class="aui-flex">
+		<div class="aui-btn-button" id="footBtn" style="font-size: 18px;width: 100%; text-align: center;">
+			<button onclick="upDetail()">上传资料 <span style="font-size: 12px;">(还需上传<span id="overcount"></span>件)</span>
+			</button>
+		</div>
+	</div>
+</footer>
+</body>
+
+<!-- 引入jQuery核心js文件 -->
+<script src="../../js/eleditor/jquery.min.js"></script>
+<script src="../../js/eleditor/webuploader.min.js"></script>
+<script src="../../js/eleditor/Eleditor.js"></script>
+<script src="../../js/layer.js"></script>
+<!-- 引入BootStrap核心js文件 -->
+<script src="../../js/bootstrap.min.js"></script>
+<script type="text/javascript">
+
+    var _id = getQueryString("id");
+    var _type = getQueryString("type");
+    var _ischecked = getQueryString("ischecked");
+
+    /**
+     * 确认
+     */
+    function qr(sonupID) {
+        layer.confirm('继续确认订单？', {
+            btn: ['确定', '取消'], //按钮
+            title: false,
+            icon: 3,
+            closeBtn: false
+        }, function (i) {
+            $.ajax({
+                url: "/wx_wlorder/check",
+                type: "post",
+                data: {
+                    id: sonupID,
+                    ischeck: 2
+                },
+                dataType: "json",
+                success: function (data) {
+                    if (data.flag) {
+                        location.reload();
+                    } else {
+                        layer.msg(data.msg);
+                    }
+                }
+            });
+            layer.close(i);
+        }, function (i) {
+            layer.close(i);
+        });
+    }
+
+    /**
+     * 驳回
+     */
+    function bh(sonupID) {
+        layer.confirm('继续驳回订单？', {
+            btn: ['确定', '取消'], //按钮
+            title: false,
+            icon: 3,
+            closeBtn: false
+        }, function (i) {
+            $.ajax({
+                url: "/wx_wlorder/check",
+                type: "post",
+                data: {
+                    id: sonupID,
+                    ischeck: -1
+                },
+                dataType: "json",
+                success: function (data) {
+                    if (data.flag) {
+                        location.reload();
+                    } else {
+                        layer.msg(data.msg);
+                    }
+                }
+            });
+            layer.close(i);
+        }, function (i) {
+            layer.close(i);
+        });
+    }
+
+    function scaleImg(src) {
+        $(".img-farme > img").attr("src", src);
+        layer.open({
+            type: 1,
+            title: false,
+            closeBtn: true,
+            area: ["85%", "auto"],
+            content: $(".img-farme"),
+            success: function (index, layero) {
+            },
+            cancel: function (index, layero) {
+            }
+        })
+    }
+
+    $(document).ready(function () {
+        if (_ischecked == "false") {
+            if (_type == 3) {
+                initMarket();
+            } else if (_type == "null") {
+                initMember();
+            } else {
+                initLook();
+            }
+        } else {
+            initLook();
+        }
+    });
+
+    function initMarket() {
+        $.ajax({
+                url: "/wx_wlorder_market/sonup/" + _id,
+                type: "get",
+                data: {},
+                dataType: "json",
+                success: function (data) {
+                    console.log(data);
+                    if (data.flag) {
+                        if (data.overcount <= 0) {
+                            $("#footBtn").css("background", "grey");
+                            $("#footBtn > button").attr("onclick", "");
+                            $("#footBtn > button").html("等待确认");
+                        } else {
+                            $('#overcount').text(data.overcount);
+                        }
+                        $("footer").show();
+                        var html = "";
+
+                        var otherlist = data.sh1;
+                        for (var i = 0; i < otherlist.length; i++) {
+                            var item = otherlist[i];
+                            console.log(item);
+                            html += "<div style=\"border-bottom: 1px solid rgba(128, 128, 128, 0.15);float: left;padding-bottom: 2vw;width: 100%;\">\n";
+                            if (item.ischeck == 2) {
+                                html += "<div style='margin: 3vw 0 3vw 4vw;font-size: 15px;color: green;'>已审核</div>";
+                            } else if (item.ischeck == -1) {
+                                html += "<div style='margin: 3vw 0 3vw 4vw;font-size: 15px;color: red;'>已驳回</div>";
+                            } else if (item.ischeck == 1) {
+                                html += "<div style='margin: 3vw 0 3vw 4vw;font-size: 15px;color: grey;'>待审核</div>";
+                            }
+                            html += "\t\t<div style=\"min-width: 50vw; float: left;text-align: left;padding: 1vw 0 1vw 6vw;\">" +
+                                "【师傅【" + item.market.nick + "】已报价" + item.number + "件】";
+                            html += "\t</div>"
+                            html += "\t</div>"
+                        }
+
+                        var mylist = data.sh2;
+                        for (var i = 0; i < mylist.length; i++) {
+                            var item = mylist[i];
+                            console.log(item);
+                            html += "<div style=\"border-bottom: 1px solid rgba(128, 128, 128, 0.15);float: left;padding-bottom: 2vw; width: 100%\">\n";
+                            if (item.ischeck == 2) {
+                                html += "<div style='margin: 3vw 0 3vw 4vw;font-size: 15px;color: green;'>已审核</div>";
+                            } else if (item.ischeck == -1) {
+                                html += "<div style='margin: 3vw 0 3vw 4vw;font-size: 15px;color: red;'>已驳回</div>";
+                            } else if (item.ischeck == 1) {
+                                html += "<div style='margin: 3vw 0 3vw 4vw;font-size: 15px;color: grey;'>待审核</div>";
+                            }
+                            html += "\t\t<div style=\"min-width: 50vw; float: left;text-align: left;padding: 1vw 0 1vw 6vw;\">进货价：" + parseFloat(item.oldprice).toFixed(2) + " 元</div>\n";
+                            html += "\t\t<div style=\"min-width: 50vw; float: left;text-align: left;padding: 1vw 0 1vw 6vw;\">数量：" + item.number + " 件</div>\n";
+                            html += "\t\t<div style=\"min-width: 50vw; float: left;text-align: left;padding: 1vw 0 1vw 6vw;\">总体积：" + item.allVolume + " m³</div>\n";
+                            html += "\t\t<div style=\"min-width: 50vw; float: left;text-align: left;padding: 1vw 0 1vw 6vw;\">总重量：" + item.number * item.weightAxe / 10000 + " KG</div>\n";
+                            html += "\t\t<div style=\"min-width: 50vw; float: left;text-align: left;padding: 1vw 0 1vw 6vw;\">商户：" + item.terpoint.nick + " (ID:" + item.terpoint.shotId + ")" + "</div>\n";
+                            let phone = item.terpoint.phone == null ? "未绑定手机" : item.terpoint.phone;
+                            html += "\t\t<div style=\"min-width: 50vw; float: left;text-align: left;padding: 1vw 0 1vw 6vw;\">商户手机：" + phone + "</div>\n";
+                            html += "\t\t<div style=\"min-width: 50vw; float: left;text-align: left;padding: 1vw 0 1vw 6vw;\">上传者：" + item.market.nick + "</div>\n";
+                            html += "\t\t<div class=\"form-control col-xs-10\" name=\"imglist\" disabled=\"\" style=\"border-top: none; min-height: 37.2vw; height: auto; width: 92vw;\tmargin: 2vw 4vw; white-space: nowrap; overflow: auto;float: left;\">\n";
+                            html += "\t\t\t<div style=\"width: 1000vw;\">\n";
+
+                            var str = item.imgurl || "";
+                            imgListArr = JSON.parse("[" + str + "]");
+                            for (let j = 0; j < imgListArr.length; j++) {
+                                html += "\t\t\t\t<div class=\"thumbnail\" onclick=\"scaleImg('" + imgListArr[j] + "')\">";
+                                html += "\t\t\t\t\t<img style=\"height: 100%;width: 100%;\" src=\"" + imgListArr[j] + "\"></div>\n";
+                            }
+                            html += "\t\t</div>\n";
+                            html += "\t\t</div>\n";
+                            if (item.ischeck == -1) {
+                                html += "<div class=\"aui-btn-button checkBtn\" style=\"background: #FF9800;margin:2% 5% 2% 5%;width: 90%\">" +
+                                    "<button onclick=\"upDetail('" + item.id + "')\">修改</button>" +
+                                    "</div>";
+                                html += "\t</div>"
+                            }
+                            html += "\t</div>";
+                        }
+
+                        if (html == "") {
+                            html += "<div style='width: 100%;text-align: center;padding: 7vw 0'>暂无师傅上传资料</div>"
+                        }
+
+                        $("#fileList").html(html);
+                    } else {
+                        layer.msg(data.msg);
+                    }
+                }
+            }
+        );
+    }
+
+    function initMember() {
+        $.ajax({
+                url: "/wx_wlorder/sonup/" + _id,
+                type: "get",
+                data: {},
+                dataType: "json",
+                success: function (data) {
+                    console.log(data);
+                    if (data.flag) {
+                        var html = "";
+                        var mylist = data.sh1;
+                        for (var i = 0; i < mylist.length; i++) {
+                            var item = mylist[i];
+                            console.log(item);
+                            html += "<div style=\"border-bottom: 1px solid rgba(128, 128, 128, 0.15);float: left;padding-bottom: 2vw; width: 100%\">\n";
+                            if (item.ischeck == 2) {
+                                html += "<div style='margin: 3vw 0 3vw 4vw;font-size: 15px;color: green;'>已审核</div>";
+                            } else if (item.ischeck == -1) {
+                                html += "<div style='margin: 3vw 0 3vw 4vw;font-size: 15px;color: red;'>已驳回</div>";
+                            } else if (item.ischeck == 1) {
+                                html += "<div style='margin: 3vw 0 3vw 4vw;font-size: 15px;color: grey;'>待审核</div>";
+                            }
+                            html += "\t\t<div style=\"min-width: 50vw; float: left;text-align: left;padding: 1vw 0 1vw 6vw;\">数量：" + item.number + " 件</div>\n";
+                            html += "\t\t<div class=\"form-control col-xs-10\" name=\"imglist\" disabled=\"\" style=\"border-top: none; min-height: 37.2vw; height: auto; width: 92vw;\tmargin: 2vw 4vw; white-space: nowrap; overflow: auto;float: left;\">\n";
+                            html += "\t\t\t<div style=\"width: 1000vw;\">\n";
+
+                            var str = item.imgurl || "";
+                            imgListArr = JSON.parse("[" + str + "]");
+                            for (let j = 0; j < imgListArr.length; j++) {
+                                html += "\t\t\t\t<div class=\"thumbnail\" onclick=\"scaleImg('" + imgListArr[j] + "')\">";
+                                html += "\t\t\t\t\t<img style=\"height: 100%;width: 100%;\" src=\"" + imgListArr[j] + "\"></div>\n";
+                            }
+                            html += "\t\t</div>\n";
+                            html += "\t\t</div>\n";
+                            if (item.ischeck == 1) {
+                                html += "<div class=\"aui-btn-button checkBtn\" style=\"background: #1e88e5;margin:2% 2% 2% 5%;\">" +
+                                    "<button onclick=\"qr('" + item.id + "')\">确认</button>" +
+                                    "</div>";
+                                html += "<div class=\"aui-btn-button checkBtn\" style=\"background: #FF9800;margin:2% 5% 2% 2%;\">" +
+                                    "<button onclick=\"bh('" + item.id + "')\">驳回</button>" +
+                                    "</div>";
+                                html += "\t</div>"
+                            }
+                            html += "\t</div>\n";
+                        }
+                        if (html == "") {
+                            html += "<div style='width: 100%;text-align: center;padding: 7vw 0'>暂无师傅上传资料</div>"
+                            $("#fileList").html(html);
+                            return;
+                        }
+
+                        if (data.overcount > 0) {
+                            html += "<div style='width: 100%;text-align: center;padding: 7vw 0;float: left;'>还有" + data.overcount + "件商品未上传资料</div>"
+                        } else {
+                            html += "<div style='width: 100%;text-align: center;padding: 7vw 0;float: left;'>全部商品已上传</div>"
+                        }
+                        $("#fileList").html(html);
+                    } else {
+                        layer.msg(data.msg);
+                    }
+                }
+            }
+        );
+    }
+
+
+    function initLook() {
+        $.ajax({
+                url: "/wx_wlorder/sonup/" + _id,
+                type: "get",
+                data: {},
+                dataType: "json",
+                success: function (data) {
+                    console.log(data);
+                    if (data.flag) {
+                        var html = "";
+                        var mylist = data.sh1;
+                        for (var i = 0; i < mylist.length; i++) {
+                            var item = mylist[i];
+                            html += "<div style=\"border-bottom: 1px solid rgba(128, 128, 128, 0.15);float: left;padding-bottom: 2vw; width: 100%\">\n";
+                            if (_type != "null") {
+                                html += "\t\t<div style=\"min-width: 50vw; float: left;text-align: left;padding: 1vw 0 1vw 6vw;\">进货价：" + parseFloat(item.oldprice).toFixed(2) + " 元</div>\n";
+                            }
+                            html += "\t\t<div style=\"min-width: 50vw; float: left;text-align: left;padding: 1vw 0 1vw 6vw;\">数量：" + item.number + " 件</div>\n";
+                            if (_type != "null") {
+                                html += "\t\t<div style=\"min-width: 50vw; float: left;text-align: left;padding: 1vw 0 1vw 6vw;\">总体积：" + item.allVolume + " m³</div>\n";
+                                html += "\t\t<div style=\"min-width: 50vw; float: left;text-align: left;padding: 1vw 0 1vw 6vw;\">总重量：" + item.number * item.weightAxe / 10000 + " KG</div>\n";
+                                html += "\t\t<div style=\"min-width: 50vw; float: left;text-align: left;padding: 1vw 0 1vw 6vw;\">商户：" + item.terpoint.nick + " (ID:" + item.terpoint.shotId + ")" + "</div>\n";
+                                let phone = item.terpoint.phone == null ? "未绑定手机" : item.terpoint.phone;
+                                html += "\t\t<div style=\"min-width: 50vw; float: left;text-align: left;padding: 1vw 0 1vw 6vw;\">商户手机：" + phone + "</div>\n";
+                                html += "\t\t<div style=\"min-width: 50vw; float: left;text-align: left;padding: 1vw 0 1vw 6vw;\">上传者：" + item.market.nick + "</div>\n";
+                            }
+                            html += "\t\t<div class=\"form-control col-xs-10\" name=\"imglist\" disabled=\"\" style=\"border-top: none; min-height: 37.2vw; height: auto; width: 92vw;\tmargin: 2vw 4vw; white-space: nowrap; overflow: auto;float: left;\">\n";
+                            html += "\t\t\t<div style=\"width: 1000vw;\">\n";
+
+                            var str = item.imgurl || "";
+                            imgListArr = JSON.parse("[" + str + "]");
+                            for (let j = 0; j < imgListArr.length; j++) {
+                                html += "\t\t\t\t<div class=\"thumbnail\" onclick=\"scaleImg('" + imgListArr[j] + "')\">";
+                                html += "\t\t\t\t\t<img style=\"height: 100%;width: 100%;\" src=\"" + imgListArr[j] + "\"></div>\n";
+                            }
+                            html += "\t\t</div>\n";
+                            html += "\t\t</div>\n";
+                            html += "\t</div>\n";
+                        }
+                        if (html == "") {
+                            html += "<div style='width: 100%;text-align: center;padding: 7vw 0'>暂无师傅上传资料</div>"
+                        }
+                        $("#fileList").html(html);
+                    } else {
+                        layer.msg(data.msg);
+                    }
+                }
+            }
+        );
+    }
+
+    function getQueryString(name) {
+        var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
+        var reg_rewrite = new RegExp("(^|/)" + name + "/([^/]*)(/|$)", "i");
+        var r = window.location.search.substr(1).match(reg);
+        var q = window.location.pathname.substr(1).match(reg_rewrite);
+        if (r != null) {
+            return unescape(r[2]);
+        } else if (q != null) {
+            return unescape(q[2]);
+        } else {
+            return null;
+        }
+    }
+
+    //type=3 市场师傅-------------------------------------------
+    //osid: 子订单id
+    //status: 1:师傅上传 2:用户确认 3:已确认（只看） 4:已驳回
+    function upDetail(sonupID) {
+        var url;
+        if (isWeiXin()) {
+            url = "up_detail.html?id=" + getQueryString("id") + "&sonupID=" + sonupID
+        } else {
+            url = "up_detail-app.html?id=" + getQueryString("id") + "&sonupID=" + sonupID
+        }
+
+        var i = layer.open({
+            type: 2,
+            title: "上传资料",
+            skin: "xx",
+            area: ["100%", "100%"],
+            maxmin: true,
+            content: url,
+            success: function (index, layero) {
+            },
+            cancel: function (index, layero) {
+            }
+        });
+        layer.full(i);
+    }
+
+    function isWeiXin() {
+        //window.navigator.userAgent属性包含了浏览器类型、版本、操作系统类型、浏览器引擎类型等信息，这个属性可以用来判断浏览器类型
+        var ua = window.navigator.userAgent.toLowerCase();
+        //通过正则表达式匹配ua中是否含有MicroMessenger字符串
+        if (ua.match(/MicroMessenger/i) == 'micromessenger') {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+</script>
+</html>

@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>修改密码</title>
+	<meta content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=0" name="viewport"/>
+	<meta content="yes" name="apple-mobile-web-app-capable"/>
+	<meta content="black" name="apple-mobile-web-app-status-bar-style"/>
+	<meta content="telephone=no" name="format-detection"/>
+	<link href="../../css/bootstrap.min.css" rel="stylesheet">
+	<link href="login.css" rel="stylesheet" type="text/css"/>
+	<link href="../../css/style.css" rel="stylesheet" type="text/css"/>
+	<style>
+		* {
+			margin: 0;
+			padding: 0;
+		}
+		
+		.btn-primary.active.focus, .btn-primary.active:focus, .btn-primary.active:hover, .btn-primary:active.focus, .btn-primary:active:focus, .btn-primary:active:hover, .open > .dropdown-toggle.btn-primary.focus, .open > .dropdown-toggle.btn-primary:focus, .open > .dropdown-toggle.btn-primary:hover {
+			outline: none !important;
+			background-color: #28608f !important;
+			border-color: #28608f !important;
+		}
+		
+		.btn-primary {
+			outline: none !important;
+			color: #000;
+			background-color: #f3f3f3;
+			border-color: #ccc;
+		}
+		
+		}
+	</style>
+</head>
+<body>
+<!-- 顶部导航栏 -->
+<header class="aui-navBar aui-navBar-fixed">
+	<a href="javascript:history.go(-1)" class="aui-navBar-item">
+		<i class="icon icon-return"></i>
+	</a>
+	<div class="aui-center">
+		<span class="aui-center-title">修改密码</span>
+	</div>
+</header>
+
+<div class="container">
+	<div class="input-group">
+		<span class="input-group-addon">旧密码</span>
+		<input type="password" class="form-control" name="oldpsd">
+	</div>
+	<div class="input-group">
+		<span class="input-group-addon">新密码</span>
+		<input type="password" class="form-control" name="newpsd">
+	</div>
+	<div class="input-group">
+		<span class="input-group-addon">确认新密码</span>
+		<input type="password" class="form-control" name="renewpsd">
+	</div>
+	<!--		<div class="input-group">-->
+	<!--			<span class="input-group-addon">验证码</span>-->
+	<!--			<input type="number" class="form-control" name="telphone">-->
+	<!--			<span class="btn input-group-addon" id="sendAuth">发送验证码</span>-->
+	<!--		</div>-->
+	<div style="width: 100%;position: fixed;bottom: 10px;left: 0;">
+		<button type="button" class="btn btn-success btn-lg" style="width:66%;" onclick="javascript:register()">确定</button>
+	</div>
+</div>
+
+</body>
+
+<!-- 引入jQuery核心js文件 -->
+<script src="../../js/eleditor/jquery.min.js"></script>
+<script src="../../js/layer.js"></script>
+<!-- 引入BootStrap核心js文件 -->
+<script src="../../js/bootstrap.min.js"></script>
+<script type="text/javascript">
+    function register() {
+        var oldpsd = $("input[name=oldpsd]").val();
+        var newpsd = $("input[name=newpsd]").val();
+        var renewpsd = $("input[name=renewpsd]").val();
+        
+        
+        if(oldpsd == "" || newpsd == "" || renewpsd == ""){
+            alert("请输入完整的信息");
+            return;
+				}else if(newpsd !== renewpsd){
+            alert("两次密码输入不同");
+            return;
+				}
+
+        $.ajax({
+            url: "/wx_wlmember/setpassword",
+            type: "post",
+            data: {
+                oldpsd: oldpsd,
+                newpsd: newpsd
+            },
+            dataType: "json",
+            success: function (data) {
+                if (data.flag) {
+                    layer.msg(data.msg,{time:2000},function(){
+                        location.href = "member_center.html";
+										});
+                } else {
+                    layer.msg(data.msg);
+                }
+            }
+        });
+    }
+
+
+</script>
+</html>

@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>提交订单</title>
+	<meta content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=0" name="viewport"/>
+	<meta content="yes" name="apple-mobile-web-app-capable"/>
+	<meta content="black" name="apple-mobile-web-app-status-bar-style"/>
+	<meta content="telephone=no" name="format-detection"/>
+	<link href="../order/css/style2.css" rel="stylesheet" type="text/css"/>
+	<link href="../../layer/theme/default/layer.css" rel="stylesheet" type="text/css"/>
+	<link href="../../css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body style="background:#f7f7f7">
+<section class="aui-flexView">
+	<header class="aui-navBar aui-navBar-fixed">
+		<a href="javascript:history.go(-1);" class="aui-navBar-item">
+			<i class="icon icon-return"></i>
+		</a>
+		<div class="aui-center">
+			<span class="aui-center-title">提交订单</span>
+		</div>
+	</header>
+	<section class="aui-scrollView">
+		<div class="aui-order-box">
+			<div class="aui-flex aui-choice-white aui-mar15" id="selectAdress">
+				
+				<div id="address_info" style="display: none;">
+					<div class="item" name="address">
+						<div class="receiver">收货人：&nbsp;<smap name="ads_name" style="color: #505050;;"></smap>
+						</div>
+						<div class="phone" name="ads_phone"></div>
+						<div class="address">收货地址：&nbsp;<smap style="color: #505050;" name="ads_address"></smap>
+						</div>
+					</div>
+				</div>
+				
+				<div class="aui-flex-box placeholder">请选择收货地址</div>
+				<div class="aui-flex-triangle" style="color:#fff">.</div>
+			</div>
+			<div class="aui-flex aui-choice-white">
+				<div class="aui-flex-box">
+					<h1>商品清单
+						<smap name="goods_num"></smap>
+						件
+					</h1>
+				</div>
+			</div>
+			
+			<my id="products">
+				<!--				<div class="aui-flex aui-flex-default">-->
+				<!--					<div class="aui-flex-goods">-->
+				<!--						<img name="goods_pic" src="" alt="">-->
+				<!--					</div>-->
+				<!--					<div class="aui-flex-box">-->
+				<!--						<h2 name="goods_title"></h2>-->
+				<!--						<p>规格：-->
+				<!--							<smap name="goods_specs"></smap>-->
+				<!--						</p>-->
+				<!--						<div class="aui-flex aui-flex-clear">-->
+				<!--							<div class="aui-flex-box">￥-->
+				<!--								<smap name="goods_price"></smap>-->
+				<!--							</div>-->
+				<!--							<div>x-->
+				<!--								<smap name="goods_num"></smap>-->
+				<!--							</div>-->
+				<!--						</div>-->
+				<!--					</div>-->
+				<!--				</div>-->
+			</my>
+			
+			<div class="aui-flex aui-choice-white b-line">
+				<div class="aui-flex-box">支付方式</div>
+				<select class="aui-flex-triangle">
+					<option value="1" selected>线上转账</option>
+				</select>
+			</div>
+			<div class="aui-flex aui-choice-white  aui-mar15">
+				<div class="" style="font-size: 14px; color: #333;">买家留言</div>
+				<input id="desc" type="text" placeholder="请填写备注" style="font-size: 14px;margin-left: 10px;width: 75%;">
+			</div>
+			<div class="aui-flex aui-choice-white ">
+				<div class="aui-flex-box">
+					<h4>商品总价</h4>
+					<h4>应付定金</h4>
+				</div>
+				<div class="aui-flex-triangle aui-flex-triangle-clear" style="text-align: right">
+					<h4 style="color: #f21956;">￥
+						<smap name="total_price"></smap>
+					</h4>
+					<h4 style="color: #f21956;">￥
+						<smap name="deposit_price"></smap>
+					</h4>
+					<div id="moneyup" style="color: #9E9E9E; position: absolute; bottom: -12px; font-size: 12px; width: 300px; right: 15px;display: none;">
+						定金最高仅需支付(<smap name="deposit_price" style="color: #e46363;"></smap>)元哦
+					</div>
+				</div>
+			</div>
+			<div class="aui-flex"></div>
+		</div>
+	</section>
+	<footer class="aui-bar-footer">
+		<div class="aui-flex">
+			<div class="aui-flex-box">
+				定金：<em>￥
+				<smap name="deposit_price"></smap>
+			</em>
+			</div>
+			<div class="aui-btn-button" onclick="toPay()">
+				<button>支付定金</button>
+			</div>
+		</div>
+	</footer>
+</section>
+<script src="../../js/jquery-1.11.3.min.js"></script>
+<script src="../../js/layer.js"></script>
+<script>
+
+    var product = {
+            tCount: 0,
+            tPrice: 0,
+            tDeposit: 0,
+            gsList: []
+        },
+        gsParam = [];
+
+    $(function () {
+        $.ajax({
+            url: "/wx_wlcart",
+            type: "get",
+            data: {},
+            dataType: "json",
+            success: function (data) {
+                if (data.flag) {
+                    var list = data.list;
+                    for (let i = 0; i < list.length; i++) {
+                        var isCheck = list[i].check;
+                        var count = list[i].count;
+                        var gs = list[i].goodsSpecs;
+                        if (isCheck) {
+                            product.tCount += parseInt(count);
+                            product.tPrice += parseFloat(gs.price) * parseInt(count);
+                            product.tDeposit += parseFloat(gs.deposit) * parseInt(count);
+                            product.gsList.push({gs: gs, num: count});
+                            gsParam.push({gsId: gs.id, num: count});
+                        }
+                    }
+                    $("[name=goods_num]").text(product.tCount);
+                    var price = parseFloat(product.tPrice).toFixed(2);
+                    var deposit = parseFloat(product.tDeposit).toFixed(2);
+                    var moneyup = parseFloat(data.moneyup).toFixed(2);
+
+                    $("[name=total_price]").text(price);
+                    if(deposit>moneyup){
+                        $("[name=deposit_price]").text(moneyup);
+                        $("#moneyup").show();
+                    }else{
+                        $("[name=deposit_price]").text(deposit);
+                    }
+                    
+                    
+                    for (let i = 0; i < product.gsList.length; i++) {
+                        var num = product.gsList[i].num;
+                        var gs = product.gsList[i].gs;
+                        var g = gs.goods;
+                        var s = gs.specs;
+                        var html = "";
+                        html += "<div class=\"aui-flex aui-flex-default\">";
+                        html += "\t<div class=\"aui-flex-goods\">";
+                        html += "\t\t<img src=\"" + JSON.parse(g.imgList)[0] + "\">";
+                        html += "\t</div>";
+                        html += "\t<div class=\"aui-flex-box\">";
+                        html += "\t\t<h2>" + g.title + "</h2>";
+                        html += "\t\t<p>规格：";
+                        html += "\t\t\t<smap>" + s.name + "</smap>";
+                        html += "\t\t</p>";
+                        html += "\t\t<div class=\"aui-flex aui-flex-clear\">";
+                        html += "\t\t\t<div class=\"aui-flex-box\">￥";
+                        html += "\t\t\t\t<smap>" + parseFloat(gs.price).toFixed(2) + "</smap>";
+                        html += "\t\t\t</div>";
+                        html += "\t\t\t<div>x";
+                        html += "\t\t\t\t<smap>" + num + "</smap>";
+                        html += "\t\t\t</div>";
+                        html += "\t\t</div>";
+                        html += "\t</div>";
+                        html += "</div>";
+
+                        $("#products").append(html);
+                    }
+                } else {
+                    layer.msg(data.msg);
+                }
+            }
+        });
+
+        $.ajax({
+            url: "/wl_address/default",
+            type: "get",
+            data: {},
+            dataType: "json",
+            success: function (data) {
+                if (data.flag) {
+                    var item = data.item;
+                    $("#selectAdress .placeholder").hide();
+                    $("#address_info").show();
+                    $("[name=ads_name]").text(item.name);
+                    $("[name=ads_phone]").text(item.phone);
+                    $("[name=ads_address]").text(item.province + item.city + item.county + item.location);
+                    $("[name=address]").attr("id", item.id);
+                } else {
+                    layer.msg(data.msg);
+                }
+            }
+        });
+    });
+
+    /**
+     * 创建订单并且跳转到支付页面
+     */
+    function toPay() {
+        var param = {
+            aId: $("[name=address]").attr("id"),
+            pay: 1,
+            desc: $("#desc").val(),
+            gsArray: JSON.stringify(gsParam)
+        };
+        console.log(param);
+        $.ajax({
+            url: "/wx_wlcart/add",
+            type: "post",
+            data: param,
+            dataType: "json",
+            success: function (data) {
+                if (data.flag) {
+                    location.href="../order/pay.html?id="+data.id;
+                } else {
+                    layer.msg(data.msg);
+                }
+            }
+        });
+    }
+
+    $("#selectAdress").on("click", function () {
+        var i = layer.open({
+            type: 2,
+            title: "收货地址",
+            skin: "xx",
+            area: ["100%", "100%"],
+            maxmin: true,
+            content: "../order/selectAddress.html",
+            success: function (index, layero) {
+            },
+            cancel: function (index, layero) {
+            }
+        });
+        layer.full(i);
+    });
+
+</script>
+</body>
+</html>

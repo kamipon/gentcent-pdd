@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>商家管理</title>
+	<meta content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=0" name="viewport"/>
+	<meta content="yes" name="apple-mobile-web-app-capable"/>
+	<meta content="black" name="apple-mobile-web-app-status-bar-style"/>
+	<meta content="telephone=no" name="format-detection"/>
+	<link href="../../css/bootstrap.min.css" rel="stylesheet">
+	<link href="../../layer/theme/default/layer.css" rel="stylesheet" type="text/css"/>
+	<link href="../order/css/selectAddress.css" rel="stylesheet">
+	<link href="../order/css/style.css" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+<header class="aui-navBar aui-navBar-fixed">
+	<a href="../membercenter/member_center.html" class="aui-navBar-item">
+		<i class="icon icon-return"></i>
+	</a>
+	<div class="aui-center">
+		<span class="aui-center-title">商家管理</span>
+	</div>
+</header>
+
+<div class="item-box" id="content">
+	<!--		<div class="item">-->
+	<!--			<my>-->
+	<!--				<div class="receiver" style="padding: 10px;width: 17vw;margin-top: 10px;">-->
+	<!--					<img src="../../img/more.png" style="width: 60px;">-->
+	<!--				</div>-->
+	<!--				<div class="receiver">-->
+	<!--					申请人：&nbsp;<smap style="color: #505050;;">左智(ID:22222)</smap>-->
+	<!--				</div>-->
+	<!--				<div class="phone">13277938897</div>-->
+	<!--				<div class="address" style="padding: 12px 20px 0px 20px;width: 75vw;">店铺地址：&nbsp;<smap style="color: #505050;;">湖北省武汉市汉阳区龙祥东区啊实打实的</smap>-->
+	<!--				</div>-->
+	<!--			</my>-->
+	<!--			<div class="toolbar2" style="font-size: 14px;" onclick="yes('22222')">-->
+	<!--				<img src="../../img/yes.png">&nbsp;通过-->
+	<!--			</div>-->
+	<!--		</div>-->
+</div>
+</body>
+<!-- 引入jQuery核心js文件 -->
+<script src="../../js/jquery-1.11.3.min.js"></script>
+<script src="../../js/layer.js"></script>
+<!-- 引入BootStrap核心js文件 -->
+<script src="../../js/bootstrap.min.js"></script>
+<script type="text/javascript">
+
+    $(function () {
+        $.ajax({
+            url: "/wx_wlter",
+            type: "get",
+            data: {},
+            dataType: "json",
+            success: function (data) {
+                if (data.flag) {
+                    var list = data.mlist;
+                    console.log(list);
+                    var html = "";
+                    for (var i = 0; i < list.length; i++) {
+                        var m = list[i];
+                        html += "<div class=\"item\">";
+                        html += "\t<my>";
+                        html += "\t\t<div class=\"receiver\" style=\"padding: 10px;width: 17vw;margin-top: 15px;\">";
+                        html += "\t\t\t<img src=\""+m.picUrl+"\" style=\"width: 60px;\">";
+                        html += "\t\t</div>";
+                        html += "\t\t<div class=\"receiver\">";
+                        html += "\t\t\t昵称：&nbsp;<smap style=\"color: #505050;;\">"+m.nick+"(ID:"+m.shotId+")</smap>";
+                        html += "\t\t</div>";
+                        if(m.phone==null){
+                            html += "\t\t<div class=\"phone\">手机号:未绑定</div>";
+												}else{
+                            html += "\t\t<div class=\"phone\">"+m.phone+"</div>";
+                        }
+                        html += "\t\t<div class=\"address\" style=\"padding: 12px 20px 0px 20px;width: 75vw;\">真实姓名：&nbsp;<smap style=\"color: #505050;;\">真实姓名："+m.realName+"</smap>";
+                        html += "\t\t</div>";
+                        html += "\t\t<div class=\"address\" style=\"padding: 12px 20px 0px 20px;width: 75vw;\">店铺地址：&nbsp;<smap style=\"color: #505050;;\">"+m.address+"</smap>";
+                        html += "\t\t</div>";
+                        html += "\t</my>";
+                        html += "\t<div class=\"toolbar2\" style=\"font-size: 14px;\" onclick=\"yes('"+m.id+"')\">";
+                        html += "\t\t<img src=\"../../img/yes.png\">&nbsp;通过";
+                        html += "\t</div>";
+                        html += "</div>";
+                    }
+                    if(html==""){
+                        html += "<p style='text-align: center'>暂无数据</p>";
+										}
+                    $("#content").html(html);
+                } else {
+                    layer.msg(data.msg);
+                }
+            }
+        });
+    });
+
+    function yes(id) {
+        layer.confirm('确定操作？', {
+            btn: ['确定', '取消'], //按钮
+            title: false,
+            icon: 3,
+            closeBtn: false
+        }, function (i) {
+            $.ajax({
+                url: "/wx_wlter/examine/" + id,
+                type: "post",
+                data: {},
+                dataType: "json",
+                success: function (data) {
+                    if (data.flag) {
+                        layer.msg(data.msg, {time: 2000}, function () {
+                            location.reload();
+                        });
+                    } else {
+                        layer.msg(data.msg);
+                    }
+                }
+            });
+        }, function (i) {
+            layer.close(i);
+        });
+
+    }
+
+</script>
+
+</html>

@@ -1,0 +1,807 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>支付</title>
+	<meta content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=0" name="viewport"/>
+	<meta content="yes" name="apple-mobile-web-app-capable"/>
+	<meta content="black" name="apple-mobile-web-app-status-bar-style"/>
+	<meta content="telephone=no" name="format-detection"/>
+	<link href="css/style2.css" rel="stylesheet" type="text/css"/>
+	<link href="../../layer/theme/default/layer.css" rel="stylesheet" type="text/css"/>
+	<link href="../../css/bootstrap.min.css" rel="stylesheet">
+	<style>
+		.button-sm {
+			padding: 0px 6px !important;
+			font-size: 12px !important;
+			height: 30px !important;
+			width: auto !important;
+			color: #fff !important;
+			position: absolute !important;
+			right: 0 !important;
+			bottom: 0 !important;
+		}
+	</style>
+</head>
+<body style="background:#f7f7f7">
+<section class="aui-flexView">
+	<header class="aui-navBar aui-navBar-fixed">
+		<a href="javascript:history.go(-1);" class="aui-navBar-item">
+			<i class="icon icon-return"></i>
+		</a>
+		<div class="aui-center">
+			<span class="aui-center-title">订单详情</span>
+		</div>
+	</header>
+	<section class="aui-scrollView">
+		<div class="aui-order-box">
+			
+			<div class="aui-flex aui-choice-white aui-mar15" id="selectAdress">
+				
+				<div id="address_info" style="display: none;">
+					<div class="item" name="address">
+						<div class="receiver">收货人：&nbsp;<smap name="ads_name" style="color: #505050;;"></smap>
+						</div>
+						<div class="phone" name="ads_phone"></div>
+						<div class="address">收货地址：&nbsp;<smap style="color: #505050;" name="ads_address"></smap>
+						</div>
+					</div>
+				</div>
+			
+			</div>
+			
+			<div class="aui-flex aui-choice-white">
+				<h4 style="margin: 0;">商品清单
+					<smap name="total_num"></smap>
+					件
+				</h4>
+			</div>
+			<my id="goods"></my>
+			<!--			<div class="aui-flex aui-flex-default aui-mar15">-->
+			<!--				<div class="aui-flex-goods">-->
+			<!--					<img name="goods_pic" src="" alt="">-->
+			<!--				</div>-->
+			<!--				<div class="aui-flex-box">-->
+			<!--					<h2 name="goods_title"></h2>-->
+			<!--					<p>规格：-->
+			<!--						<smap name="goods_specs"></smap>-->
+			<!--					</p>-->
+			<!--					<div class="aui-flex aui-flex-clear">-->
+			<!--						<div class="aui-flex-box">￥-->
+			<!--							<smap name="goods_price"></smap>-->
+			<!--						</div>-->
+			<!--						<div>x-->
+			<!--							<smap name="goods_num"></smap>-->
+			<!--						</div>-->
+			<!--					</div>-->
+			<!--				</div>-->
+			<!--			</div>-->
+			
+			<div class="aui-flex aui-choice-white b-line" style="margin-top: 15px;">
+				<div class="aui-flex-box">支付方式</div>
+				<select class="aui-flex-triangle" disabled>
+					<option value="1" selected>线上转账</option>
+				</select>
+			</div>
+			<div class="aui-flex aui-choice-white ">
+				<div class="aui-flex-box">
+					<h4>商品总价</h4>
+					<h4>定金</h4>
+					<h4>尾款</h4>
+				</div>
+				<div class="aui-flex-triangle aui-flex-triangle-clear " style="text-align: right">
+					<h4 style="color: #f21956;">￥
+						<smap name="total_price"></smap>
+					</h4>
+					<h4 style="color: #f21956;">￥
+						<smap name="deposit_price"></smap>
+					</h4>
+					<h4 style="color: #f21956;">￥
+						<smap name="end_price"></smap>
+					</h4>
+				</div>
+			</div>
+			<div class="aui-flex aui-choice-white" id="allvt"
+					 style="display: none;border-top: 0.5px solid rgb(245, 245, 245);">
+				<div class="aui-flex-box">
+					<h4>总体积</h4>
+					<h4>总重量</h4>
+				</div>
+				<div class="aui-flex-triangle aui-flex-triangle-clear" style="text-align: right">
+					<h4>
+						<smap name="allv"></smap>
+						m³
+					</h4>
+					<h4>
+						<smap name="allt"></smap>
+						KG
+					</h4>
+				</div>
+			</div>
+			
+			<div class="aui-flex aui-choice-white b-line" style="margin-top: 15px;">
+				<div class="aui-flex-box">
+					<h4>当前状态</h4>
+				</div>
+				<div class="aui-flex-triangle aui-flex-triangle-clear">
+					<h4 style="color: #f21956;">
+						<smap name="status"></smap>
+					</h4>
+				</div>
+			</div>
+			
+			<div id="desc-box" class="aui-flex aui-choice-white b-line"
+					 style="margin-top: 0px;padding: 10px 15px;display: none;">
+				<div class="aui-flex-box">
+					<h4>驳回原因</h4>
+				</div>
+				<div class="aui-flex-triangle aui-flex-triangle-clear">
+					<h4 style="color: #f21956;">
+						<smap name="desc"></smap>
+					</h4>
+				</div>
+			</div>
+			
+			<div id="deposit-box" class="aui-flex aui-choice-white b-line" onclick="showDeposit()"
+					 style="margin-top: 0px;padding: 10px 15px;display: none;">
+				<div class="aui-flex-box">
+					<h4>定金支付凭证</h4>
+				</div>
+				<div class="aui-flex-triangle aui-flex-triangle-clear">
+					<h4 style="color: #f21956;">
+						<smap name="depositBtn">未审核</smap>
+					</h4>
+				</div>
+				<div class="aui-flex-triangle" style="color:#fff">.</div>
+			</div>
+			
+			<div id="end-box" class="aui-flex aui-choice-white b-line" onclick="showEnd()"
+					 style="margin-top: 0px;padding: 10px 15px;display: none;">
+				<div class="aui-flex-box">
+					<h4>尾款支付凭证</h4>
+				</div>
+				<div class="aui-flex-triangle aui-flex-triangle-clear">
+					<h4 style="color: #f21956;">
+						<smap name="endBtn">未审核</smap>
+					</h4>
+				</div>
+				<div class="aui-flex-triangle" style="color:#fff">.</div>
+			</div>
+		
+		
+		</div>
+		
+		<div class="aui-flex" style="height: 0;"></div>
+	
+	</section>
+	<footer class="aui-bar-footer" style="display: none;">
+		<my type="2" style="display: none;">
+			<div class="aui-flex">
+				<div class="aui-btn-button" style="font-size: 18px;width: 100%; text-align: center;">
+					<button type="2">接单</button>
+				</div>
+			</div>
+		</my>
+		<my type="4" style="display: none;">
+			<div class="aui-flex">
+				<div class="aui-btn-button" style="font-size: 18px;width: 100%; text-align: center;">
+					<button type="4">发货</button>
+				</div>
+			</div>
+		</my>
+		<my type="5" style="display: none;">
+			<div class="aui-flex">
+				<div class="aui-btn-button" style="font-size: 18px;width: 100%; text-align: center;">
+					<button type="5">审核定金支付凭证</button>
+				</div>
+			</div>
+		</my>
+	</footer>
+</section>
+
+<div class="payimg-farme" style="display: none;">
+	<div style="overflow: auto;width: 100%;max-height: 70vh;">
+		<img src="" style="width: 100%;padding:30px 15px;">
+	</div>
+	<div class="aui-btn-button btn-red" name="depositauth" style="display: none;" type="2" onclick="check(1,0);">
+		<button>通过</button>
+	</div>
+	<div class="aui-btn-button btn-blue" name="depositauth" style="display: none;" type="2" onclick="check(2,0);">
+		<button>驳回</button>
+	</div>
+</div>
+<div class="payendimg-farme" style="display: none;">
+	<img src="" style="width: 100%;padding:30px 15px;">
+	<div class="aui-btn-button btn-red" name="endauth" style="display: none;" type="2" onclick="check(1,1);">
+		<button>通过</button>
+	</div>
+	<div class="aui-btn-button btn-blue" name="endauth" style="display: none;" type="2" onclick="check(2,1);">
+		<button>驳回</button>
+	</div>
+</div>
+
+<div class="dispatch-farme" style="display: none;padding: 10px;">
+	<div class="input-group" name="5_hide" style="margin: 10px 0;">
+		<span class="input-group-addon">已选师傅</span>
+		<input class='form-control' type="text" disabled id="marketListVal">
+		<span class="input-group-addon btn" onclick="clearMarket()">清空</span>
+	</div>
+	<div class="input-group">
+		<span class="input-group-addon">选择师傅</span>
+		<select id='marketList' class='form-control'></select>
+		<span name="5_hide" class="input-group-addon btn" onclick="addMarket()">添加</span>
+	</div>
+	<div name="5_hide" class="aui-btn-button btn-blue" onclick="dispatch();" style="width: 100%; margin-top: 20px;">
+		<button>派单</button>
+	</div>
+	<div type="5" class="aui-btn-button btn-blue" onclick="dispatchWl();"
+			 style="display: none;width: 100%; margin-top: 20px;">
+		<button>分配</button>
+	</div>
+</div>
+
+<script src="../../js/jquery-1.11.3.min.js"></script>
+<script src="../../js/layer.js"></script>
+<script src="http://res.wx.qq.com/open/js/jweixin-1.4.0.js"></script>
+<script>
+    var _wx;
+    $(function () {
+        var url = location.href.split('#')[0];
+        $.ajax({
+            url: "/share",
+            type: "get",
+            dataType: "json",
+            data: {"url": encodeURIComponent(url)},
+            success: function (data) {
+                console.log(data);
+                wx.config({
+                    debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+                    appId: data.appId, // 必填，公众号的唯一标识
+                    timestamp: data.timestamp, // 必填，生成签名的时间戳
+                    nonceStr: data.nonceStr, // 必填，生成签名的随机串
+                    signature: data.signature,// 必填，签名，见附录1
+                    jsApiList: [
+                        'chooseImage',
+                        'previewImage',
+                        'uploadImage',
+                        'downloadImage'
+                    ]
+                });
+                wx.ready(function () {
+                    _wx = wx;
+                });
+                wx.error(function (res) {
+                });
+            }
+        });
+    });
+
+    var _id = getQueryString("id");
+    var _type = getQueryString("type");
+    var _src, _order;
+    var statusMap = {
+        "-1": "已失效", "0": "未付款", "1": "已付定金（待审核）",
+        "2": "已接单", "3": "备货中", "4": "已确认", "5": "已付尾款（待审核）",
+        "6": "发货", "7": "确认收货", "8": "交易成功", "10": "已审订金", "11": "已审尾款",
+        "12": "退货中", "13": "已退货", "14": "退款中", "15": "已退款"
+    };
+
+
+    $(function () {
+        init(function (order) {
+            _order = order;
+            if (_type != null) {
+                if (_type != 3 && _type != 1000) {
+                    $(".aui-bar-footer").show();
+                }
+                $("[type=" + _type + "]").show();
+                if (_type == 5) {
+                    if (order.status == 11) {
+                        $("[type=5]button").text("分配物流");
+                        $("[type=5]button").parent().click(function () {
+                            goDispatchWl()
+                        });
+                        $("[name=5_hide]").hide();
+                    }
+                } else if (_type == 2) {
+                    if (order.status == 1) {
+                        $("[type=2]button").text("接单");
+                        $("[type=2]button").parent().click(function () {
+                            showDeposit()
+                        });
+                    } else if (order.status == 2) {
+                        $("[type=2]button").text("派单");
+                        $("[type=2]button").parent().click(function () {
+                            goDispatch()
+                        });
+                    } else if (order.status == 5) {
+                        $("[type=2]button").text("审核尾款支付凭证");
+                        $("[type=2]button").parent().click(function () {
+                            showEnd()
+                        });
+                        $("[name=2_hide]").hide();
+                    }
+                } else if (_type == 4) {
+                    $("[type=4]button").text("发货");
+                    $("[type=4]button").parent().click(function () {
+                        send()
+                    });
+                } else if (_type == 3) {
+                    $("[type=3]button").text("上传资料");
+                    $("[type=3]button").parent().click(function () {
+                        upDetail()
+                    });
+                }
+            }
+        });
+    });
+
+    //type=4 物流师傅-------------------------------------------
+    function send() {
+        layer.confirm('确定发货？', {
+            btn: ['确定', '取消'], //按钮
+            title: false,
+            icon: 3,
+            closeBtn: false
+        }, function (i) {
+            $.ajax({
+                url: "/wx_wlorder_wl/send/" + _id,
+                type: "post",
+                data: {},
+                dataType: "json",
+                success: function (data) {
+                    if (data.flag) {
+                        location.href = "order_list_wl.html";
+                    } else {
+                        layer.msg(data.msg);
+                    }
+                    layer.close(i);
+                }
+            });
+        }, function (i) {
+            layer.close(i);
+        });
+    }
+
+
+    /**
+     * 查看订单详情图片
+     * @param status
+     */
+    function lookDetail(osid, ischecked) {
+        var i = layer.open({
+            type: 2,
+            title: "确认订单",
+            skin: "xx",
+            area: ["100%", "100%"],
+            maxmin: true,
+            content: "son_detail.html?id=" + osid + "&type=" + _type + "&ischecked=" + ischecked,
+            success: function (index, layero) {
+            },
+            cancel: function (index, layero) {
+                location.reload();
+            }
+        });
+        layer.full(i);
+    }
+
+
+    //type=2 销售-------------------------------------------
+    //接单
+    function receipt() {
+        $.ajax({
+            url: "/wx_wlorder_sale/receipt",
+            type: "post",
+            data: {id: _id},
+            dataType: "json",
+            success: function (data) {
+                if (data.flag) {
+                    layer.confirm(data.msg, {
+                        btn: ['确定'], //按钮
+                        title: false,
+                        icon: 1,
+                        closeBtn: false
+                    }, function (i) {
+                        parent.location.href = "order_list_sale.html";
+                    });
+                } else {
+                    layer.confirm(data.msg, {
+                        btn: ['确定'], //按钮
+                        title: false,
+                        icon: 2,
+                        closeBtn: false
+                    }, function (i) {
+                        parent.location.href = "order_list_sale.html";
+                    });
+                }
+            }
+        });
+    }
+
+    var mArray = "";
+    var mNickArray = "";
+
+    //查询派单列表
+    function goDispatch() {
+        $.ajax({
+            url: "/wx_wlorder_sale/marketlist",
+            type: "get",
+            data: {},
+            dataType: "json",
+            success: function (data) {
+                // console.log(data.wllist);
+                $("#marketList").html("");
+                for (let i = 0; i < data.marketlist.length; i++) {
+                    var market = data.marketlist[i];
+                    var html = "<option value='" + market.id + "'>" + market.nick + "</option>";
+                    $("#marketList").append(html);
+                }
+                layer.open({
+                    type: 1,
+                    title: "派单",
+                    shadeClose: false,
+                    shade: 0.6,
+                    closeBtn: 1,
+                    area: ["90%", "220px"],
+                    content: $(".dispatch-farme"),
+                    success: function (index, layero) {
+                    },
+                    cancel: function (index, layero) {
+                    }
+                });
+
+            }
+        });
+    }
+
+    function addMarket() {
+        var m = $("#marketList").val();
+        if (mArray.indexOf(m) > -1) {
+            layer.msg("已添加过该师傅");
+            return;
+        }
+        if (mArray != "") {
+            mArray += ",";
+        }
+        mArray += m;
+        var mNick = $(".dispatch-farme option[value=" + m + "]").html();
+        if (mNickArray != "") {
+            mNickArray += ",";
+        }
+        mNickArray += mNick;
+        $("#marketListVal").val(mNickArray);
+    }
+
+    function clearMarket() {
+        mArray = "";
+        mNickArray = "";
+        $("#marketListVal").val("");
+    }
+
+
+    //派单
+    function dispatch() {
+        if (mArray == "" || mArray == null) {
+            layer.msg("请添加师傅");
+            return;
+        }
+        $.ajax({
+            url: "/wx_wlorder_sale/dispatch",
+            type: "post",
+            data: {
+                id: _id,
+                market: mArray
+            },
+            dataType: "json",
+            success: function (data) {
+                if (data.flag) {
+                    layer.confirm(data.msg, {
+                        btn: ['确定'], //按钮
+                        title: false,
+                        icon: 1,
+                        closeBtn: false
+                    }, function (i) {
+                        parent.location.href = "order_list_sale.html";
+                    });
+                } else {
+                    layer.confirm(data.msg, {
+                        btn: ['确定'], //按钮
+                        title: false,
+                        icon: 2,
+                        closeBtn: false
+                    }, function (i) {
+                        parent.location.href = "order_list_sale.html";
+                    });
+                }
+            }
+        });
+    }
+
+
+    //type=5 客服-------------------------------------------
+    //审核
+    function check(isTongGuo, isWeikuan) {
+        var params = {
+            status: isTongGuo
+        };
+        if (isTongGuo == 2) {
+            layer.prompt({title: "请输入驳回原因"}, function (value, index, elem) {
+                params.desc = value;
+                layer.close(index);
+                checkAjax(params, isWeikuan);
+            });
+        } else {
+            checkAjax(params, isWeikuan);
+        }
+    }
+
+    //分配物流
+    function dispatchWl() {
+        var wl = $("#marketList").val();
+        if (wl == "" || wl == null) {
+            layer.msg("请选择物流师傅");
+            return;
+        }
+        $.ajax({
+            url: "/wx_wlorder_msg/dispatch",
+            type: "post",
+            data: {
+                id: _id,
+                wl: wl
+            },
+            dataType: "json",
+            success: function (data) {
+                if (data.flag) {
+                    layer.confirm(data.msg, {
+                        btn: ['确定'], //按钮
+                        title: false,
+                        icon: 1,
+                        closeBtn: false
+                    }, function (i) {
+                        parent.location.href = "order_list_msg.html";
+                    });
+                } else {
+                    layer.confirm(data.msg, {
+                        btn: ['确定'], //按钮
+                        title: false,
+                        icon: 2,
+                        closeBtn: false
+                    }, function (i) {
+                        parent.location.href = "order_list_msg.html";
+                    });
+                }
+            }
+        });
+    }
+
+    //分配物流
+    function goDispatchWl() {
+        $.ajax({
+            url: "/wx_wlorder_msg/wllist",
+            type: "get",
+            data: {},
+            dataType: "json",
+            success: function (data) {
+                for (let i = 0; i < data.wllist.length; i++) {
+                    var wl = data.wllist[i];
+                    var html = "<option value='" + wl.shotId + "'>" + wl.nick + "</option>";
+                    $("#marketList").html(html);
+                }
+                layer.open({
+                    type: 1,
+                    title: "分配物流",
+                    shadeClose: false,
+                    shade: 0.6,
+                    closeBtn: 1,
+                    area: ["90%", "220px"],
+                    content: $(".dispatch-farme"),
+                    success: function (index, layero) {
+                    },
+                    cancel: function (index, layero) {
+                    }
+                });
+
+            }
+        });
+    }
+
+    function checkAjax(params, isWeikuan) {
+        $.ajax({
+            url: "/wx_wlorder_sale/up/" + _id,
+            type: "post",
+            data: params,
+            dataType: "json",
+            success: function (data) {
+                if (data.flag) {
+                    layer.confirm(data.msg, {
+                        btn: ['确定'], //按钮
+                        title: false,
+                        icon: 1,
+                        closeBtn: false
+                    }, function (i) {
+                        parent.location.href = "order_list_sale.html";
+                    });
+                } else {
+                    layer.confirm(data.msg, {
+                        btn: ['确定'], //按钮
+                        title: false,
+                        icon: 2,
+                        closeBtn: false
+                    }, function (i) {
+                        parent.location.href = "order_list_sale.html";
+                    });
+                }
+            }
+        });
+    }
+
+
+    function showDeposit() {
+        layer.open({
+            type: 1,
+            title: "定金支付凭证",
+            shadeClose: false,
+            shade: 0.6,
+            closeBtn: 1,
+            area: ["90%", "auto"],
+            content: $(".payimg-farme"),
+            success: function (index, layero) {
+            },
+            cancel: function (index, layero) {
+            }
+        });
+    }
+
+    function showEnd() {
+        layer.open({
+            type: 1,
+            title: "尾款支付凭证",
+            shadeClose: false,
+            shade: 0.6,
+            closeBtn: 1,
+            area: ["90%", "auto"],
+            content: $(".payendimg-farme"),
+            success: function (index, layero) {
+            },
+            cancel: function (index, layero) {
+            }
+        });
+    }
+
+
+    function init(callback) {
+        //订单信息
+        $.ajax({
+            url: "/wx_wlorder/getOrderDetail",
+            type: "get",
+            data: {
+                id: _id
+            },
+            dataType: "json",
+            success: function (data) {
+                if (data.flag) {
+                    console.log(data);
+                    var order = data.order;
+                    $("[name=total_num]").text(order.num);
+                    for (var i = 0; i < data.list.length; i++) {
+                        var html = "";
+                        var os = data.list[i];
+                        var gs = os.goodsSpecs;
+                        var info = data.list[i];
+                        html += "<div class=\"aui-flex aui-flex-default\" id=\"" + gs.id + "\">";
+                        html += "<div class=\"aui-flex-goods\">";
+                        html += "<img src=\"" + info.goodsPic + "\" onclick=\"location.href='../category/goodsDetail.html?id=" + gs.goods.id + "'\">";
+                        html += "</div>";
+                        html += " <div class=\"aui-flex-box\">";
+                        html += "<h2>" + info.goodsName + "</h2>";
+                        html += "<div style='position: absolute;top: 17px;right: 10px;'>x";
+                        html += "<smap name=\"goods_num\">" + info.number + "</smap>";
+                        html += "</div>";
+                        html += "<p>规格：";
+                        html += info.specsName;
+                        html += "</p>";
+                        html += "<div class=\"aui-flex aui-flex-clear\">";
+                        html += "<div class=\"aui-flex-box\" style='-webkit-flex:none'>￥";
+                        html += parseFloat(info.price).toFixed(2);
+                        html += "</div>";
+                        html += "<div>";
+                        if (order.status == 3) {
+                            if (info.ischeck != 1) {
+                                if (_type == 3) {
+                                    html += "<button class='btn-blue btn button-sm' onclick=\"lookDetail('" + os.id + "',false)\" style='width: 100%;color: #fff;'>上传资料</button>";
+                                } else if (_type == null) {
+                                    html += "<button class='btn-blue btn button-sm' onclick=\"lookDetail('" + os.id + "',false)\" style='width: 100%;color: #fff;'>确认订单</button>"
+                                }
+                            } else {
+                                html += "<button class='btn-success btn button-sm' onclick=\"lookDetail('" + os.id + "',true)\" style='background-color: #4cae4c;width: 100%;color: #fff;'>查看订单</button>"
+                            }
+                        } else if (order.status > 3 && (_type == null || _type == 2 || _type == 3 || _type == 4 || _type == 1000)) {
+                            html += "<button class='btn-success btn button-sm' onclick=\"lookDetail('" + os.id + "',true)\" style='background-color: #4cae4c;width: 100%;color: #fff;'>查看订单</button>"
+                            //显示体积重量
+                            $("#allvt").show();
+                            $("[name=allv]").text(data.v);
+                            $("[name=allt]").text(data.t);
+                        }
+                        html += "</div>";
+                        html += "</div>";
+                        html += "</div>";
+                        html += "</div>";
+                        $("#goods").append(html);
+                    }
+                    $("[name=total_price]").text(parseFloat(order.total).toFixed(2));
+                    $("[name=deposit_price]").text(parseFloat(order.totaldeposit).toFixed(2));
+                    $("[name=end_price]").text(parseFloat(order.totalend).toFixed(2));
+
+                    //收货地址
+                    var item = order.address;
+                    $("#selectAdress .placeholder").hide();
+                    $("#address_info").show();
+                    var addressa = item.province + item.city + item.county + item.location;
+                    if (_type == 3 || _type == 4) {
+                        //隐藏个人信息
+                        item.name = item.name.substring(0, 1) + item.name.substring(1).replace(/./g, "*");
+                        item.phone = item.phone.substring(0, 3) + item.phone.substring(3).replace(/./g, "*");
+                        var addressb = item.city + item.county + item.location;
+                        addressa = item.province + addressb.replace(/./g, "*");
+                    }
+                    $("[name=ads_name]").text(item.name);
+                    $("[name=ads_phone]").text(item.phone);
+                    $("[name=ads_address]").text(addressa);
+                    $("[name=address]").attr("id", item.id);
+
+
+                    //当前状态
+                    $("[name=status]").text(statusMap[order.status]);
+
+                    //支付凭证
+                    if (order.status >= 5 && order.status != 10) {
+                        $("#deposit-box").show();
+                        $("#end-box").show();
+                    } else if (order.status >= 1) {
+                        $("#deposit-box").show();
+                    }
+                    if (order.status > 1) {
+                        $("[name=depositBtn]").text("已审核");
+                        $("[name=depositauth]").remove();
+                        console.log($("[name=depositauth]"));
+                    }
+                    if (order.status > 5 && order.status != 10) {
+                        $("[name=endBtn]").text("已审核");
+                        $("[name=endauth]").remove();
+                    }
+                    //驳回原因
+                    if (order.paydesc != "" && order.paydesc != null) {
+                        $('#desc-box').show();
+                        $('[name=desc]').text(order.paydesc);
+                    }
+
+                    $(".payimg-farme img").attr("src", order.payurl);
+                    $(".payendimg-farme img").attr("src", order.payendurl);
+
+                    callback(order);
+
+                } else {
+                    layer.msg(data.msg, {time: 2000}, function () {
+                        history.go(-1);
+                    });
+                }
+            }
+        });
+    }
+
+    function getQueryString(name) {
+        var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
+        var reg_rewrite = new RegExp("(^|/)" + name + "/([^/]*)(/|$)", "i");
+        var r = window.location.search.substr(1).match(reg);
+        var q = window.location.pathname.substr(1).match(reg_rewrite);
+        if (r != null) {
+            return unescape(r[2]);
+        } else if (q != null) {
+            return unescape(q[2]);
+        } else {
+            return null;
+        }
+    }
+</script>
+</body>
+</html>

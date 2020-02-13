@@ -1,0 +1,17 @@
+html,body { overflow-x: hidden; }
+.navdown a { color: #ff0000; }
+#nav { margin-top: 10px; }
+/* 指正常的未被访问过的链接*/
+a:link { text-decoration: none; color: black; }
+/*指已经访问过的链接*/
+a:visited { text-decoration: none; color: black; }
+/*指鼠标在链接*/
+a:hover { text-decoration: none; color: black; }
+/* 指正在点的链接*/
+a:active { text-decoration: none; color: black; }
+.bttomx a:hover { text-decoration: none; color: black; background-clolr: white; }
+.iconTwox { width: 1em; height: 1em; vertical-align: -0.15em; fill: currentColor; overflow: hidden; }
+.nav-tabs { text-align: center; height: 40px; line-height: 40px; }
+.navbar { background-color: white; }
+.href{ color:red; }
+.main_nav_bottom{ z-index: 99999; }

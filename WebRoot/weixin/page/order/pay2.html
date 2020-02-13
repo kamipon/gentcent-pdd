@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>支付尾款</title>
+	<meta content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=0" name="viewport"/>
+	<meta content="yes" name="apple-mobile-web-app-capable"/>
+	<meta content="black" name="apple-mobile-web-app-status-bar-style"/>
+	<meta content="telephone=no" name="format-detection"/>
+	<link href="css/style2.css" rel="stylesheet" type="text/css"/>
+	<link href="../../layer/theme/default/layer.css" rel="stylesheet" type="text/css"/>
+	<link href="../../css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body style="background:#f7f7f7">
+<section class="aui-flexView">
+	<header class="aui-navBar aui-navBar-fixed">
+		<a href="javascript:history.go(-1);" class="aui-navBar-item">
+			<i class="icon icon-return"></i>
+		</a>
+		<div class="aui-center">
+			<span class="aui-center-title">支付</span>
+		</div>
+	</header>
+	<section class="aui-scrollView">
+		<div class="aui-order-box">
+			
+			<div class="aui-flex aui-choice-white">
+					<h4 style="margin: 0;">商品清单
+						<smap name="total_num"></smap>
+						件
+					</h4>
+			</div>
+			<my id="goods">
+			
+			</my>
+<!--			<div class="aui-flex aui-flex-default aui-mar15">-->
+<!--				<div class="aui-flex-goods">-->
+<!--					<img name="goods_pic" src="" alt="">-->
+<!--				</div>-->
+<!--				<div class="aui-flex-box">-->
+<!--					<h2 name="goods_title"></h2>-->
+<!--					<p>规格：-->
+<!--						<smap name="goods_specs"></smap>-->
+<!--					</p>-->
+<!--					<div class="aui-flex aui-flex-clear">-->
+<!--						<div class="aui-flex-box">￥-->
+<!--							<smap name="goods_price"></smap>-->
+<!--						</div>-->
+<!--						<div>x-->
+<!--							<smap name="goods_num"></smap>-->
+<!--						</div>-->
+<!--					</div>-->
+<!--				</div>-->
+<!--			</div>-->
+			
+			<div class="aui-flex aui-choice-white b-line" style="margin-top: 15px;">
+				<div class="aui-flex-box">支付方式</div>
+				<select class="aui-flex-triangle" disabled>
+					<option value="1" selected>线上转账</option>
+				</select>
+			</div>
+			<div class="aui-flex aui-choice-white ">
+				<div class="aui-flex-box">
+					<h4>商品总价</h4>
+					<h4>应付尾款</h4>
+				</div>
+				<div class="aui-flex-triangle aui-flex-triangle-clear" style="text-align: right">
+					<h4 style="color: #f21956;">￥
+						<smap name="total_price"></smap>
+					</h4>
+					<h4 style="color: #f21956;">￥
+						<smap name="end_price"></smap>
+					</h4>
+				</div>
+			</div>
+			
+			<div class="aui-choice-white b-line" style="margin-top: 15px;text-align: center;">
+				<div style="padding: 15px 15px 0 15px;">支付二维码</div>
+				<p style="padding: 10px;">
+					请扫描下方二维码并支付&nbsp;<smap style="color: #f21956">尾款：</smap>
+					<smap name="end_price" style="color: #f21956"></smap>&nbsp;元
+					<br>支付后请保存您的支付凭证并点击上传</p>
+				<my id="paylist">
+				</my>
+			</div>
+			
+		</div>
+	</section>
+	<footer class="aui-bar-footer">
+		<div class="aui-flex">
+			<div id="upbtn" class="aui-btn-button" style="width: 100%; text-align: center;" onclick="upload()">
+				<button>上传支付凭证</button>
+			</div>
+		</div>
+	</footer>
+</section>
+<script src="../../js/jquery-1.11.3.min.js"></script>
+<script src="../../js/layer.js"></script>
+<script>
+
+    var _id = getQueryString("id");
+    var _src;
+    $(function () {
+        //支付二维码
+        $.ajax({
+            url: "/wx_wlpay/paylist",
+            type: "get",
+            data: {},
+            dataType: "json",
+            success: function (data) {
+                if (data.flag) {
+                    console.log(data);
+                    for (var i = 0; i < data.plist.length; i++) {
+                        var html="<img src=\""+data.plist[i].url+"\" style=\"width: 98%;\">";
+                        $("#paylist").append(html);
+                    }
+                    
+                } else {
+                    layer.msg(data.msg);
+                }
+            }
+        });
+        
+        //订单信息
+        $.ajax({
+            url: "/wx_wlorder/getOrder",
+            type: "get",
+            data: {
+                id: _id
+						},
+            dataType: "json",
+            success: function (data) {
+                if (data.flag) {
+                    console.log(data);
+                    var order = data.order;
+                    $("[name=total_num]").text(order.num);
+                    for (var i = 0; i < data.list.length; i++) {
+                        var html = "";
+                        var gs = data.list[i].goodsSpecs;
+                        var info = data.list[i];
+                        html += "<div class=\"aui-flex aui-flex-default\" style='border-bottom: 0.5px solid rgba(128, 128, 128, 0.25);' id=\""+gs.id+"\">";
+                        html += "<div class=\"aui-flex-goods\">";
+                        html += "<img src=\""+info.goodsPic+"\">";
+                        html += "</div>";
+                        html += " <div class=\"aui-flex-box\">";
+                        html += "<h2>"+info.goodsName+"</h2>";
+                        html += "<p>规格：";
+                        html += info.specsName;
+                        html += "</p>";
+                        html += "<div class=\"aui-flex aui-flex-clear\">";
+                        html += "<div class=\"aui-flex-box\">￥";
+                        html += parseFloat(info.price).toFixed(2);
+                        html += "</div>";
+                        html += "<div>x";
+                        html += "<smap name=\"goods_num\">"+info.number+"</smap>";
+                        html += "</div>";
+                        html += "</div>";
+                        html += "</div>";
+                        html += "</div>";
+                        $("#goods").append(html);
+                    }
+                    $("[name=total_price]").text(parseFloat(order.total).toFixed(2));
+                    $("[name=end_price]").text(parseFloat(order.totalend).toFixed(2));
+                } else {
+                    layer.msg(data.msg,{time:2000},function () {
+                        location.href="order_list.html";
+                    });
+                }
+            }
+        });
+    });
+    
+    /**
+		 * 下一步
+		 */
+    function next(){
+        $.ajax({
+            url: "/wx_wlorder/payendurl",
+            type: "post",
+            data: {
+                id: _id,
+                url: _src
+						},
+            dataType: "json",
+            success: function (data) {
+                console.log(data);
+                if (data.flag) {
+                    location.href="order_list.html?nav=2";
+                } else {
+                    layer.msg(data.msg);
+                }
+            }
+        });
+		}
+
+    /**
+		 * 上传支付凭证
+     */
+    function upload(){
+        layer.open({
+            type: 2,
+            title: "上传支付凭证",
+            shadeClose: false,
+            shade: 0.6,
+            closeBtn: 1,
+            area: ["90%", "60%"],
+            content: "upload.html",
+            success: function (index, layero) {
+            },
+            cancel: function (index, layero) {
+            }
+        });
+		}
+
+    function getQueryString(name) {
+        var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
+        var reg_rewrite = new RegExp("(^|/)" + name + "/([^/]*)(/|$)", "i");
+        var r = window.location.search.substr(1).match(reg);
+        var q = window.location.pathname.substr(1).match(reg_rewrite);
+        if (r != null) {
+            return unescape(r[2]);
+        } else if (q != null) {
+            return unescape(q[2]);
+        } else {
+            return null;
+        }
+    }
+</script>
+</body>
+</html>

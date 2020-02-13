@@ -1,0 +1,312 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport"
+				content="width=device-width,initial-scale=1.0,maximum-scale=1.0,minimum-scale=1.0,user-scalable=0">
+	<title>购物车</title>
+	<link href="../../css/bootstrap.min.css" rel="stylesheet">
+	<link rel="stylesheet" type="text/css" href="shoppingcart.css"/>
+	<link href="../../css/style.css" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+<div class="body">
+	<header class="aui-navBar aui-navBar-fixed">
+		<div class="aui-center">
+			<span class="aui-center-title">购物车</span>
+		</div>
+	</header>
+	<div class="product" id="product">
+<!--		<div class="product-box">-->
+<!--			<div class="product-ckb"><em class="product-em product-xz"></em></div>-->
+<!--			<div class="product-sx">-->
+<!--				<a href="###">-->
+<!--					<img src="img/a3.png" class="product-img"/>-->
+<!--					<span class="product-name">酷冷至尊(Cooler Master)T610P CPU风冷散热器</span>-->
+<!--				</a>-->
+<!--				<span class="product-price">¥&thinsp;<span class="price">296</span></span>-->
+<!--				<div class="product-amount">-->
+<!--					<div class="product_gw">-->
+<!--						<em class="product-jian">-</em>-->
+<!--						<input type="text" value="1" class="product-num"/>-->
+<!--						<em class="product-add">+</em>-->
+<!--					</div>-->
+<!--				</div>-->
+<!--				<div class="product-del"><img src="img/deleteico.png"/></div>-->
+<!--			</div>-->
+<!--		</div>-->
+	</div>
+	<div class="product-js">
+		<div class="product-al">
+			<div class="product-all">
+				<em class=""></em>
+			</div>
+			<div class="all-xz"><span class="product-all-qx">全选</span>
+				<div class="all-sl" style="display: none;">(<span class="product-all-sl">0</span>)</div>
+			</div>
+		</div>
+		<a href="commitArray.html" class="product-sett product-sett-a" style="color:#fff;">结算</a>
+		<div class="all-product"><span class="all-product-a">¥&thinsp;<span class="all-price">296</span></span></div>
+	
+	</div>
+</div>
+<!--购物车空-->
+<div class="kon-cat">
+	<div class="catkon">
+		<div class="kon-box">
+			<div class="kon-hz">
+				<img src="img/cart-air.png"/>
+				<span class="kon-wz">购物车什么都没有</span>
+				<a href="../category/category.html" class="kon-lj">去逛逛</a>
+			</div>
+		</div>
+	</div>
+</div>
+<div id="page"></div>
+</body>
+<script src="../../js/jquery-1.11.3.min.js"></script>
+<script src="../../js/layer.js"></script>
+<script src="../../js/bootstrap.min.js"></script>
+<script src="../../js/iconfont.js"></script>
+<script src="../../js/iconfontx.js"></script>
+<script src="shoppingcart.js" type="text/javascript" charset="utf-8"></script>
+<script>
+    $("#page").load("../bottom.html", function () {
+        $("#bottom-cart > img").attr("src", "../../img/bottom-cart-a.png");
+        $("#bottom-cart > div").css("color", "#32b531");
+    });
+
+
+    var _str;
+    $(function(){
+        if(getQueryString("msg")==1){
+            layer.msg("添加购物车成功！");
+				}
+        
+        $.ajax({
+            url: "/wx_wlcart",
+            type: "get",
+            data: {},
+            dataType: "json",
+            success: function (data) {
+                if (data.flag) {
+                    var list = data.list;
+										_str = data.cartStr;
+                    if(_str==""||_str==null){
+                        $(".kon-cat").show();
+                        return;
+                    }
+                    for (let i = 0; i < list.length; i++) {
+                        var count = list[i].count;
+                        var isCheck = list[i].check;
+                        var gs = list[i].goodsSpecs;
+                        var goods = gs.goods;
+                        var specs = gs.specs;
+                        var check = isCheck?"product-xz":"";
+                        var html ="";
+                        html += "<div class=\"product-box\" gsId='"+gs.id+"'>";
+                        html += "\t<div class=\"product-ckb\" gsId='"+gs.id+"'><em class=\"product-em "+check+"\"></em></div>";
+                        html += "\t<div class=\"product-sx\">";
+                        html += "\t\t<a href=\"../category/goodsDetail.html?id="+goods.id+"\">";
+                        html += "\t\t\t<img src=\""+JSON.parse(goods.imgList)[0]+"\" class=\"product-img\"/>";
+                        html += "\t\t\t<span class=\"product-name\">"+goods.title+"</span>";
+                        html += "\t\t\t<span class=\"product-name\" style='color: grey;'>"+specs.name+"</span>";
+                        html += "\t\t</a>";
+                        html += "\t\t<span class=\"product-price\">¥&thinsp;<span class=\"price\">"+gs.price+"</span></span>";
+                        html += "\t\t<div class=\"product-amount\">";
+                        html += "\t\t\t<div class=\"product_gw\">";
+                        html += "\t\t\t\t<em class=\"product-jian\" gsId=\""+gs.id+"\">-</em>";
+                        html += "\t\t\t\t<input type=\"text\" value=\""+count+"\" class=\"product-num\"/>";
+                        html += "\t\t\t\t<em class=\"product-add\" shengyu=\""+gs.num+"\" gsId=\""+gs.id+"\">+</em>";
+                        html += "\t\t\t</div>";
+                        html += "\t\t</div>";
+                        html += "\t\t<div class=\"product-del\" gsId=\""+gs.id+"\"><img src=\"img/deleteico.png\"/></div>";
+                        html += "\t</div>";
+                        html += "</div>";
+												$('#product').append(html);
+                    }
+                    init();
+                } else {
+                    layer.msg(data.msg);
+                }
+            }
+        });
+		});
+
+    //更新数量
+    function updateCount(id){
+        var count = $("[gsId="+id+"]").find(".product-num").val();
+        $.ajax({
+            url: "/wx_wlcart",
+            type: "get",
+            data: {},
+            dataType: "json",
+            success: function (data) {
+                if (data.flag) {
+                    var cart = JSON.parse(data.cartStr);
+                    for (let i = 0; i < cart.length; i++) {
+                        var item = cart[i];
+                        if(item.gsId == id){
+                            item.count = parseInt(count);
+                        }
+                    }
+
+                    var jsonStr = JSON.stringify(cart);
+                    $.ajax({
+                        url: "/wx_wlcart",
+                        type: "post",
+                        data: {
+                            cartStr: jsonStr
+                        },
+                        dataType: "json",
+                        success: function (data2) {
+                            if (data2.flag) {
+                            } else {
+                                layer.msg(data2.msg);
+                            }
+                        }
+                    });
+                } else {
+                    layer.msg(data.msg);
+                }
+            }
+        });
+    }
+
+    //更新选中状态
+    function updateCheck(id){
+        $.ajax({
+            url: "/wx_wlcart",
+            type: "get",
+            data: {},
+            dataType: "json",
+            success: function (data) {
+                if (data.flag) {
+                    var cart = JSON.parse(data.cartStr);
+                    for (let i = 0; i < cart.length; i++) {
+                        var item = cart[i];
+                        if(item.gsId == id){
+                            item.isCheck = !item.isCheck;
+                        }
+                    }
+
+                    var jsonStr = JSON.stringify(cart);
+                    $.ajax({
+                        url: "/wx_wlcart",
+                        type: "post",
+                        data: {
+                            cartStr: jsonStr
+                        },
+                        dataType: "json",
+                        success: function (data2) {
+                            if (data2.flag) {
+                            } else {
+                                layer.msg(data2.msg);
+                            }
+                        }
+                    });
+                } else {
+                    layer.msg(data.msg);
+                }
+            }
+        });
+    }
+    
+    
+    //全选
+		//0: 取消		1:全选
+    function checkAll(param){
+        $.ajax({
+            url: "/wx_wlcart",
+            type: "get",
+            data: {},
+            dataType: "json",
+            success: function (data) {
+                if (data.flag) {
+                    var cart = JSON.parse(data.cartStr);
+                    for (let i = 0; i < cart.length; i++) {
+                        var item = cart[i];
+                        if(param == 0){
+                            item.isCheck = false;
+												}else if(param == 1){
+                            item.isCheck = true;
+                        }
+                    }
+
+                    var jsonStr = JSON.stringify(cart);
+                    $.ajax({
+                        url: "/wx_wlcart",
+                        type: "post",
+                        data: {
+                            cartStr: jsonStr
+                        },
+                        dataType: "json",
+                        success: function (data2) {
+                            if (data2.flag) {
+                            } else {
+                                layer.msg(data2.msg);
+                            }
+                        }
+                    });
+                } else {
+                    layer.msg(data.msg);
+                }
+            }
+        });
+    }
+    
+    //删除商品
+    function deleteProduct(id){
+        $.ajax({
+            url: "/wx_wlcart",
+            type: "get",
+            data: {},
+            dataType: "json",
+            success: function (data) {
+                if (data.flag) {
+                    var cart = JSON.parse(data.cartStr);
+                    for (let i = 0; i < cart.length; i++) {
+                        var item = cart[i];
+                        if(item.gsId == id){
+                            cart.splice(i,1);
+                        }
+                    }
+                    var jsonStr = JSON.stringify(cart);
+                    $.ajax({
+                        url: "/wx_wlcart",
+                        type: "post",
+                        data: {
+                            cartStr: jsonStr
+                        },
+                        dataType: "json",
+                        success: function (data2) {
+                            if (data2.flag) {
+                            } else {
+                                layer.msg(data2.msg);
+                            }
+                        }
+                    });
+                } else {
+                    layer.msg(data.msg);
+                }
+            }
+        });
+		}
+
+    function getQueryString(name) {
+        var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
+        var reg_rewrite = new RegExp("(^|/)" + name + "/([^/]*)(/|$)", "i");
+        var r = window.location.search.substr(1).match(reg);
+        var q = window.location.pathname.substr(1).match(reg_rewrite);
+        if (r != null) {
+            return unescape(r[2]);
+        } else if (q != null) {
+            return unescape(q[2]);
+        } else {
+            return null;
+        }
+    }
+    
+  
+</script>
+</html>

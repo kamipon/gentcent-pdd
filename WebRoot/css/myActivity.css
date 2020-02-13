@@ -1,0 +1,265 @@
+*{
+	font-family: "����",Arial,Helvetica,sans-serif;
+    font-size: 12px;
+    text-align: left;
+}
+a {
+    color: black;
+    text-decoration: none;
+}
+#myActContainer .hotSaleBox {
+    font-weight: bold;
+    margin-left: 30px;
+}
+
+#myActContainer .hotSaleBox .hotSaleImg {
+    background: rgba(0, 0, 0, 0) url("../images/hot_1.png") no-repeat scroll 0 0 / 100% auto;
+    display: inline-block;
+    height: 20px;
+    margin-right: 4px;
+    vertical-align: -2px;
+    width: 15px;
+}
+.faiTableWrap {
+    min-width: 10px;
+}
+.faiTableWrap .center {
+    overflow-x: auto;
+    overflow-y: hidden;
+    width: 100%;
+}
+.center {
+    text-align: center;
+}
+
+.faiTableWrap .center table.faiTable {
+    border: 1px solid #dfdfdf;
+    padding: 1px;
+    table-layout: fixed;
+    width: 100%;
+}
+
+.faiTableWrap .center table.faiTable thead tr {
+    background: #3398e0 none repeat scroll 0 0;
+    padding-bottom: 2px;
+}
+
+#myActContainer .faiTableWrap .column1 {
+    min-width: 175px;
+    padding-left: 55px;
+    width: 100%;
+}
+.faiTableWrap .center table.faiTable thead tr th.sort {
+    background: rgba(0, 0, 0, 0) url("../images/sort.png") no-repeat scroll right 13px;
+}
+.faiTableWrap .center table.faiTable thead tr th.sep {
+    background-position: right -80px;
+}
+.faiTableWrap .center table.faiTable thead tr th {
+    color: #fff;
+    cursor: default;
+    font-size: 12px;
+    font-weight: normal;
+    height: 36px;
+    line-height: 18px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    vertical-align: middle;
+    white-space: nowrap;
+}
+.faiTableWrap .pointer {
+    cursor: pointer !important;
+}
+.faiTableWrap .center table.faiTable .padding {
+    padding: 0 6px;
+}
+
+#myActContainer .faiTableWrap .column2 {
+    width: 180px;
+}
+
+.faiTableWrap .textCenter {
+    text-align: center;
+}
+.pointer {
+    cursor: pointer;
+}
+* {
+    margin: 0;
+    padding: 0;
+}
+#myActContainer .faiTableWrap .column3 {
+    line-height: 21px;
+    width: 150px;
+}
+#myActContainer .faiTableWrap .column4 {
+    width: 100px;
+}
+#myActContainer .faiTableWrap .column5 {
+    width: 100px;
+}
+#myActContainer .faiTableWrap .column6 {
+    width: 100px;
+}
+#myActContainer .faiTableWrap .column7 {
+    width: 200px;
+}
+.faiTableWrap .center table.faiTable thead tr th.sort {
+    background: rgba(0, 0, 0, 0) url("../images/sort.png") no-repeat scroll right 13px;
+}
+
+.faiTableWrap .center table.faiTable tbody tr.odd {
+    background: #fafafa none repeat scroll 0 0;
+}
+.faiTableWrap .center table.faiTable tbody tr {
+    cursor: default;
+}
+
+.faiTableWrap .center table.faiTable tbody tr td {
+    height: 60px;
+    line-height: 19px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.faiTableWrap .center table.faiTable .padding {
+    padding: 0 6px;
+}
+.faiTableWrap .ellipsis {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: normal;
+}
+
+element.style {
+    margin-left: 5px;
+}
+
+#myActContainer .tableContent .qrcodeIcon {
+    background-image: url("../images/ermIcon.png");
+    background-position: 11px 21px;
+    background-repeat: no-repeat;
+    display: inline-block;
+    height: 56px;
+    margin-left: -11px;
+    vertical-align: middle;
+    width: 38px;
+}
+
+#myActContainer .tableContent .imgBox {
+    background: #e6e6e6 none repeat scroll 0 0;
+    display: inline-block;
+    height: 40px;
+    margin: 3px 0;
+    position: relative;
+    vertical-align: middle;
+    width: 72px;
+}
+
+.ver_notBuy {
+    background-image: url("../images/mianfei.png");
+}
+.gameVerIcon {
+    background-size: 25px 25px;
+    height: 25px;
+    position: absolute;
+    right: -3px;
+    top: -3px;
+    width: 25px;
+}
+#myActContainer .tableContent .actNum {
+    background-color: rgba(0, 0, 0, 0.7);
+    bottom: -2px;
+    color: #fff;
+    display: none;
+    font-size: 12px;
+    left: 0;
+    line-height: 18px;
+    position: absolute;
+    text-align: center;
+    width: 100%;
+    z-index: 50;
+}
+
+#myActContainer .tableContent .textBox {
+    display: inline-block;
+    margin-left: 8px;
+    margin-top: 1px;
+    vertical-align: middle;
+}
+.faiTableWrap .textLeft {
+    text-align: left;
+}
+
+.faiTableWrap .center table.faiTable tbody tr td .tdWrap {
+    width: auto;
+}
+.faiTableWrap .center table.faiTable .padding {
+    padding: 0 6px;
+}
+.upgradeNow {
+    padding-left: 10px;
+}
+a {
+    color: black;
+    text-decoration: none;
+}
+
+.hide {
+    display: none;
+}
+
+.faiTableWrap .center table.faiTable .padding {
+    padding: 0 6px;
+}
+.faiTableWrap .textCenter {
+    text-align: center;
+}
+
+.faiTableWrap .center table.faiTable .padding {
+    padding: 0 6px;
+}
+.faiTableWrap .bottom {
+    height: 30px;
+    position: relative;
+}
+
+.faiTableWrap .bottom .total {
+    margin-top: 10px;
+    position: absolute;
+    top: 0;
+    z-index: 1;
+}
+.faiTableWrap .bottom .page {
+    margin-top: 10px;
+    position: absolute;
+    text-align: center;
+    top: 0;
+    width: 100%;
+}
+
+.faiTableWrap .bottom .page a.disabledBtn {
+    color: black;
+    text-decoration: none;
+}
+.faiTableWrap .bottom .page a {
+    color: #666;
+    cursor: default;
+    margin: 0 5px;
+    outline: 0 none;
+    padding: 0;
+    text-decoration: underline;
+}
+
+.faiTableWrap .bottom .page a {
+    color: #666;
+    cursor: default;
+    margin: 0 5px;
+    outline: 0 none;
+    padding: 0;
+    text-decoration: underline;
+}
+.faiTableWrap .pointer {
+    cursor: pointer !important;
+}
+

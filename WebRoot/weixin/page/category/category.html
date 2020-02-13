@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+	<meta charset="utf-8"/>
+	<!--声明文档兼容模式，表示使用IE浏览器的最新模式-->
+	<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+	<!--设置视口的宽度(值为设备的理想宽度)，页面初始缩放值<理想宽度/可见宽度>-->
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+	<!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
+	<title>商品分类</title>
+	
+	<!-- 引入Bootstrap核心样式文件 -->
+	<link href="../../css/bootstrap.min.css" rel="stylesheet">
+	<link href="category.css" rel="stylesheet"/>
+	<style type="">
+		.hover {
+			border-color: #E65C31;
+		}
+	</style>
+</head>
+
+<body>
+<div class="container-fluid">
+	<!-- 1.搜索框 -->
+	<div style="height: 10px;"></div>
+	<div class="row">
+		<div class="container">
+			<form class="form-horizontal">
+				<div class="form-group has-feedback">
+					<div class="col-xs-9 col-sm-9 col-md-9  col-lg-9">
+						<label class="sr-only" for="inputOne">提交</label>
+						<div class="input-group">
+									<span class="input-group-addon">
+										<svg class="icons" aria-hidden="true">
+									  		<use xlink:href="#icon-sousuo"></use>
+										</svg>
+									</span>
+							<input type="text" class="form-control" id="inputOne" aria-describedby="inputTwo" placeholder="搜索"
+										 value="">
+						</div>
+						<span id="inputTwo" class="sr-only">(success)</span>
+					</div>
+					<div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
+						<a type="submit" href="javascript:search();" class="btn btn-default" id="search">
+							<svg class="icons" aria-hidden="true">
+								<use xlink:href="#icon-xingtaiduICON_sousuo--"></use>
+							</svg>
+						</a>
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+	
+	<!-- 2.分类 -->
+	<div class="container" id="content">
+<!--		<div class="item">-->
+<!--			<div class="item-img">-->
+<!--				<img src="../../img/in1.png" style="width: 100%;height: 100%;">-->
+<!--			</div>-->
+<!--			<div class="item-title">-->
+<!--				家用空调-->
+<!--			</div>-->
+<!--		</div>-->
+	</div>
+	
+	<!-- 7.底部导航栏 -->
+	<div id="page"></div>
+</div>
+<!-- 引入jQuery核心js文件 -->
+<script src="../../js/jquery-1.11.3.min.js"></script>
+<!-- 引入BootStrap核心js文件 -->
+<script src="../../js/bootstrap.min.js"></script>
+<script src="../../js/layer.js"></script>
+<script src="../../js/iconfont.js"></script>
+<script src="../../js/iconfontb.js"></script>
+<script src="../../js/iconfontc.js"></script>
+<script type="text/javascript">
+    $("#page").load("../bottom.html", function () {
+        $("#bottom-fenlei > img").attr("src", "../../img/bottom-fenlei-a.png");
+        $("#bottom-fenlei > div").css("color", "#32b531");
+    });
+    $("#all_channel").click();
+
+    $(document).ready(function () {
+        $.ajax({
+            url: "/wx_wlcategory",
+            type: "get",
+            data: {},
+            dataType: "json",
+            success: function (data) {
+                if (data.flag) {
+                    console.log(data);
+                    var html = "";
+                    for (let i = 0; i < data.clist.length; i++) {
+												const category = data.clist[i];
+                        html +=
+														"<div class=\"item\" onclick='location.href=\"goodsList.html?cid="+category.id+"\"'>" +
+														"<div class=\"item-img\">" +
+                            "<img src=\""+category.picurl+"\" style=\"width: 15.5vw;height: 15.5vw;padding: 7px;\">" +
+                            "</div>" +
+                            "<div class=\"item-title\">" +
+                            category.name +
+                            "</div>" +
+                            "</div>"
+                    }
+                    $("#content").html(html);
+                } else {
+                    layer.msg(data.msg);
+                }
+            }
+        });
+    });
+    
+    function search(){
+        location.href="goodsList.html?content="+escape($("#inputOne").val());
+		}
+</script>
+</body>
+
+</html>

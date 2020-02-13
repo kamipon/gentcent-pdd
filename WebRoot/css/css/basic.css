@@ -1,0 +1,415 @@
+.ml10 {
+	margin-left: 10px;
+}
+
+.mr10 {
+	margin-right: 10;
+}
+
+.mt20 {
+	margin-top: 20px;
+}
+
+.mt38 {
+	margin-top: 38px;
+}
+
+.mr25 {
+	margin-right: 25px;
+}
+
+.ml25 {
+	margin-left: 25px;
+}
+
+.none {
+	display: none;
+}
+
+.border-t {
+	border-top: 1px solid #ddddde;
+}
+
+.border-b {
+	border-bottom: 1px solid #ddddde;
+}
+
+.add-point {
+	color: #1fa51e;
+}
+
+.del-point {
+	color: #ff0000;
+}
+
+
+/*   按钮   */
+
+.btn {
+	font-size: 34px;
+	border-radius: 8px;
+	padding: 26px 0;
+	width: 100%;
+	word-spacing: 8px;
+	letter-spacing: 3px;
+}
+
+.btn--primary {
+	background: #ff9a36;
+	color: #fff;
+}
+
+
+/*  常规  form 表单    */
+
+.form {
+	margin-left: 30px;
+}
+
+.form .form-item {
+	padding: 30px 0;
+	border-bottom: 1px solid #ddddde;
+	background: #fff;
+}
+
+.form .form-item__leb {
+	float: left;
+	font-size: 28px;
+	color: #333;
+	text-align: right;
+}
+
+.form .form-item__con {
+	margin-left: 84px;
+}
+
+.input-wrap__inner {
+	width: 100%;
+	font-size: 28px;
+}
+
+.input__inner,
+.select__inner {
+	width: 100%;
+	font-size: 28px;
+}
+
+.form__btn-box {
+	margin-top: 38px;
+	text-align: center;
+}
+
+.form__btn-box .btn {
+	width: 584px;
+	padding: 28px 0;
+	background-color: #ff9a36;
+	font-size: 34px;
+	color: #fff;
+	border-radius: 12px;
+}
+
+
+/*      弹层 form        */
+
+.form-pop {
+	/*width:85%;*/
+	margin: auto;
+}
+
+.form-pop .form-item {
+	margin-bottom: 25px;
+}
+
+.form-pop .form-item .inp-wrap {
+	height: 86px;
+}
+
+.form-pop .inp-wrap__inner {
+	border: 1px solid #bbb;
+	height: 100%;
+	width: 100%;
+	font-size: 28px;
+	text-indent: 15px;
+	border-radius: 8px;
+}
+
+
+/*  弹层  */
+
+.m-pop {
+	position: fixed;
+	top: 240px;
+	left: 30px;
+	z-index: 500;
+	width: 690px;
+	padding: 30px 0;
+	background-color: #fff;
+	border-radius: 15px;
+	text-align: center;
+}
+
+.m-pop .des {
+	margin-bottom: 30px;
+	font-size: 28px;
+	color: #777;
+}
+
+.m-pop__hd {
+	margin-top: 30px;
+	margin-bottom: 38px;
+}
+
+.m-pop__hd .h3 {
+	font-size: 36px;
+	color: #ff9a36;
+}
+
+.m-pop__hd .des {
+	margin-bottom: 30px;
+	font-size: 28px;
+	color: #777;
+}
+
+.m-pop .m-pop__bd {
+	width: 85%;
+	margin: auto;
+}
+
+.m-pop .btn--half {
+	width: 40%;
+}
+
+.m-pop .prize-img {
+	max-width: 381px;
+	margin-bottom: 35px;
+}
+
+.m-pop .btn {
+	padding: 22px 53px;
+	border: 1px solid #bfbfbf;
+	color: #7d7c7c;
+	font-size: 36px;
+	border-radius: 8px;
+}
+
+.m-pop .btn--defult {
+	background: #fff;
+}
+
+.m-pop .btn--primary {
+	background: #ff9a36;
+	color: #fff;
+	border-color: #ff9a36;
+}
+
+.m-pop .close {
+	position: absolute;
+	top: 24px;
+	right: 30px;
+	width: 44px;
+	height: 44px;
+	overflow: hidden;
+	border-radius: 100%;
+	background-color: #e8eff8;
+}
+
+.m-pop .close .iconfont {
+	color: #9cb1cb;
+	font-size: 25px;
+	line-height: 45px;
+	font-weight: bold;
+}
+
+.m-pop .bd .des {
+	margin-bottom: 30px;
+	font-size: 28px;
+	color: #777;
+}
+
+.m-pop .bd .prize-des {
+	margin-bottom: 30px;
+	font-size: 28px;
+	color: #777;
+}
+
+
+/*  中奖弹层         */
+
+.win-prize__pop {
+	background-color: #fff;
+	border-radius: 15px;
+	text-align: center;
+}
+
+.win-prize__pop .tit {
+	margin-top: 30px;
+	margin-bottom: 38px;
+}
+
+.win-prize__pop .tit .h3 {
+	font-size: 36px;
+	color: #ff9a36;
+}
+
+.win-prize__pop .prize-img {
+	max-width: 381px;
+	margin-bottom: 35px;
+}
+
+.win-prize__pop .prize-des {
+	margin-bottom: 55px;
+	font-size: 28px;
+	color: #777;
+}
+
+.win-prize__pop .btn {
+	padding: 22px 53px;
+	border: 1px solid #bfbfbf;
+	color: #7d7c7c;
+	font-size: 36px;
+	border-radius: 8px;
+}
+
+.win-prize__pop .btn--defult {
+	background: #fff;
+}
+
+.win-prize__pop .btn--primary {
+	background: #ff9a36;
+	color: #fff;
+	border-color: #ff9a36;
+}
+
+.win-prize__pop .close {
+	position: absolute;
+	top: 24px;
+	right: 30px;
+	width: 44px;
+	height: 44px;
+	overflow: hidden;
+	border-radius: 100%;
+	background-color: #e8eff8;
+}
+
+.win-prize__pop .close .iconfont {
+	color: #9cb1cb;
+	font-size: 25px;
+	line-height: 45px;
+	font-weight: bold;
+}
+
+.win-prize__pop--nothing .tips-img {
+	width: 141px;
+	height: 165px;
+	margin-bottom: 35px;
+}
+
+.win-prize__pop--nothing .tips-txt {
+	margin-bottom: 55px;
+	font-size: 28px;
+	color: #777;
+}
+
+
+/*   完善信息相关弹层      */
+
+.info-pop__hd {
+	margin-top: 30px;
+	margin-bottom: 38px;
+}
+
+.info-pop .search-result {
+	margin: auto;
+	margin-top: 35px;
+}
+
+.info-pop .adress-list li {
+	margin-bottom: 20px;
+	font-size: 28px;
+	color: #333;
+}
+
+.info-pop .adress-list li:nth-last-child() {
+	margin-bottom: 0;
+}
+
+.info-pop .adress__info {
+	text-align: left;
+	width: 400px;
+}
+
+.info-pop .info-list li {
+	font-size: 28px;
+	margin-bottom: 20px;
+}
+
+.info-pop .info-list li:nth-last-child(1) {
+	margin-bottom: 0;
+}
+
+.info-pop .info-list__leb {
+	text-align: right;
+}
+
+.info-pop .info-list__con {
+	text-align: left;
+}
+
+.info-pop .recharge-info {
+	font-size: 36px;
+}
+
+.prize--invented .code {
+	display: inline-block;
+	width: 318px;
+	height: 98px;
+	margin-bottom: 20px;
+	line-height: 98px;
+	background: #fbfbfd;
+	border: 2px solid #ff9a36;
+	font-size: 36px;
+}
+
+.info-pop__bd .des {
+	margin-bottom: 30px;
+	font-size: 28px;
+	color: #777;
+}
+
+
+/*   无数据  PC   */
+
+.nodata img {
+	margin-top: 45px;
+	margin-bottom: 50px;
+}
+
+.nodata p {
+	margin-bottom: 50px;
+	font-size: 28px;
+	color: #666;
+}
+
+
+/*     非法入口       */
+
+.illegal {
+	text-align: center;
+	color: #999;
+	font-size: 30px;
+}
+
+.illegal img {
+	margin-top: 244px;
+	margin-bottom: 46px;
+}
+
+
+/*    分享引导弹层     */
+
+.share-friend-pop {
+	position: absolute;
+	top: 5px;
+	left: 196px;
+	z-index: 10000;
+}

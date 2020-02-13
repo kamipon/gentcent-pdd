@@ -1,0 +1,598 @@
+body {
+    font-family: "宋体",Arial,Helvetica,sans-serif;
+    font-size: 12px;
+    text-align: left;
+}
+* {
+    margin: 0;
+    padding: 0;
+}
+#editActContainer #editActive .topBar {
+    width: 100%;
+    height: 40px;
+    border-top: 1px solid #fff;
+    border-bottom: 1px solid #ebebeb;
+    margin-bottom: 10px;
+    background: #fafafa;
+}
+#editActContainer #editActive .topBar .title {
+    width: 80px;
+    height: 100%;
+    line-height: 40px;
+    text-align: center;
+    display: inline-block;
+    border-right: 1px solid #ebebeb;
+    margin-right: 5px;
+}
+#editActContainer #editActive .topBar .flag {
+    display: inline-block;
+    width: 5px;
+    height: 9px;
+    background: url('../images/flag.png') no-repeat;
+    background-size: 100%;
+    margin-left: 15px;
+}
+.flag {
+    display: inline-block;
+    width: 17px;
+    color: red;
+    margin: 0 1px;
+    text-align: center;
+    font-size: 12px;
+}
+#editActContainer #editActive .topBar .slideBar, #activeTabSubMenu .slideBar {
+    width: 100%;
+    height: 7px;
+    position: relative;
+}
+#editActContainer #editActive .editContent .editDetailBox {
+    margin-top: 15px;
+    position: relative;
+}
+.editContent .phone {
+    width: 348px;
+    height: 650px;
+    vertical-align: top;
+    display: inline-block;
+    border-radius: 5px;
+    background: url('../images/phone.png') no-repeat;
+    background-size: 100%;
+    position: relative;
+}
+#editActContainer #editActive .editContent .phone .wxTitle {
+    width: 320px;
+    height: 64px;
+    background: url('../images/wxTitle.png') no-repeat;
+    background-size: 100%;
+    margin: 30px auto 0;
+    position: relative;
+}
+#editActContainer #editActive .editContent .phone .wxTitle #actName {
+    font-size: 18px;
+    color: #fff;
+    text-align: center;
+    height: 20px;
+    line-height: 20px;
+    width: 210px;
+    position: absolute;
+    left: 65px;
+    right: 0;
+    bottom: 9px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    padding: 3px 0;
+    font-family: '微软雅黑';
+}
+#editActContainer #editActive .editContent .phone #changeLeft {
+    left: -13px;
+    border-top-left-radius: 4px;
+    border-bottom-left-radius: 4px;
+}
+#editActContainer #editActive .editContent .phone .changePage {
+    width: 27px;
+    height: 48px;
+    cursor: pointer;
+    background: rgba(0,0,0,0.4);
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    margin: auto;
+}
+#editActContainer #editActive .editContent .phone #changeLeft .leftImg {
+    background-position: 0 -58px;
+}
+#editActContainer #editActive .editContent .phone .changePage .img {
+    width: 17px;
+    height: 37px;
+    margin: 0 auto;
+    text-align: center;
+    background-repeat: no-repeat;
+    background-image: url('../images/jiantou.png');
+    background-size: 100%;
+}
+#editActContainer #editActive .editContent .phone #changeRight {
+    right: -13px;
+    border-top-right-radius: 4px;
+    border-bottom-right-radius: 4px;
+}
+#editActContainer #editActive .editContent .phone #changeRight .rightImg {
+    background-position: 0 11px;
+}
+#editActContainer #editActive .editContent .phone #gameContent {
+    width: 320px;
+    height: 504px;
+    margin: 0 auto;
+}
+#gameContent {
+    position: relative;
+}
+#editActContainer #editActive .editContent .editDetail {
+    display: inline-block;
+    margin-left: 30px;
+    width: 512px;
+    padding: 0 5px;
+    position: relative;
+}
+#editActContainer #editActive .editContent #activeTab .checked {
+    background: #3896dc;
+    color: #fff;
+}
+#editActContainer #editActive .editContent #activeTab .tabSetting {
+    display: inline-block;
+    width: 123px;
+    height: 40px;
+    background: #eaeaea;
+    text-align: center;
+    line-height: 40px;
+    cursor: pointer;
+}
+#editActContainer #editActive .editContent .baseSettingTitle {
+    display: inline-block;
+    width: 84px;
+    margin: 0 10px 0 0;
+}
+.editContent .input1 {
+    width: 380px;
+}
+input[type="text"] {
+    height: 28px;
+    border: 1px solid #c8c8c8;
+}
+#editActContainer #editActive .editContent #baseSetting #setGameTimeBox {
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+#editActContainer #editActive .editContent .baseLine {
+    position: relative;
+}
+.baseLine {
+    position: relative;
+}
+#editActContainer #editActive .editContent .baseSettingTitle {
+    display: inline-block;
+    width: 84px;
+    margin: 0 10px 0 0;
+}
+.editContent input[type="text"], .editContent .awardType {
+    height: 28px;
+    border: 1px solid #c8c8c8;
+    outline: 0;
+    padding-left: 8px;
+}
+input[type="radio"], .formMSG input[type="radio"] {
+    display: none;
+}
+input[type="radio"] {
+    vertical-align: -3px;
+    margin-right: 3px;
+}
+input[type="radio"] + label, .formMSG input[type="radio"] + label {
+    display: inline-block;
+    padding-left: 20px;
+    margin-right: 7px;
+    background-image: url('../images/inputNormal.jpg');
+    background-repeat: no-repeat;
+    background-position: 0 center;
+    height: 30px;
+    overflow: visible;
+    white-space: nowrap;
+    -webkit-box-sizing: border-box !important;
+    box-sizing: border-box !important;
+    float: none;
+    vertical-align: middle;
+    line-height: 30px;
+}
+label {
+    cursor: pointer;
+}
+input[type="radio"]:checked + label, .formMSG input[type="radio"]:checked + label {
+    background-image: url('../images/inputSelect.jpg');
+}
+#editActContainer #editActive .editContent .mg110 {
+    margin-left: 116px;
+}
+#editActContainer #editActive .editContent .explain {
+    color: #808080;
+    display: inline-block;
+    margin-top: 5px;
+}
+#editActContainer #editActive .editContent .joinNumLimit {
+    margin-bottom: 20px;
+}
+.hide {
+    display: none;
+}
+#editActContainer #editActive .editContent #baseSetting textarea {
+    width: 380px;
+    height: 145px;
+    max-width: 380px;
+    line-height: 18px;
+    font-size: 12px;
+    border: 1px solid #c8c8c8;
+    padding: 5px;
+    margin-left: -3px;
+}
+.fixBottombar {
+    position: fixed;
+    left: 35px;
+    bottom: 0;
+}
+.saveBottomBar {
+    width: 900px;
+    height: 50px;
+    background: url(../images/btmbg.png) repeat;
+    margin-top: 22px;
+    border-top: 1px solid #c8c8c8;
+}
+.buttonBox {
+    width: 200px;
+    height: 35px;
+    margin: 10px auto;
+    text-align: center;
+}
+.buttonBox .saveButon {
+    width: 85px;
+    background: none repeat scroll 0 0 #358ee2;
+    border: 1px solid #358ee2;
+    color: #fff;
+}
+.buttonBox .bottomButon {
+    height: 30px;
+    text-align: center;
+    line-height: 30px;
+    border-radius: 2px;
+    display: inline-block;
+    font-weight: bold;
+    cursor: pointer;
+}
+.buttonBox .cancelButton {
+    width: 60px;
+    background: none repeat scroll 0 0 #f4f5f7;
+    margin-left: 10px;
+    border: 1px solid #c8c8c8;
+}
+.cancelButton {
+    border: 1px solid #8f8f8f;
+    background: #f5f5f5;
+    color: #666;
+}
+#editActContainer #editActive .editContent .noBotBorder {
+    border-bottom: 0;
+}
+#editActContainer #editActive .editContent .menuBox {
+    border: 1px solid #dcdcdc;
+    background: #f9f9f9;
+    padding: 10px;
+    overflow: hidden;
+}
+.relative {
+    position: relative;
+}
+.editActContainer #gameTypeSetting .setGameTypeBox .iconBox.checked {
+    background: #fff;
+    border-bottom: 0;
+    border-right: 1px solid #dcdcdc;
+    border-left: 1px solid #dcdcdc;
+}
+.editActContainer #gameTypeSetting .setGameTypeBox .iconBox {
+    width: 100px;
+    height: 88px;
+    border-right: 1px solid #f9f9f9;
+    border-left: 1px solid #f9f9f9;
+}
+.in-bl {
+    display: inline-block;
+}
+.pointer {
+    cursor: pointer;
+}
+.editActContainer #gameTypeSetting .setGameTypeBox .iconBox .drawIcon {
+    background-position: -10px -156px;
+}
+.editActContainer #gameTypeSetting .setGameTypeBox .iconBox .font {
+    text-align: center;
+    margin-top: 10px;
+}
+.editActContainer #gameTypeSetting .setGameTypeBox .iconBox .icon {
+    width: 28px;
+    height: 26px;
+    background-image: url('../images/pjfs.png');
+    position: absolute;
+    top: 8px;
+    left: 10px;
+}
+.editActContainer #gameTypeSetting .setGameTypeBox .iconBox .iconOuter {
+    width: 44px;
+    height: 44px;
+    background-image: url('../images/pjfs.png');
+    background-position: 0 0;
+    margin: 10px auto 0;
+    position: relative;
+}
+.editActContainer #gameTypeSetting #gameTypeDesc {
+    background-color: #fff;
+}
+.center {
+    text-align: center;
+}
+.tipsColor {
+    color: #808080;
+}
+.editActContainer #gameTypeSetting #gameTypeDesc .text {
+    padding: 20px 10px;
+    margin: auto;
+    text-align: center;
+}
+.editActContainer #gameTypeSetting #gameTypeDesc #gameTypeDescBorder {
+    width: 430px;
+    border-bottom: 1px solid #dcdcdc;
+    margin: auto;
+}
+.editActContainer #gameTypeSetting #drawSetBox {
+    background-color: #fff;
+    padding: 15px 4px 20px;
+}
+#editActContainer #editActive .editContent .baseLine1 {
+    margin: 10px 0 0;
+}
+.powerIcon {
+    width: 17px;
+    height: 15px;
+    vertical-align: -3px;
+}
+.ver_biz {
+    background: url('../images/bojin.png');
+}
+#editActContainer #awardsSetting .topAwardExplain {
+    color: #5c5c5c;
+    line-height: 22px;
+}
+#editActContainer #editActive .editContent .awardLevelBox {
+    border-bottom: 0;
+    height: 14px;
+}
+#editActContainer #editActive .editContent .awardLevelBox .awardLevelItem.checked {
+    background-color: #3896dc;
+    color: #fff;
+}
+#editActContainer #editActive .editContent .awardLevelBox .awardLevelItem {
+    float: left;
+    cursor: pointer;
+    width: 46px;
+    text-align: center;
+    margin-right: 3px;
+    padding: 3px 0;
+    border-radius: 3px;
+    margin-top: -3px;
+    position: relative;
+}
+.right {
+    float: right;
+}
+#editActContainer #editActive .editContent .awardLevelBox .awardNumOpt {
+    width: 18px;
+    height: 18px;
+    border: 1px solid #ccc;
+    display: inline-block;
+    margin-top: -4px;
+    border-radius: 3px;
+    background-color: #e6e6e6;
+    font-size: 20px;
+    text-align: center;
+    line-height: 20px;
+    color: #777;
+    font-weight: bold;
+}
+#editActContainer #editActive .editContent .awardLevelBox .addAwardDetail {
+    background-color: #fff;
+    padding: 5px 8px;
+    border: 1px solid #dcdcdc;
+    position: absolute;
+    top: 78px;
+    right: 8px;
+    z-index: 10;
+}
+#editActContainer #editActive .editContent #addAwardDetail .sanjiao {
+    background: url('../images/xsj1.png') no-repeat;
+    width: 12px;
+    height: 6px;
+    position: absolute;
+    top: -6px;
+    right: 6px;
+}
+#editActContainer #awardsSetting .awardBox .awardDetail {
+    position: relative;
+    max-height: 480px;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+#editActContainer #awardsSetting .awardBox .awardDetail .awardSettingBox {
+    position: relative;
+    top: 0;
+    width: 100%;
+}
+#editActContainer #editActive .editContent .awardSettingLine {
+    width: 95%;
+    margin-left: 10px;
+}
+#editActContainer #editActive .editContent #awardsSetting .awardTitle {
+    width: 84px;
+    display: inline-block;
+}
+.editContent .input7 {
+    width: 150px;
+}
+#editActContainer #editActive .editContent .baseLine3 {
+    margin: 12px 0 10px;
+    line-height: 30px;
+}
+#editActive .editContent .divBeInput {
+    width: 150px;
+    border: 1px solid #c8c8c8;
+    padding-left: 8px;
+    background-color: #fff;
+}
+#editActive .editContent .awardTypeValue .detailIcon {
+    margin: 10px 10px 0 0;
+}
+.editContent .detailIcon {
+    width: 9px;
+    height: 10px;
+    background: url('../images/aIcon.png') no-repeat;
+    background-size: 100%;
+    background-position: 0 -33px;
+    float: right;
+    margin-top: 12px;
+}
+#editActive .editContent .awardTypeBox {
+    position: absolute;
+    width: 158px;
+    border: 1px solid #c8c8c8;
+    border-top: 0;
+    background: #fff;
+    z-index: 1;
+}
+.marginLeft4 {
+    margin-left: 4px;
+}
+.editContent .input5 {
+    width: 333px;
+}
+
+.marginLeft109 {
+    margin-left: 109px;
+}
+.hd-wxCardNameBox {
+    background: #fff;
+    border: 1px solid #dcdcdc;
+    margin-top: 12px;
+    padding: 10px 0 12px 10px;
+    width: 328px;
+}
+#editActContainer #editActive .editContent .awardTextArea {
+    width: 330px;
+    height: 90px;
+    max-width: 330px;
+    margin-top: 6px;
+    padding: 5px;
+    border: 1px solid #c8c8c8;
+}
+.alignTop {
+    vertical-align: top;
+}
+#activeTabSubMenu {
+    height: 40px;
+    border-bottom: solid 1px #f1f1f1;
+    margin-bottom: 20px;
+    position: relative;
+}
+#activeTabSubMenu .column {
+    padding-left: 0;
+    width: 100px;
+}
+#editActContainer #editActive .topBar .column, #activeTabSubMenu .column {
+    width: 80px;
+    height: 100%;
+    line-height: 40px;
+    display: inline-block;
+    cursor: pointer;
+    padding-left: 2px;
+    text-align: center;
+}
+.editContent .input2 {
+    width: 140px;
+}
+#editActContainer #moreSetting .footSetting #QRCodeBox {
+    display: inline-block;
+}
+#editActContainer .comUploadImg {
+    display: inline-block;
+    width: 48px;
+    height: 48px;
+}
+.onlineCashImg, #editActContainer .comUploadBox {
+    vertical-align: middle;
+}
+#editActContainer .comUploadBox {
+    display: inline-block;
+    margin-left: 10px;
+}
+#editActContainer #moreSetting .footSetting #QRCodeBox #QRloadButton {
+    padding-bottom: 10px;
+}
+#editActContainer .comUploadBox .btn {
+    width: 72px;
+    height: 22px;
+    padding-bottom: 6px;
+    display: table-cell;
+    cursor: pointer;
+}
+#editActContainer .chooseImg .uploadify-button {
+    width: 70px;
+    height: 20px;
+    border: 1px solid #c8c8c8;
+    background: #f9f9f9;
+    text-align: center;
+    line-height: 20px;
+    padding: 1px;
+}
+.uploadify-button {
+    background: url(../images/upload-btn.png) no-repeat;
+    width: 72px;
+    height: 22px;
+    padding-bottom: 6px;
+    display: table-cell;
+}
+a {
+    text-decoration: none;
+    color: black;
+}
+
+#editActContainer #editActive .editContent {
+    margin-left: 35px;
+}
+#editContent .phone {
+    width: 348px;
+    height: 650px;
+    vertical-align: top;
+    display: inline-block;
+    border-radius: 5px;
+    background: url('../images/phone.png') no-repeat;
+    background-size: 100%;
+    position: relative;
+}
+
+
+#editActContainer #editActive .editContent .phone #changeRight .rightImg {
+    background-position: 0 11px;
+}
+
+#editActContainer #editActive .editContent .phone #gameContent {
+    height: 504px;
+    margin: 0 auto;
+    width: 320px;
+}
+#gameContent {
+    position: relative;
+}

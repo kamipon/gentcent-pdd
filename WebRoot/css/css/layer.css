@@ -1,0 +1,21 @@
+/*   通用组件样式    */
+
+#defAlert {
+	background: #333;
+	text-align: center;
+	font-family: "微软雅黑";
+	display: none;
+	position: fixed;
+	color: #fff;
+	-webkit-border-radius: 6px;
+	-moz-border-radius: 6px;
+	border-radius: 6px;
+	opacity: 0.9;
+	-moz-opacity: 0.9;
+	z-index: 1200;
+	font-size: 30px;
+}
+
+#defAlert div {
+	padding: 20px 30px
+}

@@ -1,0 +1,126 @@
+body {
+    color: #333333;
+    font-family: "微软雅黑","Helvetica Neue",Helvetica,Arial,sans-serif;
+    line-height: 20px;
+}
+a {
+    text-decoration: none;
+	color: #333;
+}
+.tiptitle {
+    font-size: 16px;
+    line-height: 30px;
+    margin: 30px 0 10px 30px;
+    text-align: center;
+}
+
+.tiptitle .colorred {
+    color: #de533c;
+    padding: 0 5px;
+}
+.tasks {
+    border-bottom: 1px solid #ccc;
+    overflow: hidden;
+}
+.listTasks {
+    list-style: outside none none;
+    margin: 0 auto;
+    overflow: hidden;
+    width: 900px;
+}
+.listTasks li {
+    float: left;
+    margin: 0 20px 20px 0;
+    width: 140px;
+	line-height: 20px;
+}
+
+.listTasks-a {
+    background: none repeat scroll 0 0 #fff;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    display: block;
+    height: 90px;
+    position: relative;
+    transition: all 0.5s ease 0s;
+}.listTasks-a:hover {
+    background: none repeat scroll 0 0 #00acec;
+    border: 1px solid #00acec;
+    text-decoration: none;
+}
+.listTasks li .number {
+    color: #de533c;
+    display: block;
+    font-size: 25px;
+    height: 60px;
+    line-height: 60px;
+    margin: 0;
+    text-align: center;
+}.listTasks li .text {
+    background: none repeat scroll 0 0 #e9e9e9;
+    border-bottom-left-radius: 3px;
+    border-bottom-right-radius: 3px;
+    bottom: 0;
+    color: #333;
+    height: 30px;
+    left: 0;
+    line-height: 30px;
+    margin: 0;
+    position: absolute;
+    right: 0;
+    text-align: center;
+}
+.listTasks li.wechat .listTasks-a {
+    background: none repeat scroll 0 0 #fff;
+    border: 1px solid #63b455;
+}
+.listTasks li.wechat .text {
+    background: none repeat scroll 0 0 #63b455;
+    color: #fff;
+}
+.homestl.smallTitle {
+    margin: 40px 30px 15px;
+}
+.smallTitle .text {
+    color: #333;
+    font-size: 16px;
+    margin: 0 0 0 15px;
+	vertical-align: middle;
+}
+.chartselect {
+    overflow: hidden;
+}.dataul {
+    float: left;
+    list-style: outside none none;
+    margin: 0 30px;
+}.dataul > li{
+    float: left;
+}.dataul.dataul > li > a {
+    padding: 5px 10px;
+	
+}
+.dataul .active a {
+    background: none repeat scroll 0 0 rgba(0, 0, 0, 0);
+    border: 0 none;
+    color: #de533c;
+}
+.followcount {
+    color: #999;
+    float: left;
+    font-size: 16px;
+    margin: 0 0 8px;
+}
+.followcount b {
+    color: #00acec;
+    font-size: 20px;
+    font-weight: normal;
+    margin-left: 5px;
+}
+
+.homechartborder {
+    border: 1px solid #ccc;
+    padding-top: 10px;
+    min-width: 500px; 
+    height: 400px; 
+    margin: 0 auto
+}

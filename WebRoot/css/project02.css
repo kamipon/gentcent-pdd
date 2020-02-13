@@ -1,0 +1,599 @@
+
+body {
+    font-family: "����",Arial,Helvetica,sans-serif;
+    font-size: 12px;
+    text-align: left;
+}
+* {
+    margin: 0;
+    padding: 0;
+}
+
+.loadBg {
+    bottom: 0;
+    display: none;
+    left: 0;
+    position: fixed;
+    right: 0;
+    top: 0;
+    z-index: 300;
+}
+
+.manager-loading {
+    background: #000 none repeat scroll 0 0;
+    border-radius: 10px;
+    height: 80px;
+    left: 50%;
+    margin: -40px 0 0 -40px;
+    opacity: 0.8;
+    position: absolute;
+    text-align: center;
+    top: 50%;
+    width: 80px;
+}
+
+.spinner {
+    display: inline-block;
+    height: 40px;
+    width: 40px;
+}
+
+.spinner .spinner-container {
+    height: 2.8rem;
+    left: 50%;
+    margin: -1.4rem 0 0 -1.4rem;
+    position: absolute;
+    top: 50%;
+    width: 2.8rem;
+}
+.container1 > div, .container2 > div, .container3 > div {
+    animation: 1.2s ease-in-out 0s normal both infinite running bouncedelay;
+    background-color: #fff;
+    border-radius: 100%;
+    height: 6px;
+    position: absolute;
+    width: 6px;
+}
+.circle1 {
+    left: 0;
+    top: 0;
+}
+
+.container1 .circle2 {
+    animation-delay: -0.9s;
+}
+.container1 > div, .container2 > div, .container3 > div {
+    animation: 1.2s ease-in-out 0s normal both infinite running bouncedelay;
+    background-color: #fff;
+    border-radius: 100%;
+    height: 6px;
+    position: absolute;
+    width: 6px;
+}
+.circle2 {
+    right: 0;
+    top: 0;
+}
+
+.container1 .circle3 {
+    animation-delay: -0.6s;
+}
+.container1 > div, .container2 > div, .container3 > div {
+    animation: 1.2s ease-in-out 0s normal both infinite running bouncedelay;
+    background-color: #fff;
+    border-radius: 100%;
+    height: 6px;
+    position: absolute;
+    width: 6px;
+}
+.circle3 {
+    bottom: 0;
+    right: 0;
+}
+
+.container1 .circle4 {
+    animation-delay: -0.3s;
+}
+.container1 > div, .container2 > div, .container3 > div {
+    animation: 1.2s ease-in-out 0s normal both infinite running bouncedelay;
+    background-color: #fff;
+    border-radius: 100%;
+    height: 6px;
+    position: absolute;
+    width: 6px;
+}
+.circle4 {
+    bottom: 0;
+    left: 0;
+}
+
+.spinner .spinner-container {
+    height: 2.8rem;
+    left: 50%;
+    margin: -1.4rem 0 0 -1.4rem;
+    position: absolute;
+    top: 50%;
+    width: 2.8rem;
+}
+.container2 {
+    transform: rotateZ(45deg);
+}
+
+.container2 .circle1 {
+    animation-delay: -1.1s;
+}
+.container1 > div, .container2 > div, .container3 > div {
+    animation: 1.2s ease-in-out 0s normal both infinite running bouncedelay;
+    background-color: #fff;
+    border-radius: 100%;
+    height: 6px;
+    position: absolute;
+    width: 6px;
+}
+.circle1 {
+    left: 0;
+    top: 0;
+}
+
+.container2 .circle2 {
+    animation-delay: -0.8s;
+}
+.container1 > div, .container2 > div, .container3 > div {
+    animation: 1.2s ease-in-out 0s normal both infinite running bouncedelay;
+    background-color: #fff;
+    border-radius: 100%;
+    height: 6px;
+    position: absolute;
+    width: 6px;
+}
+.circle2 {
+    right: 0;
+    top: 0;
+}
+
+.container2 .circle3 {
+    animation-delay: -0.5s;
+}
+.container1 > div, .container2 > div, .container3 > div {
+    animation: 1.2s ease-in-out 0s normal both infinite running bouncedelay;
+    background-color: #fff;
+    border-radius: 100%;
+    height: 6px;
+    position: absolute;
+    width: 6px;
+}
+.circle3 {
+    bottom: 0;
+    right: 0;
+}
+
+.container2 .circle4 {
+    animation-delay: -0.2s;
+}
+.container1 > div, .container2 > div, .container3 > div {
+    animation: 1.2s ease-in-out 0s normal both infinite running bouncedelay;
+    background-color: #fff;
+    border-radius: 100%;
+    height: 6px;
+    position: absolute;
+    width: 6px;
+}
+.circle4 {
+    bottom: 0;
+    left: 0;
+}
+
+.spinner .spinner-container {
+    height: 2.8rem;
+    left: 50%;
+    margin: -1.4rem 0 0 -1.4rem;
+    position: absolute;
+    top: 50%;
+    width: 2.8rem;
+}
+.container3 {
+    transform: rotateZ(90deg);
+}
+
+.container3 .circle1 {
+    animation-delay: -1s;
+}
+.container1 > div, .container2 > div, .container3 > div {
+    animation: 1.2s ease-in-out 0s normal both infinite running bouncedelay;
+    background-color: #fff;
+    border-radius: 100%;
+    height: 6px;
+    position: absolute;
+    width: 6px;
+}
+.circle1 {
+    left: 0;
+    top: 0;
+}
+
+.container3 .circle2 {
+    animation-delay: -0.7s;
+}
+.container1 > div, .container2 > div, .container3 > div {
+    animation: 1.2s ease-in-out 0s normal both infinite running bouncedelay;
+    background-color: #fff;
+    border-radius: 100%;
+    height: 6px;
+    position: absolute;
+    width: 6px;
+}
+.circle2 {
+    right: 0;
+    top: 0;
+}
+
+.container3 .circle3 {
+    animation-delay: -0.4s;
+}
+.container1 > div, .container2 > div, .container3 > div {
+    animation: 1.2s ease-in-out 0s normal both infinite running bouncedelay;
+    background-color: #fff;
+    border-radius: 100%;
+    height: 6px;
+    position: absolute;
+    width: 6px;
+}
+.circle3 {
+    bottom: 0;
+    right: 0;
+}
+
+.container3 .circle4 {
+    animation-delay: -0.1s;
+}
+.container1 > div, .container2 > div, .container3 > div {
+    animation: 1.2s ease-in-out 0s normal both infinite running bouncedelay;
+    background-color: #fff;
+    border-radius: 100%;
+    height: 6px;
+    position: absolute;
+    width: 6px;
+}
+.circle4 {
+    bottom: 0;
+    left: 0;
+}
+
+#newActContainer .newActhdTitle {
+    font-size: 12px;
+    left: 0;
+    position: fixed;
+    right: 0;
+    top: 0;
+    z-index: 10;
+}
+#newActContainer .newActhdTitle {
+    background-color: #f9f9f9;
+    border-top: 1px solid #fff;
+    position: relative;
+}
+
+element.style {
+    padding-left: 30px;
+}
+.clearfix::after {
+    clear: both;
+    content: ".";
+    display: block;
+    height: 0;
+    visibility: hidden;
+}
+.newActhdTitle #categoryBox {
+    border-bottom: 1px solid #e7e7e7;
+    height: 38px;
+    margin-top: 8px;
+    position: relative;
+}
+.clearfix {
+}
+
+.newActhdTitle #categoryBox .column.checked {
+    background-color: #fff;
+    border-color: #e1e1e1 #e1e1e1 #fff;
+    border-style: solid;
+    border-width: 1px;
+    position: relative;
+    z-index: 10;
+}
+.newActhdTitle #categoryBox .column {
+    border: 1px solid rgba(0, 0, 0, 0);
+    color: #333;
+    cursor: pointer;
+    float: left;
+    line-height: 37px;
+    margin-right: 0;
+    padding: 0 8px;
+    position: relative;
+    text-align: left;
+}
+
+.newActhdTitle #categoryBox .column span {
+    display: inline-block;
+    text-align: center;
+    width: 60px;
+}
+
+.newActhdTitle #categoryBox .column {
+    border: 1px solid rgba(0, 0, 0, 0);
+    color: #333;
+    cursor: pointer;
+    float: left;
+    line-height: 37px;
+    margin-right: 0;
+    padding: 0 8px;
+    position: relative;
+    text-align: left;
+}
+
+.newActhdTitle #categoryBox .column span {
+    display: inline-block;
+    text-align: center;
+    width: 60px;
+}
+
+#categoryBox .categoryBoxIcon {
+    background: rgba(0, 0, 0, 0) url("../images/flsj.png") no-repeat scroll 0 -42px;
+    float: right;
+    height: 4px;
+    margin-left: 5px;
+    margin-top: 16px;
+    width: 7px;
+}
+
+element.style {
+    display: none;
+    max-height: none;
+    overflow: auto;
+}
+.newActhdTitle .subCategoryBox {
+    background-color: #fff;
+    border-bottom: 1px solid #f1f1f1;
+    box-sizing: border-box;
+    line-height: 32px;
+    padding: 6px 45px 6px 8px;
+    position: relative;
+    width: 100%;
+}
+.hide {
+    display: none;
+}
+
+element.style {
+    display: none;
+}
+.subCategoryBox .subCategoryIcon {
+    background: rgba(0, 0, 0, 0) url("../images/bg02.png") no-repeat scroll -206px -448px;
+    border: 1px solid #ddd;
+    cursor: pointer;
+    height: 18px;
+    position: absolute;
+    right: 20px;
+    top: 13px;
+    width: 18px;
+}
+.hide {
+    display: none;
+}
+
+.newActhdTitle .subCategoryBox .item.checked {
+    color: #1c8cdf;
+}
+.newActhdTitle .subCategoryBox .item {
+    color: #777;
+    cursor: pointer;
+    display: inline-block;
+    font-size: 12px;
+    margin-left: 25px;
+    position: relative;
+}
+
+.newActhdTitle .subCategoryBox .item {
+    color: #777;
+    cursor: pointer;
+    display: inline-block;
+    font-size: 12px;
+    margin-left: 25px;
+    position: relative;
+}
+
+.newActhdTitle .subCategoryBox .item {
+    color: #777;
+    cursor: pointer;
+    display: inline-block;
+    font-size: 12px;
+    margin-left: 25px;
+    position: relative;
+}
+
+.newActhdTitle .subCategoryBox .item {
+    color: #777;
+    cursor: pointer;
+    display: inline-block;
+    font-size: 12px;
+    margin-left: 25px;
+    position: relative;
+}
+
+element.style {
+    display: none;
+}
+.selectResult {
+    background: #fff none repeat scroll 0 0;
+    color: #666;
+    font-size: 12px;
+    padding-left: 40px;
+    padding-top: 25px;
+}
+.hide {
+    display: none;
+}
+
+element.style {
+    display: block;
+}
+#newActContainer #ActiveBox {
+    margin-top: 70px;
+}
+#newActContainer .ActiveBox {
+    border-bottom: 1px solid #eee;
+    margin-left: 40px;
+    margin-top: 106px;
+}
+
+element.style {
+    display: block;
+}
+#newActContainer .ActiveBox .recom_title {
+    border-bottom: 1px solid #f1f1f1;
+    margin-bottom: 28px;
+    padding-bottom: 12px;
+}
+
+element.style {
+    display: none;
+}
+.hide {
+    display: none;
+}
+
+element.style {
+    display: none;
+}
+#newActContainer .ActiveBox .active {
+    border: 1px solid #dfdfdf;
+    border-radius: 4px;
+    cursor: pointer;
+    display: inline-block;
+    height: 180px;
+    margin-bottom: 28px;
+    margin-right: 24px;
+    position: relative;
+    transition: all 0.2s ease 0s;
+    vertical-align: middle;
+    width: 233px;
+}
+.hide {
+    display: none;
+}
+
+#newActContainer .ActiveBox .active .actPic {
+    border-radius: 4px 4px 0 0;
+    height: 125px;
+    margin: 4px;
+    overflow: hidden;
+    position: relative;
+    width: 225px;
+}
+
+#newActContainer .ActiveBox .active .actPic > img {
+    background: rgba(0, 0, 0, 0) url("../images/defImage.jpg") no-repeat scroll 0 0 / 100% auto;
+    height: 100%;
+    width: 100%;
+}
+
+
+
+#newActContainer .ActiveBox .active .recomPic {
+    background: rgba(0, 0, 0, 0) url("../images/tj.png") no-repeat scroll 0 0 / 100% auto;
+    height: 35px;
+    position: absolute;
+    right: 4px;
+    top: -5px;
+    width: 61px;
+    z-index: 1;
+}
+
+#newActContainer .ActiveBox .active .actDescripe {
+    color: #333;
+    display: inline-block;
+    height: 45px;
+    line-height: 45px;
+    margin-left: 12px;
+    width: 210px;
+}
+
+#newActContainer .ActiveBox .active .actName {
+    display: inline-block;
+}
+element.style {
+    display: none;
+}
+.slidHideBar {
+    background: #666 none repeat scroll 0 0;
+    cursor: pointer;
+    height: 100%;
+    left: 0;
+    overflow: hidden;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 100;
+}
+.slidHideBar .hideIcon {
+    background: rgba(0, 0, 0, 0) url("../images/ret.png") no-repeat scroll 0 0 / 100% auto;
+    height: 56px;
+    left: 15px;
+    opacity: 0.2;
+    position: relative;
+    top: 320px;
+    width: 24px;
+}
+
+element.style {
+    display: none;
+    min-width: 980px;
+}
+.slidShowBox {
+    background: #fff none repeat scroll 0 0;
+    display: block;
+    height: 100%;
+    left: 100%;
+    overflow: hidden;
+    position: fixed;
+    right: 0;
+    top: 0;
+    z-index: 200;
+}
+
+element.style {
+    display: none;
+    min-width: 980px;
+}
+.slidShowBox {
+    background: #fff none repeat scroll 0 0;
+    display: block;
+    height: 100%;
+    left: 100%;
+    overflow: hidden;
+    position: fixed;
+    right: 0;
+    top: 0;
+    z-index: 200;
+}
+#newActContainer .newActhdTitle {
+    font-size: 12px;
+    left: 0;
+    position: fixed;
+    right: 0;
+    top: 0;
+    z-index: 10;
+}
+
+#newActContainer .actCreate {
+    background-image: url("../images/bg02.png");
+    background-position: -1157px -368px;
+    border: 1px solid #dadada;
+    border-radius: 2px;
+    color: #333;
+    float: right;
+    height: 26px;
+    line-height: 26px;
+    margin-top: 9px;
+    padding-left: 19px;
+    width: 57px;
+}

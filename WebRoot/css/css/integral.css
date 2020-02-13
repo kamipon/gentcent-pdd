@@ -1,0 +1,25 @@
+.icon {
+	width: 1em;
+	height: 1em;
+	vertical-align: -0.15em;
+	fill: currentColor;
+	overflow: hidden;
+}
+
+#fatherOne {
+	margin-bottom: 1rem;
+}
+
+#fatherTwo {
+	margin-bottom: 1rem;
+}
+
+#activity {
+	text-align: center;
+	box-shadow: 1px 1px #888888;
+	margin-bottom: 1rem;
+}
+
+body{
+	font-family: "微软雅黑";
+}

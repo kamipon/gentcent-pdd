@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>上传凭证</title>
+	<meta content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=0" name="viewport"/>
+	<meta content="yes" name="apple-mobile-web-app-capable"/>
+	<meta content="black" name="apple-mobile-web-app-status-bar-style"/>
+	<meta content="telephone=no" name="format-detection"/>
+	<link href="../../css/bootstrap.min.css" rel="stylesheet">
+	<link href="css/selectAddress.css" rel="stylesheet">
+</head>
+<body>
+
+<div class="item-box" id="content">
+	<div class="item" style="text-align: center;padding: 30px;">
+		<div id="addImg" style="display: none;"></div>
+		<img id="uploadbtn" src="../../img/addpic.png" style="width: 80%;">
+		</div>
+</div>
+<div class="btn-box">
+	<button class="btn btn-danger" id="addManual" onclick="save()">上传凭证</button>
+</div>
+</body>
+<script src="../../js/jquery-1.11.3.min.js"></script>
+<script src="../../js/layer.js"></script>
+<script src="../../js/bootstrap.min.js"></script>
+<script src="../../js/eleditor/webuploader.min.js"></script>
+<script type="text/javascript">
+
+		var _lock = true;
+    /**
+		 * 保存退出
+     */
+		function save(){
+		    if(_lock)	return;
+        var src = $("#uploadbtn").attr("src")
+        parent._src = src;
+        console.log(parent._src);
+        $("#upbtn",parent.document).css("background-color","green");
+				$("#upbtn",parent.document).attr("onclick","next()");
+        $("#upbtn button",parent.document).text("下一步");
+        parent.layer.closeAll();
+    }
+		
+		$("#uploadbtn").click(function () {
+				$("input.webuploader-element-invisible").click();
+    });
+	
+    // 初始化Web Uploader
+    var uploader = WebUploader.create({
+        // 选完文件后，是否自动上传。
+        auto: true,
+        // swf文件路径
+        swf: '../../js/webuploader/Uploader.swf',
+        // 文件接收服务端。
+        server: '/wx_plugin/fileUploads',
+        // 选择文件的按钮。可选。
+        pick: '#addImg',
+        // 只允许选择图片文件。
+        accept: {
+            title: 'Images',
+            extensions: 'gif,jpg,jpeg,bmp,png',
+            mimeTypes: 'image/*'
+        },
+        compress:{
+            width: 600,
+            quality: 90,
+            compressSize: 512000
+        },
+        multiple:true
+    });
+    // 当有文件添加进来的时候
+    uploader.on('fileQueued', function (file) {
+        // 创建缩略图
+        uploader.on('uploadSuccess', function (file2, response) {
+            console.log(response);
+            if (!response.flag) {
+                alert("上传失败");
+                _lock = true;
+                return;
+            }
+            $("#uploadbtn").attr('onclick', "delImg()");
+            $("#uploadbtn").attr('src', response.src);
+            _lock = false;
+        });
+    });
+
+    // 文件上传失败，显示上传出错。
+    uploader.on('uploadError', function (file) {
+        alert("上传失败");
+    });
+</script>
+
+</html>

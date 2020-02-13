@@ -1,0 +1,236 @@
+<!doctype html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width,
+                              initial-scale=1,
+                              minimum-scale=1,
+                              maximum-scale=1"/>
+	<meta name="apple-mobile-web-app-status-bar-style" content="black"/>
+	<meta name="format-detection" content="telephone=no"/>
+	<meta name="format-detection" content="email=no"/>
+	<title>商品详情</title>
+	<link href="../../css/bootstrap.min.css" rel="stylesheet">
+	<link rel="stylesheet" href="static/css/swiper.min.css">
+	<link href="static/css/app.css" rel="stylesheet">
+	<link href="../../css/style.css" rel="stylesheet" type="text/css"/>
+</head>
+<body class="item">
+<!-- 顶部导航栏 -->
+<header class="aui-navBar aui-navBar-fixed">
+	<a href="myGoods.html" class="aui-navBar-item">
+		<i class="icon icon-return"></i>
+	</a>
+	<div class="aui-center">
+		<span class="aui-center-title">商品详情</span>
+	</div>
+</header>
+
+<section class="images">
+	<div class="swiper-container">
+		<div class="swiper-wrapper" id="imgList">
+			<!--			<div class="swiper-slide">-->
+			<!--				<img src="https://dn-kdt-img.qbox.me/upload_files/2015/10/29/FkJsNdMJmc0vRe5omF0kt4hs9tmu.jpg?imageView2/2/w/640/h/640"/>-->
+			<!--			</div>-->
+		</div>
+		<div class="swiper-pagination"></div>
+	</div>
+</section>
+
+<section class="header">
+	<h2 class="title" id="title">标题</h2>
+	<h2 class="subhead" id="subhead">副标题</h2>
+	<div class="price ">
+		<div class="current-price">
+			<span class="current-price"><small>￥</small><smap name="current-price">0.00</smap></span>
+		</div>
+		<!--		<span class="express">¥20.00</span>-->
+	</div>
+	<div class="sales">已售:
+		<smap id="yishou">0</smap>
+		剩余:
+		<smap id="shengyu">0</smap>
+	</div>
+</section>
+
+<section class="sku">
+	<dl class="sku-group">
+		<dt>规格:</dt>
+		<dd id="default-sku"></dd>
+	</dl>
+</section>
+
+<section class="content">
+	<div class="nav">
+		<span class="spxq">商品详细</span>
+	</div>
+	<div class="desc" id="desc">
+		<!--		<img data-original="http://wd.geilicdn.com/vshop214911204-1437124807048-33816-s1.jpg?w=1080&amp;h=0" width="100%">-->
+	</div>
+</section>
+
+<section class="layer">
+	<div class="content">
+		<div class="head"><a class="close"></a></div>
+		<div class="bd">
+			<dl>
+				<dt>本网价</dt>
+				<dd><span>￥<b name="current-price">6.80</b></span></dd>
+			</dl>
+			<dl>
+				<dt>规格</dt>
+				<dd>
+					<ul id="sku">
+						<!--						<li><a data-sku=10 class="active">红色</a><i></i></li>-->
+						<!--						<li><a data-sku=11>粉色</a><i></i></li>-->
+						<!--						<li><a data-sku=12>碎花</a><i></i></li>-->
+					</ul>
+				</dd>
+			</dl>
+		</div>
+		<!--		<div class="foot"><a class="next" data-id=10 href="{:U('buy')}?id=10">下一步</a></div>-->
+	</div>
+
+</section>
+
+<!--<footer class="footer">-->
+<!--	<span class="server"><a></a></span>-->
+<!--	<div class="button"><a class="buy">立即购买</a></div>-->
+<!--</footer>-->
+
+<script src="static/js/jquery.min.js"></script>
+<script src="../../js/layer.js"></script>
+<script src="static/js/swiper.min.js"></script>
+<script src="static/js/jquery.lazyload.js"></script>
+<script>
+
+    var path = "{:U('buy')}?id=";
+    //兼容性：字体大小，全局尺寸(rem)
+    (function (doc, win) {
+        var docEl = doc.documentElement,
+            resizeEvt = 'orientationchange' in window ? 'orientationchange' : 'resize',
+            recalc = function () {
+                var clientWidth = docEl.clientWidth;
+                if (!clientWidth) return;
+                var docElWidth = 80 * (clientWidth / 640);
+                if (docElWidth > 100) docElWidth = 100;
+                docEl.style.fontSize = docElWidth + 'px';
+            };
+        if (!doc.addEventListener) return;
+        win.addEventListener(resizeEvt, recalc, false);
+        doc.addEventListener('DOMContentLoaded', recalc, false);
+    })(document, window);
+
+    $(document).ready(function () {
+        $.ajax({
+            url: "/wx_wlgoods/" + getQueryString("id"),
+            type: "get",
+            data: {},
+            dataType: "json",
+            success: function (data) {
+                if (data.flag) {
+                    console.log(data);
+                    let goods = data.wlgoods;
+                    let categoryList = data.list;
+                    let specsList = data.slist;
+                    let imgListHtml = "", JSONImgList = JSON.parse(goods.imgList);
+                    for (let i = 0; i < JSONImgList.length; i++) {
+                        let src = JSONImgList[i];
+                        imgListHtml +=
+                            "<div class=\"swiper-slide\">" +
+                            "<img src=\"" + src + "\"/>" +
+                            "</div>";
+                    }
+                    $("#imgList").html(imgListHtml);
+                    $("#desc").html(goods.desc);
+                    $("#desc img").each(function () {
+                        $(this).attr("data-original", $(this).attr("src"));
+                        $(this).removeAttr("src");
+                    });
+                    $("#title").html(goods.title);
+                    $("#subhead").html(goods.subhead);
+                    $("#yishou").html(goods.salenum);
+
+                    //默认规格
+                    let defaultSku = specsList[0];
+                    $("#default-sku").text(defaultSku.specs.name);
+                    $("#shengyu").text(defaultSku.num);
+                    if(defaultSku.price!=null){
+                        $("[name=current-price]").text(parseFloat(defaultSku.price).toFixed(2));
+                    }else{
+                        $("[name=current-price]").text("未设置");
+										}
+
+                    //规格
+                    let specsHtml = "";
+                    for (let i = 0; i < specsList.length; i++) {
+                        const info = specsList[i];
+                        const specs = specsList[i].specs;
+                        let sclass = "";
+                        if (i == 0) sclass = "active";
+                        specsHtml +=
+                            "<li><a shengyu='" + info.num + "' price='" + info.price + "' data-sku=" + specs.id + " class=\"" + sclass + "\">" + specs.name + "</a><i></i></li>"
+                    }
+                    $("#sku").html(specsHtml);
+
+                } else {
+                    layer.msg(data.msg);
+                }
+                init();
+            }
+        });
+    });
+
+    function init() {
+        //轮播图
+        new Swiper('.swiper-container', {
+            pagination: '.swiper-pagination',
+            paginationClickable: true,
+            autoplay: 3000
+        });
+
+        $('.nav a').click(function () {
+            $('.nav a').removeClass('active');
+            $(this).addClass('active');
+        })
+        //sku
+        $('.sku,.buy').click(function () {
+            $('.layer').addClass('acitve');
+        })
+        $('.close').click(function () {
+            $('.layer').removeClass('acitve');
+        });
+        //规格选择
+        $('#sku a').click(function () {
+            console.log(this);
+            $('#sku a').removeClass('active');
+            $(this).addClass('active');
+            $('.next').attr('href', path + $(this).data('sku'));
+            $('#default-sku').text($(this).text());
+            $("#shengyu").text($(this).attr("shengyu"));
+            $("[name=current-price]").text(parseFloat($(this).attr("price")).toFixed(2));
+        });
+        //图片懒加载
+        $("img").lazyload({
+            effect: 'fadeIn',
+            placeholder: './static/images/timg.gif'
+        });
+
+    };
+
+    function getQueryString(name) {
+        var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
+        var reg_rewrite = new RegExp("(^|/)" + name + "/([^/]*)(/|$)", "i");
+        var r = window.location.search.substr(1).match(reg);
+        var q = window.location.pathname.substr(1).match(reg_rewrite);
+        if (r != null) {
+            return unescape(r[2]);
+        } else if (q != null) {
+            return unescape(q[2]);
+        } else {
+            return null;
+        }
+    }
+</script>
+</body>
+</html>

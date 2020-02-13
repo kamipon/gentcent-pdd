@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>商品列表</title>
+	<meta content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=0" name="viewport"/>
+	<meta content="yes" name="apple-mobile-web-app-capable"/>
+	<meta content="black" name="apple-mobile-web-app-status-bar-style"/>
+	<meta content="telephone=no" name="format-detection"/>
+	<link href="../../css/bootstrap.min.css" rel="stylesheet">
+	<link href="goodsList.css" rel="stylesheet" type="text/css"/>
+	<link href="../../css/style.css" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+<!-- 顶部导航栏 -->
+<header class="aui-navBar aui-navBar-fixed">
+	<a href="category.html;" class="aui-navBar-item">
+		<i class="icon icon-return"></i>
+	</a>
+	<div class="aui-center">
+		<span class="aui-center-title">商品列表</span>
+	</div>
+</header>
+
+<div class="container-fluid" style="margin-top: -8px;">
+	<div class="top row">
+		<div class="col-xs-3">
+			<span class="" type="1">综合</span>
+		</div>
+		<div class="col-xs-3">
+			<span class="" type="2">最新</span>
+		</div>
+		<div class="col-xs-3">
+			<span class="" type="3">销量</span>
+		</div>
+		<div class="col-xs-3" isDesc="true">
+			<span class="" style="font-size: 12px;color: gray;" style="display: none;">降序</span>
+			<img src="../../img/desc.png" style="height: 20px;">
+		</div>
+		<div class="col-xs-3" isDesc="false">
+			<span class="" style="font-size: 12px;color: gray;" style="display: none;">升序</span>
+			<img src="../../img/asc.png" style="height: 20px;">
+		</div>
+	</div>
+</div>
+<div class="goods-list" id="goods-list">
+<!--	<div class="item-box">-->
+<!--		<div class="item">-->
+<!--			<div>-->
+<!--				<img src="../../img/1.jpg" style="width: 100%;height: 48.5vw;">-->
+<!--			</div>-->
+<!--			<div class="info">-->
+<!--				<div class="title">阿瑟东i哈怂i打算窘境佛i阿散啊实打窘境佛i阿散啊实打实打算井</div>-->
+<!--				<div class="price-sale">-->
+<!--					<span class="price">￥<smap id="price">2950.00</smap></span>-->
+<!--					<span class="sale">已售<smap id="sale">0</smap>件</span>-->
+<!--				</div>-->
+<!--			</div>-->
+<!--		</div>-->
+<!--	</div>-->
+</div>
+
+<!-- 7.底部导航栏 -->
+<div id="page"></div>
+
+</body>
+<script src="../../js/jquery-1.11.3.min.js"></script>
+<script src="../../js/layer.js"></script>
+<script src="../../js/bootstrap.min.js"></script>
+<script type="text/javascript">
+    $("#page").load("../bottom.html", function () {
+        $("#bottom-fenlei > img").attr("src", "../../img/bottom-fenlei-a.png");
+        $("#bottom-fenlei > div").css("color", "#32b531");
+    });
+	
+	var _type = getQueryString("type") || 1;
+	var _isDesc = getQueryString("isDesc") || "true";
+	var _content = unescape(getQueryString("content"));
+	var _cid = getQueryString("cid");
+
+    $(document).ready(function () {
+				if(_isDesc == "false"){
+				    $("[isDesc = true]").hide();
+            $("[isDesc = false]").show();
+        }else{
+            $("[isDesc = false]").hide();
+            $("[isDesc = true]").show();
+				}
+        getList();
+    });
+
+    function getList() {
+        var param = {
+            type:_type,
+            isDesc: _isDesc
+				};
+        if(_cid != null){
+            param.cid = _cid;
+        }
+        if(_content != null) {
+            param.content = _content;
+        }
+        
+        console.log(param);
+        
+        $.ajax({
+            url: "/wx_wlgoods/getList",
+            type: "get",
+            data: param,
+            dataType: "json",
+            success: function (data) {
+                if (data.flag) {
+                    console.log(data);
+                    let html = "";
+                    for (let i = 0; i < data.list.length; i++) {
+                        const goods = data.list[i].goods;
+                        const goodsSpecs = data.list[i].specsList[0];
+                        html +=
+                            "<div class=\"item-box\" onclick=\"location.href='goodsDetail.html?id="+goods.id+"'\">" +
+                            "<div class=\"item\">" +
+                            "<div>" +
+                            "<img src=\""+JSON.parse(goods.imgList)[0]+"\" style=\"width: 100%;height: 48.5vw;\">" +
+                            "</div>\n" +
+                            "<div class=\"info\">" +
+                            "<div class=\"title\">"+goods.title+"</div>" +
+                            "<div class=\"subhead\">"+goods.subhead+"</div>" +
+                            "<div class=\"price-sale\">" +
+                            "<span class=\"price\">￥<smap id=\"price\">"+goodsSpecs.price+"</smap></span>" +
+														"<span class=\"sale\">库存<smap id=\"sale\">"+goodsSpecs.num+"</smap>件</span>" +
+                            "</div>" +
+                            "</div>" +
+                            "</div>" +
+                            "</div>"
+                    }
+                    $("#goods-list").html(html);
+                    _type = data.type;
+                    _isDesc = data.isDesc;
+                    _content = escape(data.content);
+                    $("[type = "+_type+"]").addClass("active");
+                } else {
+                    layer.msg(data.msg);
+                }
+            }
+        });
+    }
+    
+    $("[type]").click(function () {
+        _type = $(this).attr("type");
+        location.href="goodsList.html?cid="+_cid+"&type="+_type+"&isDesc="+_isDesc+"&content="+_content;
+    });
+    $("[isDesc]").click(function () {
+        _isDesc = $(this).attr("isDesc");
+        if(_isDesc == "true"){
+            _isDesc = "false";
+				}else{
+            _isDesc = "true";
+				}
+        location.href="goodsList.html?cid="+_cid+"&type="+_type+"&isDesc="+_isDesc+"&content="+_content;
+    });
+    
+    function getQueryString(name) {
+        var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
+        var reg_rewrite = new RegExp("(^|/)" + name + "/([^/]*)(/|$)", "i");
+        var r = window.location.search.substr(1).match(reg);
+        var q = window.location.pathname.substr(1).match(reg_rewrite);
+        if (r != null) {
+            return unescape(r[2]);
+        } else if (q != null) {
+            return unescape(q[2]);
+        } else {
+            return null;
+        }
+    }
+</script>
+
+</html>

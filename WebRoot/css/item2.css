@@ -1,0 +1,575 @@
+			.container{
+			    text-align: center;
+			    width: 100%;
+			    max-width: 960px;
+			    margin: 0 auto;
+			    padding: 15px 5px;
+			    background-color: rgba(0,0,0,0.3);
+			    height: 100%;
+				}
+			<!--领取过了-->
+			#dialog2 .avatar1{
+				left: 6%;
+			    position: relative;
+			    top: -8%;
+			}
+			#dialog2 .avatar1 span{
+			    position: absolute;
+			    top: -38%;
+			    right: 4%;
+			    -webkit-transform: rotate(45deg);
+			        -ms-transform: rotate(45deg);
+			            transform: rotate(45deg);
+			    font-size: 2em;
+			    font-weight: bolder;
+			}
+			#dialog2 .close1{
+			    color: rgba(0,0,0,0.5);
+			    right: -22%;
+			}
+			#dialog2 .description1{
+				margin-top:7%;
+			    font-size: 21px;
+			    font-weight:600;
+			    color:#FFA73A;
+			}
+			#dialog2 .text1{
+				width:100%;
+				height:50%;
+				position: absolute;
+				margin-top: 36%;
+				text-align: center;
+				padding: 0px;
+			}
+			.insert{
+				position: absolute;
+				width: 100%;
+				height: 6%;
+				background-color: #A5423A;
+				z-index: 100;	
+				top: 21%;		
+			  	border-radius: 0px 0px 50% 50% / 0px 0px 100% 100%;
+			}		
+			#dialog2 .sp1{
+				font-size: 20px;
+				font-weight: 600;
+				color: #fff;
+			}
+			<!-- 朋友圈-->
+			#dialog5 .avatar1{
+				left: 6%;
+			    position: relative;
+			    top: -8%;
+			}
+			#dialog5 .avatar1 span{
+			    position: absolute;
+			  	top: -34%;
+			    right: 3%;
+			    -webkit-transform: rotate(45deg);
+			        -ms-transform: rotate(45deg);
+			            transform: rotate(45deg);
+			    font-size: 2em;
+			    font-weight: bolder;
+			}
+			#dialog5 .close1{
+			    color: rgba(0,0,0,0.5);
+			}
+			#dialog5 .description1{
+				margin-top:9%;
+			    font-size: 21px;
+			    font-weight:600;
+			    color: #FFA73A;
+			}
+			#dialog5 .text1{
+					position: absolute;
+					width:100%;
+					height:50%;
+					position: absolute;
+					text-align: center;
+					padding: 0px;
+					top: 30%;
+					
+			}	
+			#dialog5 .sp1{
+				font-size: 20px;
+				font-weight: 600;
+				text-align: center;
+				color: #fff;
+			}
+			
+				<!-- 朋友圈-->
+			#dialog40 .avatar1{
+				left: 6%;
+			    position: relative;
+			    top: -8%;
+			}
+			#dialog40 .avatar1 span{
+			    position: absolute;
+			  	top: -34%;
+			    right: 3%;
+			    -webkit-transform: rotate(45deg);
+			        -ms-transform: rotate(45deg);
+			            transform: rotate(45deg);
+			    font-size: 2em;
+			    font-weight: bolder;
+			}
+			#dialog40 .close1{
+			    color: rgba(0,0,0,0.5);
+			}
+			#dialog40 .description1{
+				margin-top:9%;
+			    font-size: 21px;
+			    font-weight:600;
+			    color: #FFA73A;
+			}
+			#dialog40 .text1{
+					position: absolute;
+					width:100%;
+					height:50%;
+					position: absolute;
+					text-align: center;
+					padding: 0px;
+					top: 30%;
+					
+			}	
+			#dialog40 .sp1{
+				font-size: 20px;
+				font-weight: 600;
+				text-align: center;
+				color: #fff;
+			}
+			<!-- 二维码 -->
+			#dialog6 .avatar1{
+				left: 6%;
+			    position: relative;
+			    top: -8%;
+			}
+			#dialog6 .avatar1 span{
+			    position: absolute;
+		 	 	top: -20%;
+			    right: -17%;
+			    -webkit-transform: rotate(45deg);
+			        -ms-transform: rotate(45deg);
+			            transform: rotate(45deg);
+			    font-size: 2em;
+			    font-weight: bolder;
+			}
+			#dialog6 .close1{
+			    color: rgba(0,0,0,0.5);
+			}
+			#dialog6 .description1{
+				margin-top: 2%;
+			    font-size: 21px;
+			    font-weight:600;
+			    color: #FFA73A;
+			}
+			#dialog6 .text1{
+					position: absolute;
+					left: 12%;
+					top: 29%;
+				}
+			.twocode{
+				width: 100%
+				height: 100%;
+				margin: auto;
+			}	
+			.tu{
+				margin-top: 10px;
+				margin-top: 10px;
+				width: 100px;
+				height: 100px;				
+			}
+			#dialog6 .sp1{
+				font-size: 20px;
+				font-weight: 600;
+				text-align: center;
+				color:#fff;
+			}
+			<!--直接领取-->
+			#dialog4 .avatar1{
+				left: 6%;
+			    position: relative;
+			    top: -8%;
+			}
+			#dialog4 .avatar1 span{
+			    position: absolute;
+			    top: -38%;
+			    right: 4%;
+			    -webkit-transform: rotate(45deg);
+			        -ms-transform: rotate(45deg);
+			            transform: rotate(45deg);
+			    font-size: 2em;
+			    font-weight: bolder;
+			}
+			.hongbao1{
+				position: relative;
+			    height: 64%;
+			    background: #BD503A;
+			    width: 88%;
+			    left: 0;
+			    top: 0;
+			    border-radius: 56% 56% 10px 10px/27% 27% 10px 10px;
+			    margin: 23% auto;
+			}
+			#dialog4 .close1{
+			    color: rgba(0,0,0,0.5);
+			    right: -22%;
+			}
+			#dialog4 .description1{
+				margin-top:7%;
+			    font-size: 21px;
+			    font-weight:600;
+			    color:#FFA73A;
+			}
+			#dialog4 .text1{
+				margin-top: 36%;
+				width:100%;
+				height:50%;
+				position: absolute;
+				text-align: center;
+				padding: 0px;
+			}
+			#dialog4 .sp1{
+				font-size: 20px;
+				font-weight: 600;
+				color: #fff;
+			}
+			<!--分享朋友圈成功-->
+			#dialog9 .avatar1{
+				left: 6%;
+			    position: relative;
+			    top: -8%;
+			}
+			#dialog9 .avatar1 span{
+			    position: absolute;
+			    top: -36%;
+			    right: -3%;
+			    -webkit-transform: rotate(45deg);
+			        -ms-transform: rotate(45deg);
+			            transform: rotate(45deg);
+			    font-size: 2em;
+			    font-weight: bolder;
+			}
+			#dialog9 .close1{
+			    color: rgba(0,0,0,0.5);
+			}
+			#dialog9 .description1{
+				margin-top:7%;
+			    font-size: 21px;
+			    font-weight:600;
+			    color:#FFA73A;
+			}
+			#dialog9 .text1{
+					margin-top: 36%;
+					width:100%;
+					height:50%;
+					position: absolute;
+					text-align: center;
+					padding: 0px;
+				}
+			#dialog9 .sp1{
+				font-size: 20px;
+				font-weight: 600;
+				color:#fff;
+			}			
+			//分享直接到账领取成功
+			#dialog10 .avatar1{
+				left: 6%;
+			    position: relative;
+			    top: -8%;
+			}
+			#dialog10 .avatar1 span{
+			    position: absolute;
+			    top: -32%;
+			    right: -22%;
+			    -webkit-transform: rotate(45deg);
+			        -ms-transform: rotate(45deg);
+			            transform: rotate(45deg);
+			    font-size: 2em;
+			    font-weight: bolder;
+			}
+			#dialog10 .close1{
+			    color: rgba(0,0,0,0.5);
+			}
+			#dialog10 .description1{
+				margin-top:7%;
+			    font-size: 21px;
+			    font-weight:600;
+			    color:#FFA73A;
+			}
+			#dialog10 .text1{
+					margin-top: 36%;
+					width:100%;
+					height:50%;
+					position: absolute;
+					text-align: center;
+					padding: 0px;
+				}
+			#dialog10 .sp1{
+				font-size: 20px;
+				font-weight: 600;
+				color:#fff;
+			}	
+			//领取积分
+			#dialog32 .avatar1{
+				left: 6%;
+			    position: relative;
+			    top: -8%;
+			}
+			#dialog32 .avatar1 span{
+			    position: absolute;
+			    top: -32%;
+			    right: -22%;
+			    -webkit-transform: rotate(45deg);
+			        -ms-transform: rotate(45deg);
+			            transform: rotate(45deg);
+			    font-size: 2em;
+			    font-weight: bolder;
+			}
+			#dialog32 .close1{
+			    color: rgba(0,0,0,0.5);
+			}
+			#dialog32 .description1{
+				margin-top:7%;
+			    font-size: 21px;
+			    font-weight:600;
+			    color:#FFA73A;
+			}
+			#dialog32 .text1{
+					margin-top: 36%;
+					width:100%;
+					height:50%;
+					position: absolute;
+					text-align: center;
+					padding: 0px;
+				}
+			#dialog32 .sp1{
+				font-size: 20px;
+				font-weight: 600;
+				color:#fff;
+			}	
+			
+			//优惠券
+			#dialog21 .avatar1{
+				left: 6%;
+			    position: relative;
+			    top: -8%;
+			}
+			#dialog21 .avatar1 span{
+			    position: absolute;
+			    top: -64%;
+			    right: 6%;
+			    -webkit-transform: rotate(45deg);
+			        -ms-transform: rotate(45deg);
+			            transform: rotate(45deg);
+			    font-size: 2em;
+			    font-weight: bolder;
+			}
+			.hongbao1{
+				position: relative;
+			    height: 64%;
+			    background: #BD503A;
+			    width: 88%;
+			    left: 0;
+			    top: 0;
+			    border-radius: 56% 56% 10px 10px/27% 27% 10px 10px;
+			    margin: 23% auto;
+			}
+			#dialog21 .close1{
+			    color: rgba(0,0,0,0.5);
+			    right: -22%;
+			}
+			#dialog21 .description1{
+				margin-top:7%;
+			    font-size: 21px;
+			    font-weight:600;
+			    color:#FFA73A;
+			}
+			#dialog21 .text1{
+					margin-top: 54%;
+					width:100%;
+					height:50%;
+					position: absolute;
+					text-align: center;
+					padding: 0px;
+				}
+			#dialog21 .sp1{
+				font-size: 20px;
+				font-weight: 600;
+				color: #fff;
+			}	
+			//优惠券
+			#dialog22 .avatar1{
+				left: 6%;
+			    position: relative;
+			    top: -8%;
+			}
+			#dialog22 .avatar1 span{
+			    position: absolute;
+			    top: -64%;
+			    right: 6%;
+			    -webkit-transform: rotate(45deg);
+			        -ms-transform: rotate(45deg);
+			            transform: rotate(45deg);
+			    font-size: 2em;
+			    font-weight: bolder;
+			}
+			.hongbao1{
+				position: relative;
+			    height: 64%;
+			    background: #BD503A;
+			    width: 88%;
+			    left: 0;
+			    top: 0;
+			    border-radius: 56% 56% 10px 10px/27% 27% 10px 10px;
+			    margin: 23% auto;
+			}
+			#dialog22 .close1{
+			    color: rgba(0,0,0,0.5);
+			    right: -22%;
+			}
+			#dialog22 .description1{
+				margin-top:7%;
+			    font-size: 21px;
+			    font-weight:600;
+			    color:#FFA73A;
+			}
+			#dialog22 .text1{
+					margin-top: 54%;
+					width:100%;
+					height:50%;
+					position: absolute;
+					text-align: center;
+					padding: 0px;
+				}
+			#dialog22 .sp1{
+				font-size: 20px;
+				font-weight: 600;
+				color: #fff;
+			}	
+			//多领取
+			#dialog11 .avatar1{
+				left: 6%;
+			    position: relative;
+			    top: -8%;
+			}
+			#dialog11 .avatar1 span{
+			    position: absolute;
+			    top: -78%;
+			    right: 6%;
+			    -webkit-transform: rotate(45deg);
+			        -ms-transform: rotate(45deg);
+			            transform: rotate(45deg);
+			    font-size: 2em;
+			    font-weight: bolder;
+			}
+			.hongbao1{
+				position: relative;
+			    height: 64%;
+			    background: #BD503A;
+			    width: 88%;
+			    left: 0;
+			    top: 0;
+			    border-radius: 56% 56% 10px 10px/27% 27% 10px 10px;
+			    margin: 23% auto;
+			}
+			#dialog11 .close1{
+			    color: rgba(0,0,0,0.5);
+			    right: -22%;
+			}
+			#dialog11 .description1{
+				margin-top:7%;
+			    font-size: 21px;
+			    font-weight:600;
+			    color:#FFA73A;
+			}
+			#dialog11 .text1{
+					margin-top: 54%;
+					width:100%;
+					height:50%;
+					position: absolute;
+					text-align: center;
+					padding: 0px;
+				}
+			#dialog11 .sp1{
+				font-size: 20px;
+				font-weight: 600;
+				color: #fff;
+			}	
+			
+			#dialog31 .avatar1{
+				left: 0%;
+			    position: relative;
+			    top: -109%;
+			}
+			#dialog31 .avatar1 span{
+			    position: absolute;
+			    top: -30%;
+			    right: 4%;
+			    -webkit-transform: rotate(45deg);
+			        -ms-transform: rotate(45deg);
+			            transform: rotate(45deg);
+			    font-size: 2em;
+			    font-weight: bolder;
+			}
+			#dialog31 .close1{
+			    color: rgba(0,0,0,0.5);
+			    right: -22%;
+			}
+			#dialog31 .description1{
+				margin-top:7%;
+			    font-size: 21px;
+			    font-weight:600;
+			    color:#FFA73A;
+			}
+			#dialog31 .text1{
+				width:100%;
+				height:50%;
+				position: absolute;
+				margin-top: 36%;
+				text-align: center;
+				padding: 0px;
+			}
+			#dialog31 .sp1{
+				font-size: 20px;
+				font-weight: 600;
+				color: #fff;
+			}	
+			
+			#dialog50 .avatar1{
+				left: 6%;
+			    position: relative;
+			    top: -8%;
+			}
+			#dialog50 .avatar1 span{
+			    position: absolute;
+			    top: -32%;
+			    right: -22%;
+			    -webkit-transform: rotate(45deg);
+			        -ms-transform: rotate(45deg);
+			            transform: rotate(45deg);
+			    font-size: 2em;
+			    font-weight: bolder;
+			}
+			#dialog50 .close1{
+			    color: rgba(0,0,0,0.5);
+			}
+			#dialog50 .description1{
+				margin-top:7%;
+			    font-size: 21px;
+			    font-weight:600;
+			    color:#FFA73A;
+			}
+			#dialog50 .text1{
+					margin-top: 36%;
+					width:100%;
+					height:50%;
+					position: absolute;
+					text-align: center;
+					padding: 0px;
+				}
+			#dialog50 .sp1{
+				font-size: 20px;
+				font-weight: 600;
+				color:#fff;
+			}	

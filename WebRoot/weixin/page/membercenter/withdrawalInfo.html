@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>提现信息设置</title>
+	<meta content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=0" name="viewport"/>
+	<meta content="yes" name="apple-mobile-web-app-capable"/>
+	<meta content="black" name="apple-mobile-web-app-status-bar-style"/>
+	<meta content="telephone=no" name="format-detection"/>
+	<link href="../../css/bootstrap.min.css" rel="stylesheet">
+	<link href="login.css" rel="stylesheet" type="text/css"/>
+	<link href="../../css/style.css" rel="stylesheet" type="text/css"/>
+	<style>
+		* {
+			margin: 0;
+			padding: 0;
+		}
+		
+		.btn-primary.active.focus, .btn-primary.active:focus, .btn-primary.active:hover, .btn-primary:active.focus, .btn-primary:active:focus, .btn-primary:active:hover, .open > .dropdown-toggle.btn-primary.focus, .open > .dropdown-toggle.btn-primary:focus, .open > .dropdown-toggle.btn-primary:hover {
+			outline: none !important;
+			background-color: #28608f !important;
+			border-color: #28608f !important;
+		}
+		
+		.btn-primary {
+			outline: none !important;
+			color: #000;
+			background-color: #f3f3f3;
+			border-color: #ccc;
+		}
+		
+		.btn-primary.active.focus, .btn-primary.active:focus, .btn-primary.active:hover, .btn-primary:active.focus, .btn-primary:active:focus, .btn-primary:active:hover, .open > .dropdown-toggle.btn-primary.focus, .open > .dropdown-toggle.btn-primary:focus, .open > .dropdown-toggle.btn-primary:hover {
+			outline: none !important;
+			background-color: #5cb85c !important;
+			border-color: #5cb85c !important;
+		}
+		
+		.btn-primary.active, .btn-primary:active, .open > .dropdown-toggle.btn-primary {
+			background-color: #5cb85c;
+			border-color: #5cb85c;
+		}
+		
+		.btn-primary {
+			outline: none !important;
+			color: #000;
+			background-color: #f3f3f3;
+			border-color: #ccc;
+		}
+		
+		.input-group {
+			margin-top: 30px;
+		}
+	
+	</style>
+</head>
+<body>
+<!-- 顶部导航栏 -->
+<header class="aui-navBar aui-navBar-fixed">
+	<a href="javascript:history.go(-1)" class="aui-navBar-item">
+		<i class="icon icon-return"></i>
+	</a>
+	<div class="aui-center">
+		<span class="aui-center-title">提现信息设置</span>
+	</div>
+</header>
+
+<div class="container">
+	<div class="input-group">
+		<span class="input-group-addon">收款类型</span>
+		<div class="btn-group" data-toggle="buttons" style="width: 100%;">
+				<label class="btn btn-primary active" id="option1" style="padding: 11.5px;width: 50%;border-radius: 0px;"
+							 onclick="changeTab(1)">
+					<input type="radio" name="titype" autocomplete="off" value="1"> 支付宝
+				</label>
+				<label class="btn btn-primary" style="padding: 11.5px;width: 50%;" id="option2" onclick="changeTab(2)">
+					<input type="radio" name="titype" autocomplete="off" value="2"> 银行卡
+				</label>
+		</div>
+	</div>
+	
+	<span id="zfb-info">
+		<div class="input-group">
+			<span class="input-group-addon">支付宝账号</span>
+			<input type="text" class="form-control" name="zfb">
+		</div>
+		<div class="input-group">
+			<span class="input-group-addon">真实姓名</span>
+			<input type="text" class="form-control" name="zfbname">
+		</div>
+	</span>
+	
+	<span id="bank-info" style="display: none;">
+		<div class="input-group">
+			<span class="input-group-addon">银行卡卡号</span>
+			<input type="text" class="form-control" name="cardnumber">
+		</div>
+		<div class="input-group">
+			<span class="input-group-addon">银行卡所属支行</span>
+			<input type="text" class="form-control" name="cardfrom">
+		</div>
+		<div class="input-group">
+			<span class="input-group-addon">真实姓名</span>
+			<input type="text" class="form-control" name="cardrealname">
+		</div>
+	</span>
+	
+	<div style="width: 100%;position: fixed;bottom: 10px;left: 0;">
+		<button type="button" class="btn btn-success btn-lg" style="width:66%;" onclick="javascript:register()" id="save">保存</button>
+	</div>
+</div>
+
+</body>
+
+<!-- 引入jQuery核心js文件 -->
+<script src="../../js/eleditor/jquery.min.js"></script>
+<script src="../../js/layer.js"></script>
+<!-- 引入BootStrap核心js文件 -->
+<script src="../../js/bootstrap.min.js"></script>
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        $.ajax({
+            url: "/wx_wlmember",
+            type: "get",
+            data: {},
+            dataType: "json",
+            success: function (data) {
+                if (data.flag) {
+                    var m = data.member;
+                    if (m.titype == 1) {
+                        if (m.zfb != null && m.zfb != ""
+                            && m.zfbname != null && m.zfbname != "") {
+                            
+                            disableInput();
+                            $("#option1").click();
+                            $("input[name=zfb]").val(m.zfb);
+                            $("input[name=zfbname]").val(m.zfbname);
+                        }
+                    } else if (m.titype == 2) {
+                        if (m.cardrealname != null && m.cardrealname != ""
+                            && m.cardnumber != null && m.cardnumber != ""
+                            && m.cardfrom != null && m.cardfrom != "") {
+
+                            disableInput();
+                            $("#option2").click();
+                            $("input[name=cardnumber]").val(m.cardnumber);
+                            $("input[name=cardfrom]").val(m.cardfrom);
+                            $("input[name=cardrealname]").val(m.cardrealname);
+                        }
+                    }
+
+                } else {
+                    layer.msg(data.msg);
+                }
+            }
+        });
+    });
+
+    function disableInput() {
+				$("input,button").attr("disabled","disabled");
+				$("#save").hide();
+    }
+
+
+    function changeTab(paytype) {
+        if (paytype == 1) {
+            $("#bank-info").hide();
+            $("#zfb-info").show();
+        } else if (paytype == 2) {
+            $("#zfb-info").hide();
+            $("#bank-info").show();
+        }
+    }
+
+    function register() {
+        var params = {};
+        var titype = $(".btn.btn-primary.active > input[name=titype]").val();
+
+        var zfb = $("input[name=zfb]").val();
+        var zfbname = $("input[name=zfbname]").val();
+        var cardnumber = $("input[name=cardnumber]").val();
+        var cardfrom = $("input[name=cardfrom]").val();
+        var cardrealname = $("input[name=cardrealname]").val();
+
+        if (titype == 1) {
+            if (zfb == "" || zfbname == "") {
+                alert("请输入完整的信息");
+                return;
+            }
+            params = {};
+            params.titype = titype;
+            params.zfb = zfb;
+            params.zfbname = zfbname;
+        } else if (titype == 2) {
+            if (cardnumber == "" || cardfrom == "" || cardrealname == "") {
+                alert("请输入完整的信息");
+                return;
+            }
+            params = {};
+            params.titype = titype;
+            params.cardnumber = cardnumber;
+            params.cardfrom = cardfrom;
+            params.cardrealname = cardrealname;
+        }
+
+        console.log(params);
+
+        $.ajax({
+            url: "/wx_wlmember/setti",
+            type: "post",
+            data: params,
+            dataType: "json",
+            success: function (data) {
+                if (data.flag) {
+                    layer.msg(data.msg, {time: 2000}, function () {
+                        history.go(-1);
+                    });
+                } else {
+                    layer.msg(data.msg);
+                }
+            }
+        });
+    }
+
+
+</script>
+</html>

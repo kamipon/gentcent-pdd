@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>上传资料</title>
+	<meta content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=0" name="viewport"/>
+	<meta content="yes" name="apple-mobile-web-app-capable"/>
+	<meta content="black" name="apple-mobile-web-app-status-bar-style"/>
+	<meta content="telephone=no" name="format-detection"/>
+	<link href="../../css/bootstrap.min.css" rel="stylesheet">
+	<link href="../membercenter/addGoods.css" rel="stylesheet" type="text/css"/>
+	<style>
+		* {
+			margin: 0;
+			padding: 0;
+		}
+		
+		#addImg input {
+			display: none;
+		}
+		
+		#fileList img {
+			height: 30vw !important;
+			width: 30vw !important;
+		}
+		
+		.thumbnail {
+			margin-bottom: 0;
+			margin-right: 12px;
+			float: left;
+		}
+		
+		.X {
+			position: absolute;
+			top: 10px;
+			right: 64px;
+			z-index: 9;
+			font-size: 18px;
+			color: gray;
+		}
+		
+		.aui-btn-button {
+			background: #f21956;
+			padding: 0 25px;
+			color: #fff;
+			font-size: 14px;
+		}
+	</style>
+</head>
+<body>
+
+<div class="container">
+	<div class="item-content">
+		<div class="item-media"><i class="icon icon-form-gender"></i></div>
+		<div class="item-inner">
+			<div class="item-input">
+				<div class="uploader-list"></div>
+			</div>
+		</div>
+	</div>
+	<div class="input-group" style="height: 35px;">
+		<span class="input-group-addon" id="addImg"
+					style="width: 100vw;border: 1px solid #ccc !important;border-bottom: 0px !important;border-radius: 4px 4px 0 0 !important;">
+			<button class="btn" style="color: #fff;background-color: #286090;">添加图片</button>
+			<span class="X" onclick="clearImg()" style="top: 13px;right: 10px;"><img height="17px"
+																																							 src="../order/images/delete.png"></span></span>
+		</span>
+	</div>
+	<div class="input-group" style="margin: 0;border-top: none;">
+		<div class="form-control col-xs-10" name="imglist" disabled
+				 style="border-top: none;min-height: 37.2vw;height: auto;width:91vw;white-space: nowrap;overflow: auto;">
+			<div id="fileList" style="width: 1000vw;"></div>
+		</div>
+	</div>
+	<div class="input-group">
+		<span class="input-group-addon">选择商户</span>
+		<select class="form-control" name="tid"></select>
+	</div>
+	<div class="input-group">
+		<span class="input-group-addon">进货价</span>
+		<input type="number" class="form-control" name="oldprice" style="text-align: right">
+		<span class="input-group-addon">元</span>
+	</div>
+	<div class="input-group" id="numberDiv">
+		<span class="input-group-addon">数量</span>
+		<input type="number" class="form-control" name="number" style="text-align: right">
+		<span class="input-group-addon">件</span>
+	</div>
+	<div class="input-group">
+		<span class="input-group-addon">长</span>
+		<input type="number" class="form-control" name="volumeLong" style="text-align: right">
+		<span class="input-group-addon">米</span>
+	</div>
+	<div class="input-group">
+		<span class="input-group-addon">宽</span>
+		<input type="number" class="form-control" name="volumeWide" style="text-align: right">
+		<span class="input-group-addon">米</span>
+	</div>
+	<div class="input-group">
+		<span class="input-group-addon">高</span>
+		<input type="number" class="form-control" name="volumeHight" style="text-align: right">
+		<span class="input-group-addon">米</span>
+	</div>
+	<div class="input-group">
+		<span class="input-group-addon">重量</span>
+		<input type="number" class="form-control" name="weightAxe" style="text-align: right">
+		<span class="input-group-addon">KG</span>
+	</div>
+	<p style="color: grey;">参考价（
+		<smap id="sp_onprice" style="color:red;">0.00</smap>
+		元）
+	</p>
+
+</div>
+
+<div style="height: 30px"></div>
+
+<div class="img-farme" style="display: none;">
+	<img style="width: 100%;padding: 5px;">
+</div>
+
+<button class="btn" onclick="shangchuan()" style="width: 92%;margin-left: 4%;color: #fff; background-color: #286090;">
+	上传
+</button>
+
+</body>
+
+<!-- 引入jQuery核心js文件 -->
+<script src="../../js/eleditor/jquery.min.js"></script>
+<script src="../../js/eleditor/webuploader.min.js"></script>
+<script src="../../js/eleditor/Eleditor.js"></script>
+<script src="../../js/layer.js"></script>
+<!-- 引入BootStrap核心js文件 -->
+<script src="../../js/bootstrap.min.js"></script>
+<script src="http://res.wx.qq.com/open/js/jweixin-1.4.0.js"></script>
+<script type="text/javascript">
+
+    var imgListArr = [];
+    $(function () {
+        parent.parent._wx.ready(function () {
+            var images = {
+                localId: [],
+                serverId: [],
+                url: []
+            };
+            document.querySelector('#addImg').onclick = function () {
+                parent.parent._wx.chooseImage({
+                    success: function (res) {
+                        for (let i = 0; i < res.localIds.length; i++) {
+                            images.localId.push(res.localIds[i]);
+                            upload(res.localIds[i]);
+                        }
+                    }
+                });
+            };
+
+            function upload(localId) {
+                parent.parent._wx.uploadImage({
+                    localId: localId, // 需要上传的图片的本地ID，由chooseImage接口获得
+                    isShowProgressTips: 0, // 默认为1，显示进度提示
+                    success: function (res) {
+                        var serverId = res.serverId; // 返回图片的服务器端ID
+                        $.ajax({
+                            url: "/wx_plugin/wx_img",
+                            type: "get",
+                            data: {
+                                image: res.serverId
+                            },
+                            dataType: "json",
+                            success: function (data) {
+                                if (data.flag) {
+                                    var $li = $(
+                                        "<div id='" + data.id + "' class='thumbnail'>" +
+                                        '<img src="' + data.image + '">' +
+                                        '</div>'
+                                    );
+                                    $("#fileList").append($li);
+                                    $("#" + data.id).attr("onclick", "scaleImg(\"" + data.image + "\")")
+                                    if ($.inArray(data.image, imgListArr) < 0) {
+                                        imgListArr.push(data.image);
+                                    }
+                                }
+                            }
+                        });
+                    }
+                });
+            }
+        });
+        parent.parent._wx.error(function (res) {
+        });
+    });
+
+    function shangchuan() {
+        var tid = $("select[name=tid]").val();
+        var oldprice = $("input[name=oldprice]").val();
+        var number = $("input[name=number]").val();
+        var imglist = JSON.stringify(imgListArr);
+        var volumeLong = $("input[name=volumeLong]").val();
+        var volumeWide = $("input[name=volumeWide]").val();
+        var volumeHight = $("input[name=volumeHight]").val();
+        var weightAxe = $("input[name=weightAxe]").val();
+        imglist = imglist.slice(1, imglist.length - 1);
+        console.log(imglist);
+        if (tid == "" || tid == null || oldprice == "" || oldprice == null || imglist == "" || volumeLong == "" || volumeWide == "" || volumeHight == "" || weightAxe == "") {
+            layer.msg("请输入完整信息");
+            return;
+        }
+        if (oldprice > son.price) {
+            layer.msg("请不要超过商品价格");
+            return;
+        }
+
+        var url;
+        var params = {
+            tid: tid,
+            oldprice: oldprice,
+            imglist: imglist,
+            volumeLong: volumeLong,
+            volumeWide: volumeWide,
+            volumeHight: volumeHight,
+            weightAxe: weightAxe
+        };
+        if (_sonupID == "null" || _sonupID == "undefined") {
+            params.number = number;
+            url = "/wx_wlorder_market/up/" + _id;
+        } else {
+            url = "/wx_wlorder_market/up/sonup/" + _sonupID;
+        }
+
+        $.ajax({
+            url: url,
+            type: "post",
+            data: params,
+            dataType: "json",
+            success: function (data) {
+                if (data.flag) {
+                    parent.location.reload();
+                } else {
+                    parent.layer.msg(data.msg);
+                }
+            }
+        });
+    }
+
+    function scaleImg(src) {
+        $(".img-farme > img").attr("src", src);
+        layer.open({
+            type: 1,
+            title: false,
+            closeBtn: true,
+            area: ["85%", "auto"],
+            content: $(".img-farme"),
+            success: function (index, layero) {
+            },
+            cancel: function (index, layero) {
+            }
+        })
+    }
+
+    var son;
+    var _sonupID = getQueryString("sonupID");
+    var _id = getQueryString("id");
+
+    $(document).ready(function () {
+        $("[name=imglist]").width($("body").width() - 56);
+        $.ajax({
+            url: "/wx_wlorder_market/" + _id,
+            type: "get",
+            data: {},
+            dataType: "json",
+            success: function (data) {
+                if (data.flag) {
+                    son = data.son;
+                    // console.log(son);
+                    $("#sp_onprice").text(parseFloat(son.onprice).toFixed(2));
+                    var shlist = data.sh;
+                    for (let i = 0; i < shlist.length; i++) {
+                        var sh = shlist[i];
+                        // console.log(sh);
+                        var html = "<option value='" + sh.id + "'>" + sh.nick + "</option>";
+                        $("select[name=tid]").append(html);
+                    }
+                    if (_sonupID != "null" && _sonupID != "undefined") {
+                        updateData();
+                        $("#numberDiv").hide();
+                    }
+                } else {
+                    layer.msg(data.msg);
+                }
+            }
+        });
+    });
+
+    function updateData() {
+        $.ajax({
+            url: "/wx_wlorder_market/sonup/update/" + _sonupID,
+            type: "get",
+            data: {},
+            dataType: "json",
+            success: function (data) {
+                if (data.flag) {
+                    sonup = data.sonup;
+                    console.log(sonup);
+
+                    $("input[name=oldprice]").val(parseFloat(sonup.oldprice).toFixed(2));
+                    $("input[name=volumeLong]").val(parseFloat(sonup.volumeLong).toFixed(2));
+                    $("input[name=volumeHight]").val(parseFloat(sonup.volumeHight).toFixed(2));
+                    $("input[name=volumeWide]").val(parseFloat(sonup.volumeWide).toFixed(2));
+                    $("input[name=weightAxe]").val(parseFloat(sonup.weightAxe).toFixed(2));
+                    let imgHtml = "";
+                    var str = sonup.imgurl || "";
+                    imgListArr = JSON.parse("[" + str + "]");
+                    for (let i = 0; i < imgListArr.length; i++) {
+                        const src = imgListArr[i];
+                        imgHtml +=
+                            '<div id="IMG_' + i + '" class="thumbnail" onclick="scaleImg(\'' + src + '\')">' +
+                            '<img src="' + src + '">' +
+                            '</div>';
+                    }
+                    $("#fileList").html(imgHtml);
+                    $("option[value=" + sonup.terpoint.id + "]").attr("selected", "selected");
+
+                } else {
+                    layer.msg(data.msg);
+                }
+            }
+        });
+    }
+
+    function getQueryString(name) {
+        var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
+        var reg_rewrite = new RegExp("(^|/)" + name + "/([^/]*)(/|$)", "i");
+        var r = window.location.search.substr(1).match(reg);
+        var q = window.location.pathname.substr(1).match(reg_rewrite);
+        if (r != null) {
+            return unescape(r[2]);
+        } else if (q != null) {
+            return unescape(q[2]);
+        } else {
+            return null;
+        }
+    }
+
+
+    function clearImg() {
+        layer.confirm('确定清空图片？', {
+            btn: ['确定', '取消'], //按钮
+            title: false,
+            icon: 3,
+            closeBtn: false
+        }, function (i) {
+            imgListArr = [];
+            $("#fileList").html("");
+            layer.close(i);
+        }, function (i) {
+            layer.close(i);
+        });
+    }
+</script>
+</html>
