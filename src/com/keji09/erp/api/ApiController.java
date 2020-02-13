@@ -22,14 +22,15 @@ import com.keji09.erp.utils.CaptchaUtil;
 public class ApiController extends XDAOSupport {
 	
 	/**
-	 * 返回null，说明验证正确
+	 * 返回null，说明验证正确ss
 	 */
 	public static Map<String,Object> validateCaptcha(HttpServletRequest req,String captcha) {
 		Map<String,Object> result = new HashMap<String, Object>();
 		Object temp = req.getSession().getAttribute("captcha");
 		if (temp == null) {
 			result.put("flag", false);
-			result.put("msg", "验证码错误！");
+			result.put("msg", "验证码错误123！");
+
 			return result;
 		} else if (!temp.toString().equals(captcha)) {
 			result.put("flag", false);

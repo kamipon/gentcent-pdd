@@ -8,6 +8,15 @@ package com.keji09.erp.utils;
 public class Constants {
 
 	/**
+	 * 拼多多 clientId
+	 */
+	public static final String  CLIENT_ID = PropertiesUtil.getProperty("project.clientId");
+	/**
+	 * 拼多多 clientSecret
+	 */
+	public static final String  CLIENT_SECRET = PropertiesUtil.getProperty("project.clientSecret");
+
+	/**
 	 * 项目绝对路径，如D\:/G/workbench/myeclipse9_workplace/11cms/WebRoot
 	 */
 	public static final String PROJECT_REAL_PATH = PropertiesUtil.getProperty("project.realpath");
@@ -52,6 +61,6 @@ public class Constants {
 	 * signName
 	 */
 	public static final String PROJECT_SIGNNAME= PropertiesUtil.getProperty("sms.signName");
-	
+
 	
 }
