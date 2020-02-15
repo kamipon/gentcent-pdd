@@ -1,18 +1,15 @@
 package com.keji09.erp.utils;
 
-import java.io.BufferedOutputStream;
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.io.OutputStreamWriter;
+import com.dyuproject.protostuff.LinkedBuffer;
+import com.dyuproject.protostuff.ProtostuffIOUtil;
+import com.dyuproject.protostuff.Schema;
+import com.dyuproject.protostuff.runtime.RuntimeSchema;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.apache.tools.zip.ZipEntry;
+import org.apache.tools.zip.ZipOutputStream;
+
+import java.io.*;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -20,53 +17,44 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.zip.ZipInputStream;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.apache.tools.zip.ZipEntry;
-import org.apache.tools.zip.ZipOutputStream;
-
-import com.dyuproject.protostuff.LinkedBuffer;
-import com.dyuproject.protostuff.ProtostuffIOUtil;
-import com.dyuproject.protostuff.Schema;
-import com.dyuproject.protostuff.runtime.RuntimeSchema;
-
 public class FileUtil {
 	private static Log log = LogFactory.getLog(FileUtil.class);
 	
 	/**
 	 * 根据日期给文件排序，
+	 *
 	 * @param list
 	 * @param desc true为倒序(最新日期在前面)，false正序
 	 */
-	public static void sortByDate(List<File> list,final boolean desc) {
+	public static void sortByDate(List<File> list, final boolean desc) {
 		Collections.sort(list, new Comparator<File>() {
 			public int compare(File o1, File o2) {
 				Long a = o1.lastModified();
 				Long b = o2.lastModified();
 				int sort = 0;
-				if(desc) {
+				if (desc) {
 					sort = b.compareTo(a);
-				}else {
+				} else {
 					sort = a.compareTo(b);
 				}
 				return sort;
 			}
 		});
 	}
-
+	
 	/**
 	 * 写文件
-	 * 
+	 *
 	 * @param f
 	 * @param content
 	 */
 	public static void writeFile(File f, String content) {
 		writeFile(f, content, "utf-8");
 	}
-
+	
 	/**
 	 * 写文件
-	 * 
+	 *
 	 * @param f
 	 * @param content
 	 */
@@ -75,7 +63,7 @@ public class FileUtil {
 			// 如果目录不存在，创建目录
 			File parent = new File(f.getParent());
 			parent.mkdirs();
-
+			
 			if (!f.exists()) {
 				f.createNewFile();
 			}
@@ -109,10 +97,11 @@ public class FileUtil {
 			log.error(e.getMessage(), e);
 		}
 	}
-
+	
 	/**
 	 * 写出url内容为文件
-	 * @param f 写出的文件
+	 *
+	 * @param f   写出的文件
 	 * @param url 写出的内容
 	 */
 	public static void writeFileByUrl(String file, String url) {
@@ -138,7 +127,7 @@ public class FileUtil {
 			writeFile(f, bytes);
 			
 		} catch (IOException e) {
-			log.error(e.getMessage(),e);
+			log.error(e.getMessage(), e);
 		} finally {
 			try {
 				if (in != null) {
@@ -152,10 +141,10 @@ public class FileUtil {
 			}
 		}
 	}
-
+	
 	/**
 	 * 写文件
-	 * 
+	 *
 	 * @param f
 	 * @param content
 	 */
@@ -164,11 +153,11 @@ public class FileUtil {
 			// 如果目录不存在，创建目录
 			File parent = new File(f.getParent());
 			parent.mkdirs();
-
+			
 			if (!f.exists()) {
 				f.createNewFile();
 			}
-
+			
 			BufferedOutputStream bos = null;
 			FileOutputStream fo = null;
 			try {
@@ -194,10 +183,10 @@ public class FileUtil {
 			log.error(e.getMessage(), e);
 		}
 	}
-
+	
 	/**
 	 * 写文件
-	 * 
+	 *
 	 * @param path
 	 * @param content
 	 */
@@ -205,10 +194,10 @@ public class FileUtil {
 		File f = new File(path);
 		writeFile(f, content, encode);
 	}
-
+	
 	/**
 	 * 写文件
-	 * 
+	 *
 	 * @param path
 	 * @param content
 	 */
@@ -216,20 +205,20 @@ public class FileUtil {
 		File f = new File(path);
 		writeFile(f, content, "utf-8");
 	}
-
+	
 	/**
 	 * 读取文件
-	 * 
+	 *
 	 * @param file
 	 * @return
 	 */
 	public static String readFile(File file) {
 		return readFile(file, "UTF-8");
 	}
-
+	
 	/**
 	 * 读取文件
-	 * 
+	 *
 	 * @param file
 	 * @return
 	 */
@@ -237,7 +226,7 @@ public class FileUtil {
 		String output = "";
 		InputStreamReader isr = null;
 		BufferedReader input = null;
-
+		
 		if (file.exists()) {
 			if (file.isFile()) {
 				try {
@@ -248,7 +237,7 @@ public class FileUtil {
 					while ((text = input.readLine()) != null)
 						buffer.append(text + "\n");
 					output = buffer.toString();
-
+					
 				} catch (IOException ioException) {
 					ioException.printStackTrace();
 				} finally {
@@ -266,14 +255,14 @@ public class FileUtil {
 			} else if (file.isDirectory()) {
 				throw new RuntimeException(file.getPath() + " isDirectory！");
 			}
-
+			
 		} else {
 			throw new RuntimeException(file.getPath() + " Does not exist！");
 		}
-
+		
 		return output;
 	}
-
+	
 	public static byte[] readFileBytes(File file) {
 		byte[] bytes = null;
 		FileInputStream fis = null;
@@ -308,17 +297,17 @@ public class FileUtil {
 			} else if (file.isDirectory()) {
 				throw new RuntimeException(file.getPath() + " isDirectory！");
 			}
-
+			
 		} else {
 			throw new RuntimeException(file.getPath() + " Does not exist！");
 		}
-
+		
 		return bytes;
 	}
-
+	
 	/**
 	 * 读取文件
-	 * 
+	 *
 	 * @param fileName
 	 * @return
 	 */
@@ -326,30 +315,30 @@ public class FileUtil {
 		File file = new File(fileName);
 		return readFile(file, encode);
 	}
-
+	
 	/**
 	 * 读取文件
-	 * 
+	 *
 	 * @param fileName
 	 * @return
 	 */
 	public static String readFile(String fileName) {
 		return readFile(fileName, "utf-8");
 	}
-
+	
 	/**
 	 * 获取目录下所有文件，一级
-	 * 
+	 *
 	 * @param folder
 	 * @return
 	 */
 	public static List<File> getFiles(String folder) {
 		return getFiles(folder, null);
 	}
-
+	
 	/**
 	 * 获取目录下所有文件，一级，后缀区分
-	 * 
+	 *
 	 * @param folder
 	 * @return
 	 */
@@ -369,7 +358,7 @@ public class FileUtil {
 		}
 		return list;
 	}
-
+	
 	/**
 	 * 遍历所有文件夹，取出文件
 	 */
@@ -378,7 +367,7 @@ public class FileUtil {
 		List<File> list = new ArrayList<File>();
 		if (file.exists() && file.isDirectory()) {
 			File[] files = file.listFiles();
-
+			
 			for (File f : files) {
 				if (f.isFile()) {
 					String fileName = f.getName();
@@ -394,7 +383,7 @@ public class FileUtil {
 		}
 		return list;
 	}
-
+	
 	/**
 	 * 遍历所有文件夹，取出文件
 	 */
@@ -403,7 +392,7 @@ public class FileUtil {
 		List<File> list = new ArrayList<File>();
 		if (file.exists() && file.isDirectory()) {
 			File[] files = file.listFiles();
-
+			
 			for (File f : files) {
 				if (f.isFile()) {
 					String fileName = f.getName();
@@ -421,10 +410,10 @@ public class FileUtil {
 		}
 		return list;
 	}
-
+	
 	/**
 	 * 获取目录下所有文件夹，一级
-	 * 
+	 *
 	 * @param folder
 	 * @return
 	 */
@@ -443,10 +432,10 @@ public class FileUtil {
 		}
 		return files;
 	}
-
+	
 	/**
 	 * 判断是否有子目录
-	 * 
+	 *
 	 * @param folder
 	 * @return
 	 */
@@ -454,10 +443,10 @@ public class FileUtil {
 		File file = new File(folder);
 		return hasSonFolder(file);
 	}
-
+	
 	/**
 	 * 判断是否有子目录
-	 * 
+	 *
 	 * @param folder
 	 * @return
 	 */
@@ -474,10 +463,10 @@ public class FileUtil {
 		}
 		return false;
 	}
-
+	
 	/**
 	 * 创建目录
-	 * 
+	 *
 	 * @param folder
 	 */
 	public static void mkdirs(String folder) {
@@ -486,7 +475,7 @@ public class FileUtil {
 			file.mkdirs();
 		}
 	}
-
+	
 	public static String writeFileByUrl(String url) {
 		String result = null;
 		byte[] bytes = null;
@@ -509,7 +498,7 @@ public class FileUtil {
 			result = new String(bytes);
 			
 		} catch (IOException e) {
-			log.error(e.getMessage(),e);
+			log.error(e.getMessage(), e);
 		} finally {
 			try {
 				if (in != null) {
@@ -524,9 +513,10 @@ public class FileUtil {
 		}
 		return result;
 	}
+	
 	/**
 	 * 复制文件
-	 * 
+	 *
 	 * @param src
 	 * @param dst
 	 */
@@ -539,7 +529,7 @@ public class FileUtil {
 			if (!dst.getParentFile().exists()) {
 				dst.getParentFile().mkdirs();
 			}
-
+			
 			int BUFFER_SIZE = 32 * 1024;
 			InputStream in = null;
 			OutputStream out = null;
@@ -566,12 +556,11 @@ public class FileUtil {
 			log.error(e2.getMessage(), e2);
 		}
 	}
-
+	
 	/**
 	 * 复制文件夹，包含内容，如果已有覆盖已有文件
-	 * 
-	 * @param overwrite
-	 *            是否覆盖文件
+	 *
+	 * @param overwrite 是否覆盖文件
 	 */
 	public static void copyDirectiory(String sourceDir, String targetDir, boolean overwrite) throws IOException {
 		if (new File(sourceDir).exists()) {
@@ -583,14 +572,14 @@ public class FileUtil {
 			// 获取源文件夹当前下的文件或目录
 			File[] file = (new File(sourceDir)).listFiles();
 			for (int i = 0; i < file.length; i++) {
-
+				
 				try {
 					if (file[i].isFile()) {
 						// 源文件
 						File sourceFile = file[i];
 						// 目标文件
 						File targetFile = new File(new File(targetDir).getAbsolutePath() + File.separator + file[i].getName());
-
+						
 						// 如果重写为true，直接覆盖现有文件
 						if (overwrite) {
 							copy(sourceFile, targetFile);
@@ -598,7 +587,7 @@ public class FileUtil {
 							// 如果文件不存在才写文件
 							copy(sourceFile, targetFile);
 						}
-
+						
 					}
 					if (file[i].isDirectory()) {
 						// 准备复制的源文件夹
@@ -614,45 +603,45 @@ public class FileUtil {
 				} catch (Exception e) {
 					log.error(e.getMessage(), e);
 				}
-
+				
 			}
 		}
 	}
-
+	
 	/**
 	 * 获取扩展名 .jpg
 	 */
 	public static String getExt(File src) {
 		if (src != null && src.getName().contains(".")) {
 			String name = src.getName();
-			return name.substring(name.lastIndexOf("."), name.length());
+			return name.substring(name.lastIndexOf("."));
 		}
 		return "";
 	}
-
+	
 	/**
 	 * 获取扩展名 .jpg
 	 */
 	public static String getExt(String src) {
 		if (src != null && src.contains(".")) {
-			return src.substring(src.lastIndexOf("."), src.length());
+			return src.substring(src.lastIndexOf("."));
 		}
 		return "";
 	}
-
+	
 	/**
 	 * 删除指定文件
-	 * 
+	 *
 	 * @param path
 	 */
 	public static void del(String path) {
 		File file = new File(path);
 		deleteFile(file);
 	}
-
+	
 	/**
 	 * 递归删除文件夹下所有文件
-	 * 
+	 *
 	 * @param file
 	 */
 	public static void deleteFile(File file) {
@@ -661,7 +650,7 @@ public class FileUtil {
 				if (file.isFile()) { // 判断是否是文件
 					file.delete(); // delete()方法 你应该知道 是删除的意思;
 				} else if (file.isDirectory()) { // 否则如果它是一个目录
-					File files[] = file.listFiles(); // 声明目录下所有的文件 files[];
+					File[] files = file.listFiles(); // 声明目录下所有的文件 files[];
 					for (int i = 0; i < files.length; i++) { // 遍历目录下所有的文件
 						deleteFile(files[i]); // 把每个文件 用这个方法进行迭代
 					}
@@ -672,13 +661,13 @@ public class FileUtil {
 			}
 		}
 	}
-
+	
 	public static void deleteFile(List<File> files) {
 		for (File f : files) {
 			deleteFile(f);
 		}
 	}
-
+	
 	/**
 	 * 序列化对象
 	 */
@@ -686,7 +675,7 @@ public class FileUtil {
 		if (list == null || list.size() <= 0) {
 			return null;
 		}
-
+		
 		@SuppressWarnings("unchecked")
 		Schema<T> schema = (Schema<T>) RuntimeSchema.getSchema(list.get(0).getClass());
 		LinkedBuffer buffer = LinkedBuffer.allocate(1024 * 1024);
@@ -708,10 +697,10 @@ public class FileUtil {
 				log.error(e.getMessage(), e);
 			}
 		}
-
+		
 		return protostuff;
 	}
-
+	
 	/**
 	 * 反序列化对象
 	 */
@@ -728,14 +717,12 @@ public class FileUtil {
 		}
 		return list;
 	}
-
+	
 	/**
 	 * 压缩文件列表到某ZIP文件
-	 * 
-	 * @param zipFilename
-	 *            要压缩到的ZIP文件
-	 * @param paths
-	 *            文件列表，多参数
+	 *
+	 * @param zipFilename 要压缩到的ZIP文件
+	 * @param paths       文件列表，多参数
 	 * @throws Exception
 	 */
 	public static void zip(String zipFilename, List<File> files) {
@@ -745,14 +732,12 @@ public class FileUtil {
 			log.error(e.getMessage(), e);
 		}
 	}
-
+	
 	/**
 	 * 解压缩
-	 * 
-	 * @param sZipPathFile
-	 *            要解压的文件
-	 * @param sDestPath
-	 *            解压到某文件夹
+	 *
+	 * @param sZipPathFile 要解压的文件
+	 * @param sDestPath    解压到某文件夹
 	 * @return
 	 */
 	public static List<String> unzip(String sZipPathFile, String sDestPath) {
@@ -790,7 +775,7 @@ public class FileUtil {
 		}
 		return allFileName;
 	}
-
+	
 	private static void compress(OutputStream os, List<File> files) throws Exception {
 		ZipOutputStream zos = new ZipOutputStream(os);
 		for (File file : files) {
@@ -804,7 +789,7 @@ public class FileUtil {
 		}
 		zos.close();
 	}
-
+	
 	private static void zipFile(ZipOutputStream zos, String filename, String basePath) throws Exception {
 		File file = new File(filename);
 		if (file.exists()) {
@@ -819,12 +804,12 @@ public class FileUtil {
 			fis.close();
 		}
 	}
-
+	
 	private static void zipDirectory(ZipOutputStream zos, String dirName, String basePath) throws Exception {
 		zos.setEncoding("UTF-8");
 		File dir = new File(dirName);
 		if (dir.exists()) {
-			File files[] = dir.listFiles();
+			File[] files = dir.listFiles();
 			if (files.length > 0) {
 				for (File file : files) {
 					if (file.isDirectory()) {
@@ -842,15 +827,15 @@ public class FileUtil {
 	public static void test() {
 		File f = new File("");
 	}
-
+	
 	public static void main(String[] args) throws Exception {
-
+		
 		long start = System.currentTimeMillis();
-
+		
 		// zip("D://aaa.zip", "D:/aaa","D:/bbb");
-
+		
 		// unzip("D:/aaa.zip", "D:/");
-
+		
 		long end = System.currentTimeMillis();
 		System.out.println(end - start);
 		System.out.println((end - start) / 1000);

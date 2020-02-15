@@ -1,21 +1,19 @@
 package com.keji09.erp.utils;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
-
+import com.keji09.model.TerPointEntity;
 import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
-import com.keji09.erp.model.TerPointEntity;
-
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 
 public class SessionUtil {
 	
 	public static HttpSession getSession() {
-		RequestAttributes ra = RequestContextHolder.getRequestAttributes();  
-		HttpServletRequest request = ((ServletRequestAttributes)ra).getRequest();  
+		RequestAttributes ra = RequestContextHolder.getRequestAttributes();
+		HttpServletRequest request = ((ServletRequestAttributes) ra).getRequest();
 		HttpSession httpSession = request.getSession();
 		return httpSession;
 	}
@@ -25,7 +23,7 @@ public class SessionUtil {
 		return temp;
 	}
 	
-	public static void setAttribute(String name,Object value) {
+	public static void setAttribute(String name, Object value) {
 		getSession().setAttribute(name, value);
 	}
 	
@@ -35,7 +33,7 @@ public class SessionUtil {
 	public static TerPointEntity getTerPoint() {
 		TerPointEntity terpoint = null;
 		Object temp = getSession().getAttribute("terpoint");
-		if(temp != null) {
+		if (temp != null) {
 			terpoint = (TerPointEntity) temp;
 		}
 		return terpoint;
@@ -47,7 +45,7 @@ public class SessionUtil {
 	public static String getDomain() {
 		String domain = null;
 		Object temp = getSession().getAttribute("domain");
-		if(temp != null) {
+		if (temp != null) {
 			domain = temp.toString();
 		}
 		return domain;
@@ -59,7 +57,7 @@ public class SessionUtil {
 	@SuppressWarnings("unchecked")
 	public static <T> T getUser() {
 		Object temp = getSession().getAttribute("loginUser");
-		return temp == null ? null : (T)temp;
+		return temp == null ? null : (T) temp;
 	}
 	
 	/**
@@ -68,7 +66,7 @@ public class SessionUtil {
 	public static TerPointEntity getTerPoint(HttpServletRequest request) {
 		TerPointEntity terpoint = null;
 		Object temp = request.getSession().getAttribute("terpoint");
-		if(temp != null) {
+		if (temp != null) {
 			terpoint = (TerPointEntity) temp;
 		}
 		return terpoint;
@@ -80,6 +78,6 @@ public class SessionUtil {
 	@SuppressWarnings("unchecked")
 	public static <T> T getUser(HttpServletRequest request) {
 		Object temp = request.getSession().getAttribute("loginUser");
-		return temp == null ? null : (T)temp;
+		return temp == null ? null : (T) temp;
 	}
 }

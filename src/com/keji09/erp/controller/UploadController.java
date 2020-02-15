@@ -1,43 +1,38 @@
 package com.keji09.erp.controller;
 
-import java.io.IOException;
-import java.util.Arrays;
-import java.util.List;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
+import com.keji09.model.role.UserEntity;
+import com.keji09.model.support.XDAOSupport;
+import com.keji09.erp.utils.SessionUtil;
+import com.keji09.erp.utils.UploadUtil;
 import net.sf.json.JSONObject;
-
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.keji09.erp.model.TerPointEntity;
-import com.keji09.erp.model.role.UserEntity;
-import com.keji09.erp.model.support.XDAOSupport;
-import com.keji09.erp.utils.SessionUtil;
-import com.keji09.erp.utils.UploadUtil;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * 上传文件，如果没有站点，就使用用户名
- * 
  */
 @Controller
 @RequestMapping("/upload")
-public class UploadController extends XDAOSupport{
+public class UploadController extends XDAOSupport {
 //	private static Log log = LogFactory.getLog(UploadController.class);
-
+	
 	@RequestMapping(value = "image", method = RequestMethod.POST)
 	@ResponseBody
 	public Object uploadImage(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		UserEntity user = SessionUtil.getUser();
-		List<String> surfixList = Arrays.asList("jpg","jpeg","gif","png","bmp");
+		List<String> surfixList = Arrays.asList("jpg", "jpeg", "gif", "png", "bmp");
 		JSONObject json = UploadUtil.saveFile(request, user.getUserName(), user == null ? null : user.getUserName(), surfixList);
 		return json;
 	}
-
+	
 	/***
 	 * 上传文件
 	 */
@@ -45,9 +40,9 @@ public class UploadController extends XDAOSupport{
 	@ResponseBody
 	public Object uploadFile(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		UserEntity user = SessionUtil.getUser();
-		JSONObject json = UploadUtil.saveFile(request,  user.getUserName(), user == null ? null : user.getUserName(), null);
+		JSONObject json = UploadUtil.saveFile(request, user.getUserName(), user == null ? null : user.getUserName(), null);
 		return json;
 	}
-
+	
 	
 }

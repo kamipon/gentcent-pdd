@@ -6,119 +6,119 @@
     <jsp-version>2.0</jsp-version>
     <short-name>l</short-name>
     <uri>http://www.keji09.com/jstl/11erp</uri>
-    
-	<tag>
+
+    <tag>
         <name>pageListContent</name>
         <tag-class>
-			com.keji09.erp.jstl.tag.PageListContentTag
+            com.keji09.erp.jstl.tag.PageListContentTag
         </tag-class>
         <body-content>scriptless</body-content>
         <description>翻页内容列表控件,type9</description>
-        
+
         <attribute>
             <name>var</name>
             <description>页面遍历对象key</description>
-            <required>true</required>	<!-- 是否必填 -->
-            <rtexprvalue>false</rtexprvalue>	<!-- 是否允许表达式 -->
+            <required>true</required>    <!-- 是否必填 -->
+            <rtexprvalue>false</rtexprvalue>    <!-- 是否允许表达式 -->
         </attribute>
         <attribute>
             <name>page</name>
             <description>页面遍历对象page</description>
-            <required>true</required>	<!-- 是否必填 -->
-            <rtexprvalue>false</rtexprvalue>	<!-- 是否允许表达式 -->
+            <required>true</required>    <!-- 是否必填 -->
+            <rtexprvalue>false</rtexprvalue>    <!-- 是否允许表达式 -->
         </attribute>
         <attribute>
             <name>id</name>
             <description>控件id</description>
-            <required>true</required>	<!-- 是否必填 -->
-            <rtexprvalue>false</rtexprvalue>	<!-- 是否允许表达式 -->
+            <required>true</required>    <!-- 是否必填 -->
+            <rtexprvalue>false</rtexprvalue>    <!-- 是否允许表达式 -->
         </attribute>
         <attribute>
             <name>pageIndex</name>
             <description>显示起始index</description>
-            <required>false</required>	<!-- 是否必填 -->
-            <rtexprvalue>true</rtexprvalue>	<!-- 是否允许表达式 -->
+            <required>false</required>    <!-- 是否必填 -->
+            <rtexprvalue>true</rtexprvalue>    <!-- 是否允许表达式 -->
         </attribute>
-	</tag>
-	
-	<tag>
+    </tag>
+
+    <tag>
         <name>dictionary</name>
         <tag-class>
-			com.keji09.erp.jstl.tag.DictionaryTag
+            com.keji09.erp.jstl.tag.DictionaryTag
         </tag-class>
         <body-content>scriptless</body-content>
         <description>获取字典标签，如果只传入key，返回list列表，value有值，返回第一个对象</description>
-        
+
         <attribute>
             <name>var</name>
             <description>页面遍历对象key</description>
-            <required>true</required>	<!-- 是否必填 -->
-            <rtexprvalue>false</rtexprvalue>	<!-- 是否允许表达式 -->
+            <required>true</required>    <!-- 是否必填 -->
+            <rtexprvalue>false</rtexprvalue>    <!-- 是否允许表达式 -->
         </attribute>
         <attribute>
             <name>key</name>
             <description>key必填</description>
-            <required>true</required>	<!-- 是否必填 -->
-            <rtexprvalue>true</rtexprvalue>	<!-- 是否允许表达式 -->
+            <required>true</required>    <!-- 是否必填 -->
+            <rtexprvalue>true</rtexprvalue>    <!-- 是否允许表达式 -->
         </attribute>
         <attribute>
             <name>value</name>
             <description>value</description>
-            <required>false</required>	<!-- 是否必填 -->
-            <rtexprvalue>true</rtexprvalue>	<!-- 是否允许表达式 -->
+            <required>false</required>    <!-- 是否必填 -->
+            <rtexprvalue>true</rtexprvalue>    <!-- 是否允许表达式 -->
         </attribute>
-	</tag>
-	
-	<!-- ************************权限标签************************* -->
-	<tag>
+    </tag>
+
+    <!-- ************************权限标签************************* -->
+    <tag>
         <name>permissionTree</name>
         <tag-class>
-			com.keji09.erp.jstl.tag.PermissionTreeTag
+            com.keji09.erp.jstl.tag.PermissionTreeTag
         </tag-class>
         <body-content>scriptless</body-content>
         <description>权限树控件,type11</description>
-        
+
         <attribute>
             <name>var</name>
             <description>页面遍历对象key</description>
-            <required>true</required>	<!-- 是否必填 -->
-            <rtexprvalue>false</rtexprvalue>	<!-- 是否允许表达式 -->
+            <required>true</required>    <!-- 是否必填 -->
+            <rtexprvalue>false</rtexprvalue>    <!-- 是否允许表达式 -->
         </attribute>
         <attribute>
             <name>userId</name>
             <description>用户id</description>
-            <required>true</required>	<!-- 是否必填 -->
-            <rtexprvalue>true</rtexprvalue>	<!-- 是否允许表达式 -->
+            <required>true</required>    <!-- 是否必填 -->
+            <rtexprvalue>true</rtexprvalue>    <!-- 是否允许表达式 -->
         </attribute>
-	</tag>
-	
-	<tag>
+    </tag>
+
+    <tag>
         <name>permission</name>
         <tag-class>
-			com.keji09.erp.jstl.tag.PermissionTag
+            com.keji09.erp.jstl.tag.PermissionTag
         </tag-class>
         <body-content>scriptless</body-content>
         <description>权限输出控件,type12</description>
-        
+
         <attribute>
             <name>userId</name>
             <description>用户id</description>
-            <required>true</required>	<!-- 是否必填 -->
-            <rtexprvalue>true</rtexprvalue>	<!-- 是否允许表达式 -->
+            <required>true</required>    <!-- 是否必填 -->
+            <rtexprvalue>true</rtexprvalue>    <!-- 是否允许表达式 -->
         </attribute>
-		<attribute>
+        <attribute>
             <name>menuId</name>
             <description>菜单id</description>
-            <required>false</required>	<!-- 是否必填 -->
-            <rtexprvalue>true</rtexprvalue>	<!-- 是否允许表达式 -->
-        </attribute>	
+            <required>false</required>    <!-- 是否必填 -->
+            <rtexprvalue>true</rtexprvalue>    <!-- 是否允许表达式 -->
+        </attribute>
         <attribute>
             <name>code</name>
             <description>菜单code</description>
-            <required>false</required>	<!-- 是否必填 -->
-            <rtexprvalue>true</rtexprvalue>	<!-- 是否允许表达式 -->
-        </attribute>	
-	</tag>
-	
+            <required>false</required>    <!-- 是否必填 -->
+            <rtexprvalue>true</rtexprvalue>    <!-- 是否允许表达式 -->
+        </attribute>
+    </tag>
+
 
 </taglib>

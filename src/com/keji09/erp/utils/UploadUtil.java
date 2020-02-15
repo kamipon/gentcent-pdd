@@ -1,18 +1,12 @@
 package com.keji09.erp.utils;
 
-import java.io.File;
-import java.util.Calendar;
-import java.util.Iterator;
-import java.util.List;
+import net.sf.json.JSONObject;
+import org.apache.commons.lang.StringUtils;
 
 import javax.servlet.http.HttpServletRequest;
-
-import net.sf.json.JSONObject;
-
-import org.apache.commons.lang.StringUtils;
-import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.multipart.MultipartHttpServletRequest;
-import org.springframework.web.multipart.commons.CommonsMultipartResolver;
+import java.io.File;
+import java.util.Calendar;
+import java.util.List;
 
 public class UploadUtil {
 	
@@ -45,7 +39,7 @@ public class UploadUtil {
 			return fileName;
 		}
 	}
-
+	
 	/**
 	 * 获取日期目录
 	 */
@@ -57,24 +51,24 @@ public class UploadUtil {
 	/**
 	 * 获取访问前缀
 	 */
-	public static String getVisitPrefixUrl(HttpServletRequest request,String userRoot,String userName) {
+	public static String getVisitPrefixUrl(HttpServletRequest request, String userRoot, String userName) {
 		String result = "";
 		String domain = request.getServerName();
-		
+
 //		//如果没有域名，使用访问名称
-		if(StringUtils.isNotEmpty(domain)&&!domain.equals("localhost")) {
+		if (StringUtils.isNotEmpty(domain) && !domain.equals("localhost")) {
 			if (StringUtils.isNotEmpty(userRoot)) {
-				result = request.getScheme() + "://" + domain + "/"+ Constants.RPOJECT_SYSTEM+"/"+userRoot;
+				result = request.getScheme() + "://" + domain + "/" + Constants.RPOJECT_SYSTEM + "/" + userRoot;
 			} else if (StringUtils.isNotEmpty(userName)) {
 				result = request.getScheme() + "://" + domain + "/" + Constants.RPOJECT_SYSTEM + "/" + userName + "/" + Constants.PROJECT_UPLOAD;
 			}
-		}else {
+		} else {
 			result += request.getScheme() + "://" + request.getServerName();
 			//不是80端口加端口号
-			if(request.getServerPort() != 80) {
+			if (request.getServerPort() != 80) {
 				result += ":" + request.getServerPort();
 			}
-			result+="/"+Constants.PROJECT_SYSTEM_HOST;
+			result += "/" + Constants.PROJECT_SYSTEM_HOST;
 			if (StringUtils.isNotEmpty(userRoot)) {
 				result += "/" + Constants.PROJECT_UPLOAD;
 			}
@@ -88,11 +82,12 @@ public class UploadUtil {
 	
 	/**
 	 * 获取整个访问路径
+	 *
 	 * @param f
 	 * @param visitPrefixUrl
 	 * @return
 	 */
-	public static String getVisitUrl(File f,String visitPrefixUrl) {
+	public static String getVisitUrl(File f, String visitPrefixUrl) {
 		String result = "";
 		String localPath = f.getAbsolutePath();
 		localPath = localPath.replaceAll("\\\\", "/");
@@ -104,10 +99,10 @@ public class UploadUtil {
 	/**
 	 * 获取存储地址
 	 */
-	public static String getStoreUrl(HttpServletRequest request,String userRoot,String userName) {
+	public static String getStoreUrl(HttpServletRequest request, String userRoot, String userName) {
 		String result = "";
 		if (StringUtils.isNotEmpty(userRoot)) {
-			result = Constants.RPOJECT_STORE_ROOT + "/" +Constants.RPOJECT_SYSTEM +"/"+userRoot;
+			result = Constants.RPOJECT_STORE_ROOT + "/" + Constants.RPOJECT_SYSTEM + "/" + userRoot;
 		} else if (StringUtils.isNotEmpty(userName)) {
 			result = Constants.RPOJECT_STORE_ROOT + "/" + Constants.RPOJECT_SYSTEM + "/" + userName + "/" + Constants.PROJECT_UPLOAD;
 		}
@@ -115,16 +110,17 @@ public class UploadUtil {
 		return result;
 	}
 	
-
+	
 	/**
 	 * 上传文件
-	 * @param req request
-	 * @param userName 用户名称，如果有说明是没有站点的用户上传文件
-	 * @param userRoot 用户站点目录，如果有说明是以后站点用户上传文件
+	 *
+	 * @param req        request
+	 * @param userName   用户名称，如果有说明是没有站点的用户上传文件
+	 * @param userRoot   用户站点目录，如果有说明是以后站点用户上传文件
 	 * @param suffixList 根据文件后缀名过滤文件
 	 * @return 返回上传信息
 	 */
-	public static JSONObject saveFile(HttpServletRequest req, String userRoot, String userName,List<String> suffixList) {
+	public static JSONObject saveFile(HttpServletRequest req, String userRoot, String userName, List<String> suffixList) {
 		JSONObject obj = new JSONObject();
 //		if (StringUtils.isEmpty(userName) && StringUtils.isEmpty(userRoot)) {
 //			obj.put("error", 1);

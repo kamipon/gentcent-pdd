@@ -1,26 +1,25 @@
 package com.keji09.erp.jstl.tag;
 
-import java.io.StringWriter;
-import java.util.List;
-
-import javax.servlet.jsp.tagext.SimpleTagSupport;
-
-import com.keji09.erp.model.role.UserMenuEntity;
+import com.keji09.model.role.UserMenuEntity;
 import com.keji09.erp.service.CmsService;
 import com.keji09.erp.utils.SpringContextHolder;
 import com.mezingr.dao.HDaoUtils;
 
+import javax.servlet.jsp.tagext.SimpleTagSupport;
+import java.io.StringWriter;
+import java.util.List;
+
 /**
  * 基础控件，一些公用方法
  */
-public abstract class BaseTag extends SimpleTagSupport{
+public abstract class BaseTag extends SimpleTagSupport {
 	
 	private CmsService cmsService = SpringContextHolder.getCmsService();
 	/**
 	 * 控件id
 	 */
 	protected String id;
-	/** 
+	/**
 	 * 页面使用key
 	 */
 	protected String var;
@@ -28,22 +27,25 @@ public abstract class BaseTag extends SimpleTagSupport{
 	public String getVar() {
 		return var;
 	}
+	
 	public void setVar(String var) {
 		this.var = var;
 	}
+	
 	public String getId() {
 		return id;
 	}
+	
 	public void setId(String id) {
 		this.id = id;
 	}
-	
 	
 	
 	/********** 业务相关 **************/
 	
 	/**
 	 * 获取控件标签内容
+	 *
 	 * @return
 	 */
 	public String getTagBody() {
@@ -63,15 +65,13 @@ public abstract class BaseTag extends SimpleTagSupport{
 	}
 	
 	
-	
 	/******************数据库查询*******************/
 	
 	
-
 	/**
 	 * 用户是否有菜单权限
 	 */
-	protected boolean hasMenu(String userId,String menuId,String code) {
+	protected boolean hasMenu(String userId, String menuId, String code) {
 		boolean f = cmsService.getUserMenuEntityDAO().exist(HDaoUtils.eq("user", userId).andEq("menu.id", menuId).orEq("code", code).toCondition());
 		return f;
 	}
@@ -80,7 +80,6 @@ public abstract class BaseTag extends SimpleTagSupport{
 		List<UserMenuEntity> list = cmsService.getUserMenuEntityDAO().list(HDaoUtils.eq("user", userId).toCondition());
 		return list;
 	}
-	
 	
 	
 }

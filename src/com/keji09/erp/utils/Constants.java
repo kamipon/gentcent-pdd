@@ -1,7 +1,6 @@
 package com.keji09.erp.utils;
 
 
-
 /**
  * 静态字段
  */
@@ -11,16 +10,16 @@ public class Constants {
 	/**
 	 * 拼多多测试推广位Id
 	 */
-	public static final String  PDD_PID = PropertiesUtil.getProperty("project.pid");
+	public static final String PDD_PID = PropertiesUtil.getProperty("pdd.pid");
 	/**
 	 * 拼多多 clientId
 	 */
-	public static final String  CLIENT_ID = PropertiesUtil.getProperty("project.clientId");
+	public static final String CLIENT_ID = PropertiesUtil.getProperty("pdd.clientId");
 	/**
 	 * 拼多多 clientSecret
 	 */
-	public static final String  CLIENT_SECRET = PropertiesUtil.getProperty("project.clientSecret");
-
+	public static final String CLIENT_SECRET = PropertiesUtil.getProperty("pdd.clientSecret");
+	
 	/**
 	 * 项目绝对路径，如D\:/G/workbench/myeclipse9_workplace/11cms/WebRoot
 	 */
@@ -65,7 +64,7 @@ public class Constants {
 	/**
 	 * signName
 	 */
-	public static final String PROJECT_SIGNNAME= PropertiesUtil.getProperty("sms.signName");
-
+	public static final String PROJECT_SIGNNAME = PropertiesUtil.getProperty("sms.signName");
+	
 	
 }

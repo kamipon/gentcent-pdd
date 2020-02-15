@@ -1,16 +1,9 @@
 package com.keji09.erp.utils;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
+import com.keji09.erp.bean.BaseTree;
 import org.apache.commons.lang.StringUtils;
 
-import com.keji09.erp.bean.BaseTree;
-
+import java.util.*;
 
 
 /**
@@ -20,6 +13,7 @@ public class TreeUtils {
 	
 	/**
 	 * 只有parentId是null，才是根节点
+	 *
 	 * @param list list必须是BaseTree子类
 	 */
 	public static <T> List<?> buildTree(List<?> list) {
@@ -31,6 +25,7 @@ public class TreeUtils {
 	
 	/**
 	 * 会去重复。只要是getParent，在队列里面没有的，都认为是根节点
+	 *
 	 * @param list list必须是BaseTree子类
 	 */
 	public static <T> List<?> buildTree2(List<?> list) {
@@ -43,40 +38,40 @@ public class TreeUtils {
 	
 	public static List<BaseTree> initTree2(List<BaseTree> tempTree) {
 		List<BaseTree> result = new ArrayList<BaseTree>();
-		Map<String,BaseTree> map = new HashMap<String, BaseTree>();
+		Map<String, BaseTree> map = new HashMap<String, BaseTree>();
 		
 		//排序
 		sort(result);
 		
 		//去重复，填充map
-		for(int i = 0; i < tempTree.size(); i++) {
+		for (int i = 0; i < tempTree.size(); i++) {
 			BaseTree bt = tempTree.get(i);
-			if(!map.containsKey(bt.getId())) {
+			if (!map.containsKey(bt.getId())) {
 				map.put(bt.getId(), bt);
-			}else {
+			} else {
 				tempTree.remove(i--);
 			}
 		}
 		
 		//设置子节点
-		for(int i = 0; i < tempTree.size(); i++) {
+		for (int i = 0; i < tempTree.size(); i++) {
 			BaseTree temp = tempTree.get(i);
 			String parentId = temp.getParentId();
 			BaseTree parent = map.get(parentId);
 			
 			//默认false
 			temp.setIsParent(false);
-			if(parent != null) {
+			if (parent != null) {
 				parent.getChildren().add(temp);
 				parent.setIsParent(true);
 			}
 		}
 		
 		//获取根节点，返回树
-		for(int i = 0; i < tempTree.size(); i++) {
+		for (int i = 0; i < tempTree.size(); i++) {
 			BaseTree temp = tempTree.get(i);
 			//如果没有父节点，认为是根节点
-			if(map.get(temp.getParentId()) == null) {
+			if (map.get(temp.getParentId()) == null) {
 				result.add(temp);
 			}
 		}
@@ -85,13 +80,14 @@ public class TreeUtils {
 	
 	/**
 	 * 找到所有根节点
+	 *
 	 * @param list 所有树数据
 	 */
 	public static List<BaseTree> findRootNode(List<BaseTree> list) {
 		List<BaseTree> roots = new ArrayList<BaseTree>();
-		for(int i = 0;i<list.size();i++) {
+		for (int i = 0; i < list.size(); i++) {
 			BaseTree bt = list.get(i);
-			if(StringUtils.isEmpty(bt.getParentId())) {
+			if (StringUtils.isEmpty(bt.getParentId())) {
 				roots.add(bt);
 			}
 		}
@@ -100,13 +96,14 @@ public class TreeUtils {
 	
 	/**
 	 * 初始化根节点和子节点
+	 *
 	 * @param list 所有树数据
 	 */
 	public static List<BaseTree> initTree(List<BaseTree> list) {
 		//排序
 		sort(list);
 		List<BaseTree> roots = findRootNode(list);
-		for(int i =0;i<roots.size();i++) {
+		for (int i = 0; i < roots.size(); i++) {
 			initLeaf(roots.get(i), list);
 		}
 		return roots;
@@ -114,19 +111,20 @@ public class TreeUtils {
 	
 	/**
 	 * 给当前节点加上子节点
+	 *
 	 * @param node 当前节点
 	 * @param list 所有树数据
 	 */
-	public static void initLeaf(BaseTree node,List<BaseTree> list) {
-		for(int i =0;i<list.size();i++) {
-			if(node.getId().equals(list.get(i).getParentId())) {
+	public static void initLeaf(BaseTree node, List<BaseTree> list) {
+		for (int i = 0; i < list.size(); i++) {
+			if (node.getId().equals(list.get(i).getParentId())) {
 				node.getChildren().add(list.get(i));
-				initLeaf(list.get(i),list);
+				initLeaf(list.get(i), list);
 			}
 		}
-		if(node.getChildren().size() > 0) {
+		if (node.getChildren().size() > 0) {
 			node.setIsParent(true);
-		}else {
+		} else {
 			node.setIsParent(false);
 		}
 	}

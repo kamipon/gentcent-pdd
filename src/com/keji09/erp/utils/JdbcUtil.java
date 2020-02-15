@@ -1,15 +1,9 @@
 package com.keji09.erp.utils;
 
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-
+import com.mezingr.hibernate.HibernateTemplateFactory;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.apache.tools.ant.taskdefs.Length.When;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -19,7 +13,11 @@ import org.springframework.jdbc.support.rowset.SqlRowSet;
 import org.springframework.jdbc.support.rowset.SqlRowSetMetaData;
 import org.springframework.orm.hibernate3.HibernateCallback;
 
-import com.mezingr.hibernate.HibernateTemplateFactory;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 /**
  * 数据库操作工具类
@@ -45,7 +43,7 @@ public class JdbcUtil {
 	/**
 	 * 获取插入语句
 	 */
-	private static String getInsertSql(List<String> cols,String table) {
+	private static String getInsertSql(List<String> cols, String table) {
 		String result = "";
 		StringBuffer sb = new StringBuffer();
 		// 设置执行语句
@@ -70,9 +68,10 @@ public class JdbcUtil {
 	
 	/**
 	 * 获取修改语句
+	 *
 	 * @param where 如果为null,默认使用id
 	 */
-	private static String getUpdateSql(List<String> cols,String table,String... where) {
+	private static String getUpdateSql(List<String> cols, String table, String... where) {
 		String result = "";
 		StringBuffer sb = new StringBuffer();
 		// 设置执行语句
@@ -84,15 +83,15 @@ public class JdbcUtil {
 			sb = sb.delete(sb.length() - 1, sb.length());
 		}
 		sb.append(" where ");
-		if(where.length > 0) {
-			for(String key : where) {
+		if (where.length > 0) {
+			for (String key : where) {
 				sb.append(key).append(" = ? ");
 				sb.append(" and ");
 			}
 			if (sb.toString().endsWith(" and ")) {
 				sb = sb.delete(sb.length() - " and ".length(), sb.length());
 			}
-		}else {
+		} else {
 			sb.append("id").append(" = ? ");
 		}
 		
@@ -102,15 +101,16 @@ public class JdbcUtil {
 	
 	/**
 	 * 获取count语句
+	 *
 	 * @param where 如果为null,不增加where语句
 	 */
-	private static String getCountSql(List<String> cols,String table,String... where) {
+	private static String getCountSql(List<String> cols, String table, String... where) {
 		String result = "";
-		StringBuffer sb = new StringBuffer("select count(*) from "+table);
+		StringBuffer sb = new StringBuffer("select count(*) from " + table);
 		//如果where是null,默认使用id筛选
-		if(where.length > 0) {
+		if (where.length > 0) {
 			sb.append(" where ");
-			for(String key : where) {
+			for (String key : where) {
 				sb.append(key).append(" = ? ");
 				sb.append(" and ");
 			}
@@ -125,8 +125,8 @@ public class JdbcUtil {
 	/**
 	 * 批量执行修改数据
 	 */
-	private static boolean jdbcTemplateBatchUpdate(JdbcTemplate jdbcTemplate,final List<String> cols,String sql, final List<?> list,final String... where) {
-		if(jdbcTemplate != null && cols !=null && cols.size() > 0 && StringUtils.isNotEmpty(sql) && list != null && list.size() > 0) {
+	private static boolean jdbcTemplateBatchUpdate(JdbcTemplate jdbcTemplate, final List<String> cols, String sql, final List<?> list, final String... where) {
+		if (jdbcTemplate != null && cols != null && cols.size() > 0 && StringUtils.isNotEmpty(sql) && list != null && list.size() > 0) {
 			jdbcTemplate.batchUpdate(sql, new BatchPreparedStatementSetter() {
 				public void setValues(PreparedStatement ps, int i) throws SQLException {
 					Object obj = list.get(i);
@@ -139,17 +139,17 @@ public class JdbcUtil {
 							ps.setObject(j + 1, value);
 						}
 						//设置where参数
-						if(where.length > 0) {
-							for(String key : where) {
-								ps.setObject(j+1, props.get(key));
+						if (where.length > 0) {
+							for (String key : where) {
+								ps.setObject(j + 1, props.get(key));
 								j++;
 							}
 						}
 					} catch (Exception e) {
-						log.error(e.getMessage(),e);
+						log.error(e.getMessage(), e);
 					}
 				}
-
+				
 				public int getBatchSize() {
 					return list == null ? 0 : list.size();
 				}
@@ -158,7 +158,7 @@ public class JdbcUtil {
 		}
 		return false;
 	}
-
+	
 	/**
 	 * 批量执行新增数据
 	 */
@@ -167,8 +167,8 @@ public class JdbcUtil {
 			return false;
 		}
 		final List<String> cols = getTableColName(jdbcTemplate, table);
-		String insertSql = getInsertSql(cols,table);
-		return jdbcTemplateBatchUpdate(jdbcTemplate,cols,insertSql,list);
+		String insertSql = getInsertSql(cols, table);
+		return jdbcTemplateBatchUpdate(jdbcTemplate, cols, insertSql, list);
 	}
 	
 	/**
@@ -201,68 +201,71 @@ public class JdbcUtil {
 		}
 		return jdbcTemplateBatchUpdate(jdbcTemplate,cols,insertSql,list);
 	}*/
+	
 	/**
 	 * 字符转大写
+	 *
 	 * @param chars
 	 * @return
 	 */
-	public static char toUpperCase(char chars) {  
-	    if (97 <= chars && chars <= 122) {  
-	        chars ^= 32;  
-	    }  
-	    return chars;  
-	}  
+	public static char toUpperCase(char chars) {
+		if (97 <= chars && chars <= 122) {
+			chars ^= 32;
+		}
+		return chars;
+	}
 	
 	/**
 	 * 批量执行新增数据
+	 *
 	 * @param where 如果为null,默认使用id
 	 */
-	public static boolean batchUpdate(JdbcTemplate jdbcTemplate, String table, final List<?> list,String... where) {
+	public static boolean batchUpdate(JdbcTemplate jdbcTemplate, String table, final List<?> list, String... where) {
 		if (list == null || list.size() == 0) {
 			return false;
 		}
 		final List<String> cols = getTableColName(jdbcTemplate, table);
-		String updateSql = getUpdateSql(cols,table,where); 
+		String updateSql = getUpdateSql(cols, table, where);
 		
-		return jdbcTemplateBatchUpdate(jdbcTemplate,cols,updateSql,list,where);
+		return jdbcTemplateBatchUpdate(jdbcTemplate, cols, updateSql, list, where);
 	}
 	
 	/**
 	 * 批量执行新增数据
 	 */
-	public static boolean batchInsertOrUpdate(JdbcTemplate jdbcTemplate, String table, List<?> list,String... where) {
+	public static boolean batchInsertOrUpdate(JdbcTemplate jdbcTemplate, String table, List<?> list, String... where) {
 		if (list == null || list.size() == 0) {
 			return false;
 		}
 		final List<String> cols = getTableColName(jdbcTemplate, table);
 		
-		String insertSql = getInsertSql(cols,table);
-		String updateSql = getUpdateSql(cols,table,where);
-		String countSql = getCountSql(cols,table,where);
+		String insertSql = getInsertSql(cols, table);
+		String updateSql = getUpdateSql(cols, table, where);
+		String countSql = getCountSql(cols, table, where);
 		List<Object> insertList = new ArrayList<Object>();
 		List<Object> updateList = new ArrayList<Object>();
 		
 		
-		for(Object obj : list) {
+		for (Object obj : list) {
 			Map<String, Object> props = CommonUtil.beanToMap(obj);
 			Object[] params = new Object[where.length];
-			if(where.length > 0) {
-				for(int i = 0;i<where.length;i++) {
+			if (where.length > 0) {
+				for (int i = 0; i < where.length; i++) {
 					params[i] = props.get(where[i]);
 				}
 			}
 			int count = jdbcTemplate.queryForObject(countSql, params, Integer.class);
-			if(count == 0) {
+			if (count == 0) {
 				//新增
 				insertList.add(obj);
-			}else if(count > 0){
+			} else if (count > 0) {
 				//修改
 				updateList.add(obj);
 			}
 		}
 		
-		jdbcTemplateBatchUpdate(jdbcTemplate,cols,insertSql,insertList);
-		jdbcTemplateBatchUpdate(jdbcTemplate,cols,updateSql,updateList,where);
+		jdbcTemplateBatchUpdate(jdbcTemplate, cols, insertSql, insertList);
+		jdbcTemplateBatchUpdate(jdbcTemplate, cols, updateSql, updateList, where);
 		
 		return true;
 	}
@@ -271,26 +274,26 @@ public class JdbcUtil {
 	 * 返回传入class对象
 	 */
 	@SuppressWarnings("unchecked")
-	public static <T> T getUnique(final String sql,final Object[] params,@SuppressWarnings("rawtypes") final Class clazz,HibernateTemplateFactory htf) {
+	public static <T> T getUnique(final String sql, final Object[] params, @SuppressWarnings("rawtypes") final Class clazz, HibernateTemplateFactory htf) {
 		Object result = null;
 		result = htf.getHibernateTemplate().execute(new HibernateCallback<Object>() {
-					public Object doInHibernate(Session session) throws HibernateException, SQLException {
-						Object temp = null;
-						try {
-							Query query = session.createSQLQuery(sql).addEntity( clazz );
-							if(params !=null && params.length > 0) {
-								for(int i = 0;i<params.length;i++) {
-									query.setParameter(i, params[i]);
-								}
-							}
-							temp = query.uniqueResult();
-						} catch (Exception e) {
-							log.error(e.getMessage(),e);
-						}finally {
-							session.close();
+			public Object doInHibernate(Session session) throws HibernateException, SQLException {
+				Object temp = null;
+				try {
+					Query query = session.createSQLQuery(sql).addEntity(clazz);
+					if (params != null && params.length > 0) {
+						for (int i = 0; i < params.length; i++) {
+							query.setParameter(i, params[i]);
 						}
-						return temp;
 					}
+					temp = query.uniqueResult();
+				} catch (Exception e) {
+					log.error(e.getMessage(), e);
+				} finally {
+					session.close();
+				}
+				return temp;
+			}
 		});
 		return (T) result;
 	}
@@ -299,26 +302,26 @@ public class JdbcUtil {
 	 * 返回查询结果对象
 	 */
 	@SuppressWarnings("unchecked")
-	public static <T> T getUnique(final String sql,final Object[] params,HibernateTemplateFactory htf) {
+	public static <T> T getUnique(final String sql, final Object[] params, HibernateTemplateFactory htf) {
 		Object result = null;
 		result = htf.getHibernateTemplate().execute(new HibernateCallback<Object>() {
-					public Object doInHibernate(Session session) throws HibernateException, SQLException {
-						Object temp = null;
-						try {
-							Query query = session.createSQLQuery(sql);
-							if(params !=null && params.length > 0) {
-								for(int i = 0;i<params.length;i++) {
-									query.setParameter(i, params[i]);
-								}
-							}
-							temp = query.uniqueResult();
-						} catch (Exception e) {
-							log.error(e.getMessage(),e);
-						}finally {
-							session.close();
+			public Object doInHibernate(Session session) throws HibernateException, SQLException {
+				Object temp = null;
+				try {
+					Query query = session.createSQLQuery(sql);
+					if (params != null && params.length > 0) {
+						for (int i = 0; i < params.length; i++) {
+							query.setParameter(i, params[i]);
 						}
-						return temp;
 					}
+					temp = query.uniqueResult();
+				} catch (Exception e) {
+					log.error(e.getMessage(), e);
+				} finally {
+					session.close();
+				}
+				return temp;
+			}
 		});
 		return (T) result;
 	}
@@ -327,26 +330,26 @@ public class JdbcUtil {
 	 * 返回查询结果对象集合
 	 */
 	@SuppressWarnings("unchecked")
-	public static <T>  List<T> getList(final String sql,final Object[] params,HibernateTemplateFactory htf) {
+	public static <T> List<T> getList(final String sql, final Object[] params, HibernateTemplateFactory htf) {
 		List<Object> result = null;
 		result = htf.getHibernateTemplate().execute(new HibernateCallback<List<Object>>() {
-					public List<Object> doInHibernate(Session session) throws HibernateException, SQLException {
-						List<Object> temp = null;
-						try {
-							Query query = session.createSQLQuery(sql);
-							if(params !=null && params.length > 0) {
-								for(int i = 0;i<params.length;i++) {
-									query.setParameter(i, params[i]);
-								}
-							}
-							temp = query.list();
-						} catch (Exception e) {
-							log.error(e.getMessage(),e);
-						}finally {
-							session.close();
+			public List<Object> doInHibernate(Session session) throws HibernateException, SQLException {
+				List<Object> temp = null;
+				try {
+					Query query = session.createSQLQuery(sql);
+					if (params != null && params.length > 0) {
+						for (int i = 0; i < params.length; i++) {
+							query.setParameter(i, params[i]);
 						}
-						return temp;
 					}
+					temp = query.list();
+				} catch (Exception e) {
+					log.error(e.getMessage(), e);
+				} finally {
+					session.close();
+				}
+				return temp;
+			}
 		});
 		result = result == null ? new ArrayList<Object>() : result;
 		return (List<T>) result;
@@ -356,27 +359,27 @@ public class JdbcUtil {
 	 * 返回class对象集合
 	 */
 	@SuppressWarnings("unchecked")
-	public static <T>  List<T> getList(final String sql,final Object[] params,@SuppressWarnings("rawtypes") final Class clazz,HibernateTemplateFactory htf) {
+	public static <T> List<T> getList(final String sql, final Object[] params, @SuppressWarnings("rawtypes") final Class clazz, HibernateTemplateFactory htf) {
 		List<Object> result = null;
 		result = htf.getHibernateTemplate().execute(new HibernateCallback<List<Object>>() {
-					public List<Object> doInHibernate(Session session) throws HibernateException, SQLException {
-						List<Object> temp = null;
-						try {
-							Query query = session.createSQLQuery(sql).addEntity( clazz );
-							if(params !=null && params.length > 0) {
-								for(int i = 0;i<params.length;i++) {
-									query.setParameter(i, params[i]);
-								}
-							}
-							temp = query.list();
-						} catch (Exception e) {
-							log.error(e.getMessage(),e);
-						}finally {
-							session.close();
+			public List<Object> doInHibernate(Session session) throws HibernateException, SQLException {
+				List<Object> temp = null;
+				try {
+					Query query = session.createSQLQuery(sql).addEntity(clazz);
+					if (params != null && params.length > 0) {
+						for (int i = 0; i < params.length; i++) {
+							query.setParameter(i, params[i]);
 						}
-						session.close();
-						return temp;
 					}
+					temp = query.list();
+				} catch (Exception e) {
+					log.error(e.getMessage(), e);
+				} finally {
+					session.close();
+				}
+				session.close();
+				return temp;
+			}
 		});
 		result = result == null ? new ArrayList<Object>() : result;
 		return (List<T>) result;
@@ -385,15 +388,15 @@ public class JdbcUtil {
 	/**
 	 * 批量执行修改数据
 	 */
-	public static List<Map<String, Object>> getList(JdbcTemplate jdbcTemplate,String sql, Object[] params) {
-		if(params == null) {
+	public static List<Map<String, Object>> getList(JdbcTemplate jdbcTemplate, String sql, Object[] params) {
+		if (params == null) {
 			params = new Object[]{};
 		}
 		List<Map<String, Object>> list = jdbcTemplate.queryForList(sql, params);
-		if(list !=null && list.size() > 0) {
+		if (list != null && list.size() > 0) {
 			return list;
 		}
-		return new ArrayList<Map<String,Object>>();
+		return new ArrayList<Map<String, Object>>();
 	}
 	
 }

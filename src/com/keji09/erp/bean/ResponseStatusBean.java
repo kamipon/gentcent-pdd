@@ -7,27 +7,27 @@ public class ResponseStatusBean {
 	/**
 	 * 成功
 	 */
-	public static final int STAUTS_SUCCESS=0;
+	public static final int STAUTS_SUCCESS = 0;
 	/**
 	 * 未知错误
 	 */
-	public static final int STATUS_UNKNOWN_ERROR=-99;
+	public static final int STATUS_UNKNOWN_ERROR = -99;
 	/**
 	 * 参数验证失败
 	 */
-	public static final int STAUTS_PARAMETERS_ERROR=-1;
+	public static final int STAUTS_PARAMETERS_ERROR = -1;
 	/**
 	 * 参数不能为空
 	 */
-	public static final int PARAMETER_NOT_ALLOW_EMPTY=-1;
+	public static final int PARAMETER_NOT_ALLOW_EMPTY = -1;
 	/**
 	 * 参数数据格式错误
 	 */
-	public static final int PARAMETER_BAD_DATA_FORMAT_SPECIFICATIONS=-2;
+	public static final int PARAMETER_BAD_DATA_FORMAT_SPECIFICATIONS = -2;
 	/**
 	 * 参数数据重复
 	 */
-	public static final int PARAMETER_DATA_DUPLICATE=-3;
+	public static final int PARAMETER_DATA_DUPLICATE = -3;
 	
 	
 	/**
@@ -41,7 +41,7 @@ public class ResponseStatusBean {
 	/**
 	 * 描述信息
 	 */
-	private Map<String,Integer> details = null;
+	private Map<String, Integer> details = null;
 	
 	/**
 	 * 用户角色
@@ -58,6 +58,7 @@ public class ResponseStatusBean {
 	public void setCode(int code) {
 		this.code = code;
 	}
+	
 	/**
 	 * 得到消息内容
 	 */
@@ -68,6 +69,7 @@ public class ResponseStatusBean {
 	public void setMessage(String message) {
 		this.message = message;
 	}
+	
 	/**
 	 * 得到描述信息
 	 */
@@ -86,47 +88,47 @@ public class ResponseStatusBean {
 	public ResponseStatusBean(int code) {
 		super();
 		this.code = code;
-		if(code==STATUS_UNKNOWN_ERROR){
-			this.message="UNKOWN ERROR";
+		if (code == STATUS_UNKNOWN_ERROR) {
+			this.message = "UNKOWN ERROR";
 		}
 	}
 	
 	public ResponseStatusBean(String message) {
 		super();
-		this.code=STATUS_UNKNOWN_ERROR;
+		this.code = STATUS_UNKNOWN_ERROR;
 		this.message = message;
 	}
 	
 	public ResponseStatusBean(Map<String, Integer> details) {
 		super();
-		this.code=STAUTS_PARAMETERS_ERROR;
+		this.code = STAUTS_PARAMETERS_ERROR;
 		this.details = details;
 	}
-
-	public void addParametersError(String paramName,int value){
-		this.code=STAUTS_PARAMETERS_ERROR;
-		if(this.details==null){
-			this.details=new HashMap<String,Integer>();
+	
+	public void addParametersError(String paramName, int value) {
+		this.code = STAUTS_PARAMETERS_ERROR;
+		if (this.details == null) {
+			this.details = new HashMap<String, Integer>();
 		}
 		this.details.put(paramName, value);
 	}
 	
-	public void addParametersNotAllowEmptyError(String paramName){
+	public void addParametersNotAllowEmptyError(String paramName) {
 		this.addParametersError(paramName, PARAMETER_NOT_ALLOW_EMPTY);
 	}
 	
-	public void addParametersDataDuplicateError(String paramName){
+	public void addParametersDataDuplicateError(String paramName) {
 		this.addParametersError(paramName, PARAMETER_DATA_DUPLICATE);
 	}
 	
-	public void addParametersBadDataFormatSpecError(String paramName){
+	public void addParametersBadDataFormatSpecError(String paramName) {
 		this.addParametersError(paramName, PARAMETER_BAD_DATA_FORMAT_SPECIFICATIONS);
 	}
-
+	
 	public int getType() {
 		return type;
 	}
-
+	
 	public void setType(int type) {
 		this.type = type;
 	}

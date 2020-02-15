@@ -1,20 +1,19 @@
 package com.keji09.erp.utils;
 
-import java.util.Date;
-import java.util.List;
-
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import net.sf.json.JsonConfig;
 import net.sf.json.processors.JsonValueProcessor;
 import net.sf.json.util.CycleDetectionStrategy;
-
 import org.codehaus.jackson.map.DeserializationConfig;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.map.SerializationConfig;
 
+import java.util.Date;
+import java.util.List;
+
 public class JsonUtils {
-    
+	
 	public static JSONObject toJSONObject(Object obj) {
 		return JSONObject.fromObject(obj, getJsonConfig());
 	}
@@ -23,26 +22,26 @@ public class JsonUtils {
 		return JSONArray.fromObject(obj, getJsonConfig());
 	}
 	
-	public static <T> List<T> toList(Object obj,Class<T> clazz) {
+	public static <T> List<T> toList(Object obj, Class<T> clazz) {
 		JSONArray arr = toJSONArray(obj);
-		@SuppressWarnings({ "unchecked", "deprecation" })
+		@SuppressWarnings({"unchecked", "deprecation"})
 		List<T> list = JSONArray.toList(arr, clazz);
 		return list;
 	}
 	
 	/**
-	 *  2016-03-01 00:00:00 替换为 2016-03-01 <br/>
+	 * 2016-03-01 00:00:00 替换为 2016-03-01 <br/>
 	 * 如果报错返回原始数据
 	 */
 	public static JSONObject replaceDateTime(JSONObject source) {
-	    JSONObject result = source;
-	    try {
-            String ss = source.toString();
-            String formatJson = ss.replaceAll(" \\d{2}:\\d{2}:\\d{2}", "");
-            result = JSONObject.fromObject(formatJson);
-        } catch (Exception e) {
-        }
-	    return result;
+		JSONObject result = source;
+		try {
+			String ss = source.toString();
+			String formatJson = ss.replaceAll(" \\d{2}:\\d{2}:\\d{2}", "");
+			result = JSONObject.fromObject(formatJson);
+		} catch (Exception e) {
+		}
+		return result;
 	}
 	
 	
@@ -73,23 +72,23 @@ public class JsonUtils {
 	
 }
 
-class Date_JsonValueProcessor implements JsonValueProcessor{
-
+class Date_JsonValueProcessor implements JsonValueProcessor {
+	
 	public Object processArrayValue(Object value, JsonConfig config) {
 		return process(value, config);
 	}
-
+	
 	public Object processObjectValue(String key, Object value,
-			JsonConfig config) {
+									 JsonConfig config) {
 		return process(value, config);
-	};
-
+	}
+	
 	private Object process(Object value, JsonConfig config) {
-	    if(value == null) {
-	        return "";
-	    }
+		if (value == null) {
+			return "";
+		}
 		if (value instanceof Date) {
-			String date = DateUtil.SDF_DATETIME.format((Date)value);
+			String date = DateUtil.SDF_DATETIME.format((Date) value);
 			return date;
 		} else {
 			return value == null ? null : value.toString();
