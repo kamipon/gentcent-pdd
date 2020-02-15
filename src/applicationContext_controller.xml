@@ -14,7 +14,6 @@
 						http://www.springframework.org/schema/context/spring-context-3.0.xsd">
 						
 
-	<context:property-placeholder location="classpath:config.properties"/>
 	<context:annotation-config />
 	
 	<aop:aspectj-autoproxy />
@@ -45,7 +44,7 @@
 	    						<constructor-arg value="json"></constructor-arg>
 	    						<constructor-arg value="UTF-8"/>
 	    					</bean>
-	    					
+
     					</list>
     				</property>
     			</bean>
@@ -67,7 +66,6 @@
 	<bean class="org.springframework.web.servlet.mvc.annotation.DefaultAnnotationHandlerMapping">
 		<property name="useDefaultSuffixPattern" value="true"></property>
 	</bean>
-	<bean class="com.keji09.erp.api.ApiController"></bean>
 	<bean class="com.keji09.erp.service.TaskService"></bean>
 	<context:component-scan base-package="com.keji09.**.controller" /> 
 </beans>

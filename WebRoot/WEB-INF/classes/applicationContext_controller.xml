@@ -15,6 +15,7 @@
 						
 
 	<context:property-placeholder location="classpath:config.properties"/>
+	<context:property-placeholder location="classpath:11erp.properties"/>
 	<context:annotation-config />
 	
 	<aop:aspectj-autoproxy />
@@ -67,7 +68,6 @@
 	<bean class="org.springframework.web.servlet.mvc.annotation.DefaultAnnotationHandlerMapping">
 		<property name="useDefaultSuffixPattern" value="true"></property>
 	</bean>
-	<bean class="com.keji09.erp.api.ApiController"></bean>
 	<bean class="com.keji09.erp.service.TaskService"></bean>
 	<context:component-scan base-package="com.keji09.**.controller" /> 
 </beans>

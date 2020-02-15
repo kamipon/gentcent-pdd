@@ -1,20 +1,15 @@
 package com.keij09.weixin.core;
 
-//import java.awt.Color;
-//import java.awt.Font;
-//import java.awt.Graphics2D;
-//import java.awt.image.BufferedImage;
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.util.Date;
-import java.util.Map;
-
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
+import com.keji09.develop.weixin.message.resp.TextMessage;
+import com.keji09.develop.weixin.util.MessageUtil;
+import com.keji09.develop.weixin.util.SignUtil;
+import com.keji09.develop.weixin.util.WeixinUtil;
+import com.keji09.erp.model.*;
+import com.keji09.erp.model.role.UserEntity;
+import com.keji09.erp.model.support.XDAOSupport;
+import com.mezingr.dao.HDaoUtils;
+import com.mezingr.dao.PaginationList;
 import net.sf.json.JSONObject;
-
 import org.apache.commons.lang.StringUtils;
 import org.hibernate.criterion.Order;
 import org.springframework.stereotype.Controller;
@@ -22,19 +17,13 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import com.keji09.develop.weixin.message.resp.TextMessage;
-import com.keji09.develop.weixin.util.MessageUtil;
-import com.keji09.develop.weixin.util.SignUtil;
-import com.keji09.develop.weixin.util.WeixinUtil;
-import com.keji09.erp.model.ActivityEntity;
-import com.keji09.erp.model.ManagerMsgEntity;
-import com.keji09.erp.model.MemberEntity;
-import com.keji09.erp.model.TerPointEntity;
-import com.keji09.erp.model.WechartConfigEntity;
-import com.keji09.erp.model.role.UserEntity;
-import com.keji09.erp.model.support.XDAOSupport;
-import com.mezingr.dao.HDaoUtils;
-import com.mezingr.dao.PaginationList;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.Date;
+import java.util.Map;
 
 
 @Controller
@@ -46,7 +35,7 @@ public class WeixinCore extends XDAOSupport{
      */  
 	@RequestMapping(value="/wechat/{type}",method=RequestMethod.GET)
     public void doGet(@PathVariable(value = "type")String type,
-    		HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {  
+					  HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         // 微信加密签名  
 		String signature = request.getParameter("signature");  
         // 时间戳  

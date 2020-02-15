@@ -251,7 +251,7 @@ public class JdbcUtil {
 					params[i] = props.get(where[i]);
 				}
 			}
-			int count = jdbcTemplate.queryForInt(countSql,params);
+			int count = jdbcTemplate.queryForObject(countSql, params, Integer.class);
 			if(count == 0) {
 				//新增
 				insertList.add(obj);

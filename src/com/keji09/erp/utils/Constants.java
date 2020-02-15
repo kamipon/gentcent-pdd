@@ -6,7 +6,12 @@ package com.keji09.erp.utils;
  * 静态字段
  */
 public class Constants {
-
+	
+	
+	/**
+	 * 拼多多测试推广位Id
+	 */
+	public static final String  PDD_PID = PropertiesUtil.getProperty("project.pid");
 	/**
 	 * 拼多多 clientId
 	 */

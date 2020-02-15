@@ -17,9 +17,9 @@ import com.mezingr.dao.HDaoUtils;
 public class TaskService extends XDAOSupport{
 	Timer timer;
     public TaskService() {
-		timer = new Timer();
-		timer.schedule(new RemindTask(),10*1000, 3600*1000);
-		System.out.println("系统微信任务启动,准备更新accesstoken！");
+//		timer = new Timer();
+//		timer.schedule(new RemindTask(),10*1000, 3600*1000);
+//		System.out.println("系统微信任务启动,准备更新accesstoken！");
     }
   
     class RemindTask extends TimerTask {

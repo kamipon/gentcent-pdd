@@ -126,93 +126,93 @@ public class UploadUtil {
 	 */
 	public static JSONObject saveFile(HttpServletRequest req, String userRoot, String userName,List<String> suffixList) {
 		JSONObject obj = new JSONObject();
-		if (StringUtils.isEmpty(userName) && StringUtils.isEmpty(userRoot)) {
-			obj.put("error", 1);
-			obj.put("msg", "请先登录");
-			obj.put("flag", false);
-			return obj;
-		}
-		String storeUrl = getStoreUrl(req, userRoot, userName);
-		File f = new File(storeUrl);
-		if (!f.exists()) {
-			f.mkdirs();
-		}
-		
-		String uploadUrl = "";
-		String filePath = "";
-		String fileName = "";
-		String fileOldName = "";
-		String type = "";
-		long size = 0L;
-		MultipartHttpServletRequest request = (MultipartHttpServletRequest) req;
-		CommonsMultipartResolver resolver = new CommonsMultipartResolver(req.getSession().getServletContext());
-		
-		// 判断是否是文件
-		if (resolver.isMultipart(request)) {
-			// 进行转换
-			MultipartHttpServletRequest multiRequest = (MultipartHttpServletRequest) (request);
-			// 获取所有文件名称
-			Iterator<String> it = multiRequest.getFileNames();
-			while (it.hasNext()) {
-				// 根据文件名称取文件
-				MultipartFile file = multiRequest.getFile(it.next());
-				size = file.getSize();
-				if(size>Long.parseLong(Constants.MAXUPLOAD_SIZE)){   
-            		String msg = "上传失败：图片大小不能超过200KB！";//字节
-	        		obj.put("msg", msg);
-					obj.put("error", 1);
-					obj.put("flag", false);
-					return obj;
-		        }
-				fileName = file.getOriginalFilename().trim();
-				if(suffixList != null && suffixList.size() > 0) {
-					type = fileName.substring(fileName.lastIndexOf(".")+1, fileName.length());
-					if(!suffixList.contains(type.toLowerCase())){
-						obj.put("msg", "请选择正确的文件类型！");
-						obj.put("error", 1);
-						obj.put("flag", false);
-						return obj;
-					}
-				}
-				//如果重名更改名称
-				fileOldName = file.getOriginalFilename().trim();
-				fileName = renameFileName(f, file.getOriginalFilename().trim());
-				filePath = storeUrl + "/" + fileName;
-				File newFile = new File(filePath);
-				try {
-					file.transferTo(newFile);
-				} catch (Exception e) {
-					System.out.println("文件存在"+e.getMessage());
-				}
-				uploadUrl = getVisitUrl(newFile, getVisitPrefixUrl(req, userRoot, userName));
-				System.out.println(uploadUrl);
-				
-			}
-		}
-		//local
-		obj.put("src", uploadUrl);
-		obj.put("fileUrl", uploadUrl);
-		obj.put("fileName", fileName);
-		obj.put("fileOldName", fileOldName);
-		
-		//ueditor
-		obj.put("state", "SUCCESS");
-		obj.put("title", fileName);
-		obj.put("original", fileOldName);
-		obj.put("type", "."+type);
-		obj.put("url", uploadUrl);
-		obj.put("size", size+"");
-		
-		
-		if (uploadUrl.equals("")) {
-			obj.put("flag", false);
-			obj.put("error", 1);
-			obj.put("msg", "上传失败!");
-		} else {
-			obj.put("flag", true);
-			obj.put("error", 0);
-			obj.put("msg", "上传成功!");
-		}
+//		if (StringUtils.isEmpty(userName) && StringUtils.isEmpty(userRoot)) {
+//			obj.put("error", 1);
+//			obj.put("msg", "请先登录");
+//			obj.put("flag", false);
+//			return obj;
+//		}
+//		String storeUrl = getStoreUrl(req, userRoot, userName);
+//		File f = new File(storeUrl);
+//		if (!f.exists()) {
+//			f.mkdirs();
+//		}
+//
+//		String uploadUrl = "";
+//		String filePath = "";
+//		String fileName = "";
+//		String fileOldName = "";
+//		String type = "";
+//		long size = 0L;
+//		MultipartHttpServletRequest request = (MultipartHttpServletRequest) req;
+//		CommonsMultipartResolver resolver = new CommonsMultipartResolver(req.getSession().getServletContext());
+//
+//		// 判断是否是文件
+//		if (resolver.isMultipart(request)) {
+//			// 进行转换
+//			MultipartHttpServletRequest multiRequest = (MultipartHttpServletRequest) (request);
+//			// 获取所有文件名称
+//			Iterator<String> it = multiRequest.getFileNames();
+//			while (it.hasNext()) {
+//				// 根据文件名称取文件
+//				MultipartFile file = multiRequest.getFile(it.next());
+//				size = file.getSize();
+//				if(size>Long.parseLong(Constants.MAXUPLOAD_SIZE)){
+//            		String msg = "上传失败：图片大小不能超过200KB！";//字节
+//	        		obj.put("msg", msg);
+//					obj.put("error", 1);
+//					obj.put("flag", false);
+//					return obj;
+//		        }
+//				fileName = file.getOriginalFilename().trim();
+//				if(suffixList != null && suffixList.size() > 0) {
+//					type = fileName.substring(fileName.lastIndexOf(".")+1, fileName.length());
+//					if(!suffixList.contains(type.toLowerCase())){
+//						obj.put("msg", "请选择正确的文件类型！");
+//						obj.put("error", 1);
+//						obj.put("flag", false);
+//						return obj;
+//					}
+//				}
+//				//如果重名更改名称
+//				fileOldName = file.getOriginalFilename().trim();
+//				fileName = renameFileName(f, file.getOriginalFilename().trim());
+//				filePath = storeUrl + "/" + fileName;
+//				File newFile = new File(filePath);
+//				try {
+//					file.transferTo(newFile);
+//				} catch (Exception e) {
+//					System.out.println("文件存在"+e.getMessage());
+//				}
+//				uploadUrl = getVisitUrl(newFile, getVisitPrefixUrl(req, userRoot, userName));
+//				System.out.println(uploadUrl);
+//
+//			}
+//		}
+//		//local
+//		obj.put("src", uploadUrl);
+//		obj.put("fileUrl", uploadUrl);
+//		obj.put("fileName", fileName);
+//		obj.put("fileOldName", fileOldName);
+//
+//		//ueditor
+//		obj.put("state", "SUCCESS");
+//		obj.put("title", fileName);
+//		obj.put("original", fileOldName);
+//		obj.put("type", "."+type);
+//		obj.put("url", uploadUrl);
+//		obj.put("size", size+"");
+//
+//
+//		if (uploadUrl.equals("")) {
+//			obj.put("flag", false);
+//			obj.put("error", 1);
+//			obj.put("msg", "上传失败!");
+//		} else {
+//			obj.put("flag", true);
+//			obj.put("error", 0);
+//			obj.put("msg", "上传成功!");
+//		}
 		return obj;
 	}
 }

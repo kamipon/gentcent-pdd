@@ -22,9 +22,9 @@ public class WeixinService extends XDAOSupport{
 	private static Log log = LogFactory.getLog(WeixinService.class);
 	Timer timer;
     public WeixinService() {
-		timer = new Timer();
-		timer.schedule(new RemindTask(),10*1000, 3600*1000);
-		log.info("定时任务启动,准备更新accesstoken！");
+//		timer = new Timer();
+//		timer.schedule(new RemindTask(),10*1000, 3600*1000);
+//		log.info("定时任务启动,准备更新accesstoken！");
     }
     class RemindTask extends TimerTask {
         public void run() {
