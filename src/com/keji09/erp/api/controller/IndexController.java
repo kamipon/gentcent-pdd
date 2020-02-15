@@ -26,17 +26,17 @@ import java.util.Map;
 public class IndexController extends XDAOSupport {
 
 	/**
-	 * 输出验证码
+	 * 接口说明地址 https://open.pinduoduo.com/#/apidocument/port?portId=pdd.ddk.goods.search
 	 */
 	@RequestMapping(method = RequestMethod.GET)
 	@ResponseBody
-	public Object getCaptcha(HttpServletRequest req, HttpServletResponse resp
+	public Object getCaptcha(HttpServletRequest req, HttpServletResponse res
 		, ModelMap map) {
 		String clientId = Constants.CLIENT_ID;
 		String clientSecret = Constants.CLIENT_SECRET;
-		PopHttpClient client = new PopHttpClient(clientId, clientSecret);
-		PddDdkGoodsSearchRequest request = new PddDdkGoodsSearchRequest();
 		try {
+			PopHttpClient client = new PopHttpClient(clientId, clientSecret);
+			PddDdkGoodsSearchRequest request = new PddDdkGoodsSearchRequest();
 			PddDdkGoodsSearchResponse response = client.syncInvoke(request);
 			System.out.println(JsonUtil.transferToJson(response));
 			return  response;
