@@ -1,6 +1,6 @@
 package com.keji09.erp.filter;
 
-import com.keji09.model.support.XDAOSupport;
+import com.keji09.erp.model.support.XDAOSupport;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.aspectj.lang.ProceedingJoinPoint;

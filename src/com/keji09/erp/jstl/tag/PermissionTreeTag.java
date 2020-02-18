@@ -1,7 +1,7 @@
 package com.keji09.erp.jstl.tag;
 
 import com.keji09.erp.bean.MenuTreeBean;
-import com.keji09.model.role.UserMenuEntity;
+import com.keji09.erp.model.role.UserMenuEntity;
 import com.keji09.erp.utils.TreeUtils;
 
 import javax.servlet.jsp.JspException;

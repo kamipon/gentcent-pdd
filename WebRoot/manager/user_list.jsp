@@ -94,7 +94,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		                            			<img src="${items.picUrl }" width="30px" height="30px"/>
 		                            		</td>
 		                            		<td>
-		                            			${items.userName }
+		                            			${items.username }
 		                            		</td>
 		                            		<td>
 		                            			${items.realName}

@@ -1,6 +1,6 @@
 package com.keji09.erp.utils;
 
-import com.keji09.model.TerPointEntity;
+import com.keji09.erp.model.TerPointEntity;
 import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;

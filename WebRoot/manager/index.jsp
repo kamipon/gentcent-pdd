@@ -44,17 +44,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                             		</c:otherwise>
                             	</c:choose>
                             </span>
-                            <c:if test="${newNotice>0}">
-							    <div id="small-chat" style="bottom:90%;right:90%">
-									<span class="badge badge-warning pull-right" id = "newNotice">${newNotice}</span>
-									<a class="open-small-chat" href="noticeUserList">
-										<i class="fa fa-comments"></i>
-									</a>
-								</div>
-						   	</c:if>
                             <a data-toggle="dropdown" class="dropdown-toggle" href="#"">
                                 <span class="clear">
-                                <span class="text-muted text-xs block"><strong class="font-bold" >${loginUser.userName }<b class="caret"></b></strong></span>
+                                <span class="text-muted text-xs block"><strong class="font-bold" >${loginUser.username }<b class="caret"></b></strong></span>
                                 </span>
                             </a>
                             <ul class="dropdown-menu animated fadeInRight m-t-xs">
@@ -123,9 +115,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                     	<a class="navbar-minimalize minimalize-styl-2 btn btn-primary " href="javascript:void(0)"><i class="fa fa-bars"></i> </a>
                     	<c:if test="${empty ter&&!empty activity}">
 	                    	<div style="margin-top:18px;width: 100%">
-	                    		<c:if test="${activity.type==0 }">试用</c:if>
-	                    		<c:if test="${activity.type==1 }">正式</c:if>
-	                    		-账户-
 	                    		<span id="toptip">
 									<span id="ti_time_day" style="color:red;">1</span>天
 									<span id="ti_time_hour" style="color:red;">23</span>小时

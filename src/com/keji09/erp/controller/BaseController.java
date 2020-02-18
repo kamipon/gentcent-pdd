@@ -1,7 +1,7 @@
 package com.keji09.erp.controller;
 
 import com.keji09.erp.bean.PageBean;
-import com.keji09.model.support.XDAOSupport;
+import com.keji09.erp.model.support.XDAOSupport;
 import com.keji09.erp.utils.CommonUtil;
 import com.mezingr.dao.Exp;
 import com.mezingr.dao.HibernateDAO;

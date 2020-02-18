@@ -2,13 +2,13 @@ package com.keji09.erp.controller.role;
 
 
 import com.keji09.erp.bean.UserBean;
-import com.keji09.model.ActivityEntity;
-import com.keji09.model.MemberEntity;
-import com.keji09.model.TerPointEntity;
-import com.keji09.model.role.RoleEntity;
-import com.keji09.model.role.UserEntity;
-import com.keji09.model.role.UserRoleEntity;
-import com.keji09.model.support.XDAOSupport;
+import com.keji09.erp.model.ActivityEntity;
+import com.keji09.erp.model.MemberEntity;
+import com.keji09.erp.model.TerPointEntity;
+import com.keji09.erp.model.role.RoleEntity;
+import com.keji09.erp.model.role.UserEntity;
+import com.keji09.erp.model.role.UserRoleEntity;
+import com.keji09.erp.model.support.XDAOSupport;
 import com.keji09.erp.service.PermissionService;
 import com.keji09.erp.utils.DateUtil2;
 import com.mezingr.dao.Exp;
@@ -47,11 +47,11 @@ public class UserController extends XDAOSupport {
 						@RequestParam(value = "phoneCode", required = false) String phoneCode,
 						HttpServletRequest request, ModelMap map) {
 		HttpSession session = request.getSession();
-		UserEntity user = this.getUserEntityDAO().findUnique("userName", username);
+		UserEntity user = this.getUserEntityDAO().findUnique("username", username);
 		if (user != null && user.getStatus() != 2) {
 			//用户名存在
 			if (password.equals(user.getPassword())) {
-				request.getSession().setAttribute("userName", username);
+				request.getSession().setAttribute("username", username);
 				//登录则设置金额操作验证为false
 				request.getSession().setAttribute("isTrue", false);
 				String openId = "";
@@ -62,12 +62,7 @@ public class UserController extends XDAOSupport {
 					map.put("message", "账户已被关闭，请联系管理员！");
 				} else {
 					session.setAttribute("loginUser", user);
-					MemberEntity mb = this.getMemberEntityDAO().findUnique(HDaoUtils.eq("openId", openId).toCondition());
-					String nick = "";
-					if (mb != null) {
-						nick = mb.getNick();
-					}
-					log(user.getUserName(), "用户登录", openId, nick);
+					log(user.getUsername(), "用户登录", openId, "");
 					return "redirect:/visit/manager";
 				}
 			} else {
@@ -91,7 +86,7 @@ public class UserController extends XDAOSupport {
 	@RequestMapping(value = "logOut")
 	public String logOut(HttpServletRequest request) {
 		request.getSession().removeAttribute("loginUser");
-		request.getSession().removeAttribute("userName");
+		request.getSession().removeAttribute("username");
 		request.getSession().removeAttribute("terpoint");
 		request.getSession().removeAttribute("activity");
 		request.getSession().removeAttribute("domain");
@@ -149,7 +144,7 @@ public class UserController extends XDAOSupport {
 		}
 		PaginationList<UserEntity> list = null;
 		if (StringUtils.isNotEmpty(username)) {
-			list = this.getUserEntityDAO().list(HDaoUtils.like("userName", username).toCondition(), pageIndex, pageSize, Order.desc("addTime"));
+			list = this.getUserEntityDAO().list(HDaoUtils.like("username", username).toCondition(), pageIndex, pageSize, Order.desc("addTime"));
 			mm.put("username", username);
 		} else {
 			list = this.getUserEntityDAO().list(pageIndex, pageSize, Order.desc("addTime"));
@@ -223,12 +218,12 @@ public class UserController extends XDAOSupport {
 		Map<String, Object> map = new HashMap<String, Object>();
 		UserEntity user = (UserEntity) request.getSession().getAttribute("loginUser");
 		UserEntity user2 = new UserEntity();
-		boolean f = this.getUserEntityDAO().exist(HDaoUtils.eq("userName", userName).toCondition());
+		boolean f = this.getUserEntityDAO().exist(HDaoUtils.eq("username", userName).toCondition());
 		if (f) {
 			map.put("msg", "用户名已存在!");
 			return map;
 		}
-		user2.setUserName(userName);
+		user2.setUsername(userName);
 		user2.setPassword(password);
 		
 		
@@ -236,11 +231,10 @@ public class UserController extends XDAOSupport {
 		user2.setSex(sex);
 		user2.setJoinTime(DateUtil2.parseDateTime(joinTime));
 		user2.setPhone(phone);
-		user2.setQq(qq);
 		user2.setStatus(1);
 		user2.setAddTime(new Date());
 		this.getUserEntityDAO().create(user2);
-		log(user.getUserName(), "添加用户:" + user2.getUserName());
+		log(user.getUsername(), "添加用户:" + user2.getUsername());
 		flag = true;
 		map.put("msg", "添加成功！");
 		map.put("flag", flag);
@@ -289,12 +283,11 @@ public class UserController extends XDAOSupport {
 				user2.setLeaveTime(DateUtil2.parseDateTime(leaveTime));
 			}
 			user2.setStatus(status);
-			user2.setQq(qq);
 			this.getUserEntityDAO().update(user2);
 			msg = "修改成功！";
 			flag = true;
 		}
-		log(user.getUserName(), "修改用户信息:" + user2.getUserName());
+		log(user.getUsername(), "修改用户信息:" + user2.getUsername());
 		map.put("msg", msg);
 		map.put("flag", flag);
 		return map;
@@ -323,7 +316,7 @@ public class UserController extends XDAOSupport {
 		//验证是否绑定微信号
 		List<MemberEntity> mb = new ArrayList<MemberEntity>();
 		//验证账号
-		UserEntity user = this.getUserEntityDAO().findUnique(HDaoUtils.eq("userName", userId).toCondition());
+		UserEntity user = this.getUserEntityDAO().findUnique(HDaoUtils.eq("username", userId).toCondition());
 		if (user == null) {
 			map.put("flag", false);
 			map.put("message", "用户不存在!");

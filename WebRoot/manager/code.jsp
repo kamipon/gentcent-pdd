@@ -62,7 +62,7 @@
 	 		url:"user/allow",
 	 		type:"get",
 	 		data:{
-	 			userId: "${loginUser.userName}",
+	 			userId: "${loginUser.username}",
 	 			level: 2
 	 		},
 	 		dataType:"json",

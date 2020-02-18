@@ -1,11 +1,11 @@
 package com.keji09.erp.controller;
 
 import com.keji09.erp.bean.MemberBean;
-import com.keji09.model.ActivityEntity;
-import com.keji09.model.MemberEntity;
-import com.keji09.model.TerPointEntity;
-import com.keji09.model.role.UserEntity;
-import com.keji09.model.support.XDAOSupport;
+import com.keji09.erp.model.ActivityEntity;
+import com.keji09.erp.model.MemberEntity;
+import com.keji09.erp.model.TerPointEntity;
+import com.keji09.erp.model.role.UserEntity;
+import com.keji09.erp.model.support.XDAOSupport;
 import com.mezingr.dao.Exp;
 import com.mezingr.dao.HDaoUtils;
 import com.mezingr.dao.PaginationList;
@@ -150,7 +150,6 @@ public class MemberEntityController extends XDAOSupport {
 			ModelMap map
 	) {
 		MemberEntity memberEntity = this.getMemberEntityDAO().get(id);
-		memberEntity.setUtype(utype);
 		this.getMemberEntityDAO().update(memberEntity);
 		map.put("flag", true);
 		map.put("msg", "设置成功");

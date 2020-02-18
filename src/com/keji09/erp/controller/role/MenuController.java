@@ -2,8 +2,8 @@ package com.keji09.erp.controller.role;
 
 import com.keji09.erp.bean.MenBean;
 import com.keji09.erp.bean.MenuBean;
-import com.keji09.model.role.*;
-import com.keji09.model.support.XDAOSupport;
+import com.keji09.erp.model.role.*;
+import com.keji09.erp.model.support.XDAOSupport;
 import com.mezingr.dao.HDaoUtils;
 import org.codehaus.jackson.JsonGenerationException;
 import org.codehaus.jackson.map.JsonMappingException;

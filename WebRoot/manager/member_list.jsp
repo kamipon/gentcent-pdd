@@ -45,39 +45,25 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 													<option value="">
 														请选择身份
 													</option>
-													<option value="0" <c:if  test="${utype==0}">
-														selected="selected"
-													</c:if>>
+													<option value="0">
 														客户
 													</option>
-													<option value="1" <c:if  test="${utype==1}">
-														selected="selected"
-													</c:if>>
+													<option value="1">
 														商户
 													</option>
-													<option value="2" <c:if  test="${utype==2}">
-														selected="selected"
-													</c:if>>
+													<option value="2">
 														销售
 													</option>
-													<option value="3" <c:if  test="${utype==3}">
-														selected="selected"
-													</c:if>>
+													<option value="3">
 														市场
 													</option>
-													<option value="4" <c:if  test="${utype==4}">
-														selected="selected"
-													</c:if>>
+													<option value="4">
 														物流
 													</option>
-													<option value="5" <c:if  test="${utype==5}">
-														selected="selected"
-													</c:if>>
+													<option value="5">
 														客服
 													</option>
-													<option value="99" <c:if  test="${utype==99}">
-														selected="selected"
-													</c:if>>
+													<option value="99">
 														管理员
 													</option>
 												</select>
@@ -137,32 +123,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		                            			</c:choose>
 		                            		</td>
 		                            		<td>
-		                            			<c:choose>
-		                            				<c:when test="${items.utype=='0'}">
-		                            					客户
-		                            				</c:when>
-		                            				<c:when test="${items.utype=='1'}">
-		                            					商户
-		                            				</c:when>
-		                            				<c:when test="${items.utype=='2'}">
-		                            					销售
-		                            				</c:when>
-		                            				<c:when test="${items.utype=='3'}">
-		                            					市场
-		                            				</c:when>
-		                            				<c:when test="${items.utype=='4'}">
-		                            					物流
-		                            				</c:when>
-		                            				<c:when test="${items.utype=='5'}">
-		                            					客服
-		                            				</c:when>
-		                            				<c:when test="${items.utype=='99'}">
-		          	                  					管理员
-		                            				</c:when>
-		                            				<c:otherwise>
-		                            					游客
-		                            				</c:otherwise>
-		                            			</c:choose>
 		                            		</td>
 		                            		<td>
 												<a class="pn-opt" onclick="set('${items.id }');">设置身份</a>

@@ -15,7 +15,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>活动互动系统</title>
-    <link rel="shortcut icon" href="favicon.ico"> 
+    <link rel="shortcut icon" href="favicon.ico">
     <link href="css/bootstrap.minb16a.css" rel="stylesheet">
     <link href="css/font-awesome.min93e3.css" rel="stylesheet">
     <link href="css/plugins/iCheck/custom.css" rel="stylesheet">
@@ -38,7 +38,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			width:40px;
 			height:40px;
 			border-radius:50px;
-			border:0; 
+			border:0;
 		}
 		.choosYue{
 			height:50px;
@@ -51,7 +51,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			width:40px;
 			height:40px;
 			border-radius:50px;
-			border:0; 
+			border:0;
 		}
 		.loading{
 			position: absolute;
@@ -68,21 +68,14 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                 <div class="ibox float-e-margins">
                     <div class="ibox-title">
                         <h5>信息统计</h5>
-                        <c:if test="${(!empty ter&&!empty ter.province)||(!empty activity&&!empty activity.province)}">
-	                         <span style="padding-left: 75%;font-weight: bold">
-	                         	账号归属地:<c:if test="${!empty ter}">${ter.province}${ter.city}</c:if>
-	                         	<c:if test="${!empty activity}">${activity.province}${activity.city}</c:if>
-	                         </span>
-                        </c:if>
                     </div>
                    	<div class="ibox-content" style="background-color: white;padding: 20px 5px 20px;">
                    		<div id="DataTables_Table_0_wrapper" class="dataTables_wrapper form-inline" role="grid">
-                   			<div class="tiptitle" style="margin-top: 0px;"> <span id="Stitle">你好，${loginUser.userName }！</span><br>以下是您的各项信息： </div>
+                   			<div class="tiptitle" style="margin-top: 0px;"> <span id="Stitle">你好，${loginUser.username }！</span><br>以下是您的各项信息： </div>
                    			<div class="tasks" >
                    			<c:choose>
 							<c:when test="${!empty ter&&empty activity}">
                   				<ul class="listTasks" style="width: 100%;margin-left:20%;">
-<!--									<li class="wechat"><a class="listTasks-a" href="javascript:void(0);"><span class="number">${shiyong }</span><span class="text">试用商家数量</span></a></li>-->
 										<li class="wechat"><a class="listTasks-a" href="javascript:void(0);"><span class="number">${zhengshi }</span><span class="text">已开通商家数</span></a></li>
 										<li class="wechat"><a class="listTasks-a" href="javascript:void(0);"><span class="number">${ter.activityNum }</span><span class="text">可开通商家总数</span></a></li>
 										<li class="wechat"><a class="listTasks-a" href="javascript:void(0);"><span class="number"><fmt:formatNumber value="${sum}" pattern="0.00"/></span><span class="text">结算总交易额</span></a></li>
@@ -92,7 +85,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 <!--									<li class="wechat"><a class="listTasks-a" href="javascript:void(0);"><span class="number"><fmt:formatNumber value="${terpoint.money}" pattern="0.00"/> </span><span class="text">账户余额</span></a></li>-->
 								</ul>
                    			</c:when>
-                   			<c:when test="${empty ter&&!empty activity}">	
+                   			<c:when test="${empty ter&&!empty activity}">
                   				<ul class="listTasks" style="width: 100%;margin-left:20%;">
                   					<li class="wechat"><a class="listTasks-a" href="javascript:void(0);"  title="商家充值的总金额" ><span class="number"><fmt:formatNumber value="${chongzhi }" pattern="0"/></span><span class="text">充值</span></a></li>
 									<li class="wechat"><a class="listTasks-a" href="javascript:void(0);"  title="已经结算过的销售额，结算销售额会充入商家余额"><span class="number"><fmt:formatNumber value="${jsxs}" pattern="0.00"/></span><span class="text">结算销售额</span></a></li>
@@ -148,13 +141,13 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 <!--								</div>-->
 <!--	                   		</div>-->
 <!--	                    </div>-->
-                    </c:when> 
+                    </c:when>
                     </c:choose>
                 </div>
             </div>
              <c:choose>
       <c:when test="${!empty activity||empty activity&&empty ter}">
-      		
+
 <!--		    <div class="choosNian">-->
 <!--			    请选择年份-->
 <!--			    <input type="button" value="2017" id="2017" class="nian" />-->
@@ -191,15 +184,15 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		    </div>
 		    <div id="loading" style="width: 100%;height:100px;text-align: center;display: none;z-index: 100">
 	    		<img src="js/plugins/layer/skin/default/loading-0.gif" style="margin-top:50px;" />
-		    </div>     
+		    </div>
 		   	<div id="b" style="background-color: #fff;height:400px;width:100%;margin: auto;margin-top: 30px;">
 		   	</div>
 		   	<div id="c" style="height:400px;width:100%;margin: auto;background-color: white"></div>
-	</c:when> 
+	</c:when>
     </c:choose>
         </div>
     </div>
-     
+
 	<script src="js/jquery.min63b9.js"></script>
     <script src="js/highcharts.js"></script>
 	<script src="js/exporting.js"></script>
@@ -229,7 +222,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     	function toUpdate(){
     		var id = $.trim($("#statistics").val());
     		if(id=="-1"){
-				layer.msg("请选择活动！");    		
+				layer.msg("请选择活动！");
 				return ;
     		}
     		layer.open({
@@ -296,7 +289,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     	function query(){
 	    	var id = $.trim($("#statistics").val());
     		if(id=="-1"){
-				layer.msg("请选择活动！");    		
+				layer.msg("请选择活动！");
 				return ;
     		}
     		var url = "visit/activity?asId="+id;
@@ -489,7 +482,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 					    ]
 					};
 			        myChart.setOption(option1);
-					
+
 					//有效点击
 					var myChart = echarts.init(document.getElementById('c'));
 			        option2 = {
@@ -546,7 +539,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 					};
 			        myChart.setOption(option2);
 			     }
-		 
+
 		        }
 	        });
     	}
@@ -561,7 +554,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	    		mess(nian,yue,url);
 	    	}
     	}
-    	
+
     	$("#tongji").on("click",function(){
 	   		 layer.open({
 					type: 2,
@@ -571,7 +564,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 					shade: 0.8,
 					area: ['1500px', '90%'],
 					content: 'manager/redpacket_tongji.jsp',
-			});	
+			});
     	});
 	</script>
 </body>

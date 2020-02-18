@@ -1,6 +1,6 @@
 package com.keji09.erp.bean;
 
-import com.keji09.model.MemberEntity;
+import com.keji09.erp.model.MemberEntity;
 
 public class MemberBean {
 	/**

@@ -1,6 +1,6 @@
 package com.keji09.erp.bean;
 
-import com.keji09.model.role.RoleEntity;
+import com.keji09.erp.model.role.RoleEntity;
 
 public class RoleBean {
 	

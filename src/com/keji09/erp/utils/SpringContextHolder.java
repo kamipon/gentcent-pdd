@@ -1,6 +1,6 @@
 package com.keji09.erp.utils;
 
-import com.keji09.model.support.XDAOSupport;
+import com.keji09.erp.model.support.XDAOSupport;
 import com.keji09.erp.service.CmsService;
 import com.mezingr.hibernate.HibernateTemplateFactory;
 import org.springframework.context.ApplicationContext;

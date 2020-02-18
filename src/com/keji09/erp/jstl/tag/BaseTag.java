@@ -1,6 +1,6 @@
 package com.keji09.erp.jstl.tag;
 
-import com.keji09.model.role.UserMenuEntity;
+import com.keji09.erp.model.role.UserMenuEntity;
 import com.keji09.erp.service.CmsService;
 import com.keji09.erp.utils.SpringContextHolder;
 import com.mezingr.dao.HDaoUtils;

@@ -1,7 +1,7 @@
 package com.keji09.erp.bean;
 
-import com.keji09.model.role.MenuEntity;
-import com.keji09.model.role.UserMenuEntity;
+import com.keji09.erp.model.role.MenuEntity;
+import com.keji09.erp.model.role.UserMenuEntity;
 
 import java.util.ArrayList;
 import java.util.Date;

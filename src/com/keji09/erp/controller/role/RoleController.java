@@ -3,7 +3,7 @@ package com.keji09.erp.controller.role;
 import com.keji09.erp.bean.PageBean;
 import com.keji09.erp.bean.RoleBean;
 import com.keji09.erp.controller.BaseController;
-import com.keji09.model.role.RoleEntity;
+import com.keji09.erp.model.role.RoleEntity;
 import com.keji09.erp.service.PermissionService;
 import com.mezingr.dao.Exp;
 import com.mezingr.dao.HDaoUtils;

@@ -2,10 +2,10 @@ package com.keji09.erp.controller;
 
 
 import com.keji09.erp.bean.ConsoleBean;
-import com.keji09.model.ActivityEntity;
-import com.keji09.model.TerPointEntity;
-import com.keji09.model.role.UserEntity;
-import com.keji09.model.support.XDAOSupport;
+import com.keji09.erp.model.ActivityEntity;
+import com.keji09.erp.model.TerPointEntity;
+import com.keji09.erp.model.role.UserEntity;
+import com.keji09.erp.model.support.XDAOSupport;
 import com.keji09.erp.utils.JdbcUtil;
 import com.mezingr.dao.Exp;
 import com.mezingr.dao.HDaoUtils;
@@ -16,11 +16,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
-import java.math.BigInteger;
 import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -67,8 +65,6 @@ public class VisitController extends XDAOSupport {
 			//新消息数量
 			Exp<Criterion> exp = null;
 			exp = HDaoUtils.eq("user.id", user.getId());
-			Integer count = this.getNoticeUserEntityDAO().count(exp.toCondition());
-			mm.put("newNotice", count);
 		}
 		return "manager/index";
 	}
@@ -97,11 +93,6 @@ public class VisitController extends XDAOSupport {
 			mm.put("activity", act);
 		}
 		Float totalMoney = 0.0f;
-		if (ter != null) {
-			zhengshi = this.getActivityEntityDAO().count(HDaoUtils.eq("terpoint", ter).andEq("type", 1).toCondition());
-			shiyong = this.getActivityEntityDAO().count(HDaoUtils.eq("terpoint", ter).andEq("type", 0).toCondition());
-			mm.put("money", ter.getMoney());
-		}
 		if (act != null) {
 			Float xs = 0.00f;
 			Float fee = 0.0f;
@@ -144,133 +135,6 @@ public class VisitController extends XDAOSupport {
 	}
 	
 	/**
-	 * 查询某一时间段的活动统计数量
-	 *
-	 * @throws ParseException
-	 */
-	@RequestMapping(value = "between", method = RequestMethod.GET)
-	@ResponseBody
-	public Map<String, Object> between(String id, String nian, String yue, ModelMap map) throws ParseException {
-		ActivityEntity act = this.getActivityEntityDAO().get(id);
-		List<String> xzhou = new ArrayList<String>();
-		List<BigInteger> lingJiang = new ArrayList<BigInteger>();
-		List<BigInteger> dianJi = new ArrayList<BigInteger>();
-		int[] monthDay = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
-		Integer year = Integer.parseInt(nian);
-		if (yue != null && !yue.equals("")) {
-			Integer month = Integer.parseInt(yue.substring(0, yue.length() - 1));
-			String mo = month >= 10 ? month + "" : "0" + month;
-			for (int i = 1; i <= monthDay[month - 1]; i++) {
-				xzhou.add(i + "号");
-				String da = i >= 10 ? i + "" : "0" + i;
-				String sql3 = "select count(`_openid`) cou from `inv_recode` t where t.`_activity`='" + act.getId() + "' AND MONTH(_add_time)=" + mo + " and YEAR(_add_time)=" + year + " and DAY(_add_time)=" + da;
-				Object[] ob3 = new Object[]{};
-				BigInteger a2 = JdbcUtil.getUnique(sql3, ob3, getTemplateFactory());
-				dianJi.add(a2);
-				String sql4 = "select count(*) cou from `inv_red_member` t where t.`_activity_id`='" + act.getId() + "' AND MONTH(_add_time)=" + mo + " and YEAR(_add_time)=" + year + " AND _status = '2' and DAY(_add_time)=" + da;
-				BigInteger a3 = JdbcUtil.getUnique(sql4, ob3, getTemplateFactory());
-				lingJiang.add(a3);
-			}
-		} else {
-			for (int i = 1; i <= 12; i++) {
-				xzhou.add(i + "月");
-				String mo = i >= 10 ? i + "" : "0" + i;
-				String sql3 = "select count(`_openid`) cou from `inv_recode` t where t.`_activity`='" + act.getId() + "' AND MONTH(_add_time)=" + mo + " and YEAR(_add_time)=" + year;
-				Object[] ob3 = new Object[]{};
-				BigInteger a2 = JdbcUtil.getUnique(sql3, ob3, getTemplateFactory());
-				dianJi.add(a2);
-				String sql4 = "select count(*) cou from `inv_red_member` t where t.`_activity_id`='" + act.getId() + "' AND MONTH(_add_time)=" + mo + " and YEAR(_add_time)=" + year + " AND _status = '2'";
-				BigInteger a3 = JdbcUtil.getUnique(sql4, ob3, getTemplateFactory());
-				lingJiang.add(a3);
-			}
-		}
-		map.put("xzhou", xzhou);
-		map.put("dianJi", dianJi);
-		map.put("lingJiang", lingJiang);
-		map.put("flag", false);
-		return map;
-	}
-	
-	/**
-	 * 查询某一时间段领红包总钱数
-	 *
-	 * @throws ParseException
-	 */
-	@RequestMapping(value = "money", method = RequestMethod.GET)
-	@ResponseBody
-	public Map<String, Object> money(String id, String nian, String yue, ModelMap map) throws ParseException {
-		List<String> xzhou = new ArrayList<String>();
-		List<Object> dianJi = new ArrayList<Object>();
-		List<Object> yuer = new ArrayList<Object>();
-		List<Object> zhijie = new ArrayList<Object>();
-		int[] monthDay = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
-		Integer year = Integer.parseInt(nian);
-		if (yue != null && !yue.equals("")) {
-			Integer month = Integer.parseInt(yue.substring(0, yue.length() - 1));
-			String mo = month >= 10 ? month + "" : "0" + month;
-			for (int i = 1; i <= monthDay[month - 1]; i++) {
-				xzhou.add(i + "号");
-				String da = i >= 10 ? i + "" : "0" + i;
-				List<String> list = getDayTime(year.toString(), mo, da);
-				String sql3 = "select sum(t.`money`) cou from `inv_redpacket` t where _type=0 and _status=2 and  _over_time between '" + list.get(0) + "' and '" + list.get(1) + "'";
-				String sql4 = "select sum(t.`_money`) cou from `wx_withdrawalrecord` t where _status=1 and _type=0 and _startDate between '" + list.get(0) + "' and '" + list.get(1) + "'";
-				String sql5 = "select sum(t.`_money`) cou from `wx_withdrawalrecord` t where _status=1 and _type = 1 and _startDate between '" + list.get(0) + "' and '" + list.get(1) + "'";
-				Object[] ob3 = new Object[]{};
-				Object a2 = JdbcUtil.getUnique(sql3, ob3, getTemplateFactory());
-				Object a3 = JdbcUtil.getUnique(sql4, ob3, getTemplateFactory());
-				Object a4 = JdbcUtil.getUnique(sql5, ob3, getTemplateFactory());
-				DecimalFormat df = new DecimalFormat(".##");
-				if (a2 != null) {
-					a2 = df.format(a2);
-				}
-				dianJi.add(a2);
-				if (a3 != null) {
-					a3 = df.format(a3);
-				}
-				yuer.add(a3);
-				if (a4 != null) {
-					a4 = df.format(a4);
-				}
-				zhijie.add(a4);
-			}
-		} else {
-			for (int i = 1; i <= 12; i++) {
-				xzhou.add(i + "月");
-				String mo = i >= 10 ? i + "" : "0" + i;
-				String lastDay = monthDay[i - 1] + "";
-				List<String> first = getDayTime(nian, mo, "1");
-				List<String> last = getDayTime(nian, mo, lastDay);
-				String sql3 = "select sum(t.`money`) cou from `inv_redpacket` t where _type=0 and _status=2 and _over_time between '" + first.get(0) + "' and '" + last.get(1) + "'";
-				String sql4 = "select sum(t.`_money`) cou from `wx_withdrawalrecord` t where  _status=1 and _type=0 and _startDate between '" + first.get(0) + "' and '" + last.get(1) + "'";
-				String sql5 = "select sum(t.`_money`) cou from `wx_withdrawalrecord` t where  _status=1 and _type=1 and _startDate between '" + first.get(0) + "' and '" + last.get(1) + "'";
-				Object[] ob3 = new Object[]{};
-				Object a2 = JdbcUtil.getUnique(sql3, ob3, getTemplateFactory());
-				Object a3 = JdbcUtil.getUnique(sql4, ob3, getTemplateFactory());
-				Object a4 = JdbcUtil.getUnique(sql5, ob3, getTemplateFactory());
-				DecimalFormat df = new DecimalFormat(".##");
-				if (a2 != null) {
-					a2 = df.format(a2);
-				}
-				dianJi.add(a2);
-				if (a3 != null) {
-					a3 = df.format(a3);
-				}
-				yuer.add(a3);
-				if (a4 != null) {
-					a4 = df.format(a4);
-				}
-				zhijie.add(a4);
-			}
-		}
-		map.put("xzhou", xzhou);
-		map.put("dianJi", dianJi);
-		map.put("yuer", yuer);
-		map.put("zhijie", zhijie);
-		map.put("flag", true);
-		return map;
-	}
-	
-	/**
 	 * 获取某一天的开始时间和结束时间
 	 *
 	 * @return
@@ -286,21 +150,6 @@ public class VisitController extends XDAOSupport {
 		list.add(kaishi);
 		list.add(jieshu);
 		return list;
-	}
-	
-	/**
-	 * 查询某一时段的所有商家发放红包金额
-	 *
-	 * @throws ParseException
-	 */
-	@RequestMapping(value = "faFang", method = RequestMethod.GET)
-	@ResponseBody
-	public Map<String, Object> faFangmoney(@RequestParam(value = "start") String start,
-										   @RequestParam(value = "end") String end,
-										   @RequestParam(value = "pageIndex", defaultValue = "1") Integer pageIndex,
-										   @RequestParam(value = "pageSize", defaultValue = "20") Integer pageSize, ModelMap map) throws ParseException {
-		map.put("fa", "");
-		return map;
 	}
 	
 	/**
@@ -328,5 +177,17 @@ public class VisitController extends XDAOSupport {
 		list.add(decimalFormat.format(yonghuYue));
 		map.put("shuaxin", list);
 		return map;
+	}
+	
+	/**
+	 * 菜单
+	 */
+	@RequestMapping(value = "modular", method = RequestMethod.GET)
+	public String modular(HttpServletRequest request, ModelMap mm) {
+		UserEntity user = (UserEntity) request.getSession().getAttribute("loginUser");
+		if (user == null) {
+			return "login";
+		}
+		return "manager/modular_list";
 	}
 }

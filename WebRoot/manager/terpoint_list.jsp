@@ -15,7 +15,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>活动互动系统-商家列表</title>
+    <title>代理商列表</title>
     <link rel="shortcut icon" href="favicon.ico"> 
     <link href="css/bootstrap.minb16a.css?v=3.3.5" rel="stylesheet">
     <link href="css/font-awesome.min93e3.css?v=4.4.0" rel="stylesheet">
@@ -47,7 +47,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 										<div class="dataTables_length" id="DataTables_Table_0_filter">
 											<label>
 												查找：
-					                        	<input type="text"  value="${name }" name="name" placeholder="根据店名查询">
+					                        	<input type="text"  value="${name }" name="name" placeholder="根据名称查询">
 					                        	<input type="text"  value="${username }" name="username" placeholder="根据用户名查询">
 					                        	<input type="submit" class="btn btn-sm btn-primary" value="搜索"> 
 											</label>
@@ -77,11 +77,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	                                    <th>店名</th>
 	                                    <th>账号</th>
                                     	<th>联系方式</th>
-                                    	<th>状态</th>
                                     	<th>余额</th>
-                                    	<th>支付宝账号</th>
-                                    	<th>平台手续费</th>
-                                    	<th>代理手续费</th>
                                     	<th style="width:120px">可添加商家数量</th>
                                     	<th>到期时间</th>
                                     	<th>操作</th>	                                   
@@ -94,32 +90,13 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		                            			${items.name }
 		                            		</td>
 		                            		<td>
-		                            			${items.user.userName }
+		                            			${items.user.username }
 		                            		</td>
 		                            		<td>
-		                            			${items.phone }
-		                            		</td>
-		                            		<td>
-		                            			<c:choose>
-		                            				<c:when test="${items.status=='0'}">
-		                            					正常
-		                            				</c:when>
-		                            				<c:when test="${items.status=='1'}">
-		                            					冻结
-		                            				</c:when>
-		                            			</c:choose>
+		                            			${items.user.phone }
 		                            		</td>
 		                            		<td>
 		                            		${items.money}
-		                            		</td>
-		                            		<td>
-											${items.zfb}
-		                            		</td>
-		                            		<td>
-											${items.ptFee}%
-		                            		</td>
-		                            		<td>
-											${items.terFee}%
 		                            		</td>
 		                            		<td>
 		                            			${items.activityNum }
@@ -133,8 +110,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 <!--		                                		<a href="javascript:void(0)" onclick="setMoney('${items.id }')">充值余额</a>|-->
 												<br>
 	                                			<a class="pn-opt" href="javascript:void(0);" onclick="setActivityNum('${items.id}','${items.activityNum }')">修改商家数量</a>
-	                                			<br>
-	                                			<a class="pn-opt" href="javascript:void(0);" onclick="setFee('${items.id}')">手续费一键设置</a>
 	                                			<br>
 												<a class="pn-opt" href="javascript:void(0);" onclick="setFeeAc('${items.id}')">商家手续费设置</a>
 		                            		</td>
@@ -197,42 +172,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		    });
 		}
     
-    	function setBoolean(id,boolean){
-    		var title;
-    		if(boolean=="true"){
-    			title="是否关闭电子二维码？";
-    		}else{
-    			title="是否开启电子二维码？";
-    		}
-		    swal({
-		        title:title,
-		        type: "warning",
-	         	showCancelButton: true,
-		        confirmButtonColor: "#DD6B55",
-		        confirmButtonText: "设置",
-		        closeOnConfirm: false
-		    }, function (isConfirm) {
-		   		 if(isConfirm){
-		    		$.ajax({
-		    			type:"get",
-						url:"terPoint/boolean?id="+id,
-						data:{boolean:boolean},
-						dataType:"json",
-						success:function(data){
-							if(data.flag){
-								swal({title:"成功！",type:"success"},function(){
-									window.location.reload();
-								});
-							}else{
-								layer.msg(data.msg);
-							}
-
-						}
-					});
-			    }
-		    });
-		}
-		
 		function setActivityNum(id,num){
 			layer.open({
 				type: 2,
@@ -243,49 +182,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				content: 'terPoint/activityNum?terId='+id
 			});	
 		}
-		function setFee(id){
-			layer.open({
-				type: 2,
-				title: '修改手续费',
-				shadeClose: true,
-				shade: 0.8,
-				area: ['1020px', '60%'],
-				content: 'terPoint/fee?id='+id
-			});	
-		}
-		
-		function setFeeAc(tid){
-			layer.open({
-				type: 2,
-				title: '代理手续费设置',
-				shadeClose: true,
-				shade: 0.8,
-				area: ['1020px', '60%'],
-				content: 'activity/selectAllAcFee?tid='+tid
-			});	
-		}
-		
-		function setMoney(id){
-			layer.open({
-				type: 2,
-				title: '充值余额',
-				shadeClose: true,
-				shade: 0.8,
-				area: ['1220px', '90%'],
-				content: 'terPoint/money?id='+id
-			});	
-		}
-		
-		function setRedPacket(id){
-			layer.open({
-				type: 2,
-				title: '绑定红包码',
-				shadeClose: true,
-				shade: 0.8,
-				area: ['1220px', '90%'],
-				content: 'manager/redpacket_binding.jsp?id='+id
-			});	
-		}
+
     </script>
 </body>
 </html>

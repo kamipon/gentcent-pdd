@@ -1,7 +1,7 @@
 package com.keji09.erp.controller;
 
-import com.keji09.model.role.UserEntity;
-import com.keji09.model.support.XDAOSupport;
+import com.keji09.erp.model.role.UserEntity;
+import com.keji09.erp.model.support.XDAOSupport;
 import com.keji09.erp.utils.SessionUtil;
 import com.keji09.erp.utils.UploadUtil;
 import net.sf.json.JSONObject;
@@ -29,7 +29,7 @@ public class UploadController extends XDAOSupport {
 	public Object uploadImage(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		UserEntity user = SessionUtil.getUser();
 		List<String> surfixList = Arrays.asList("jpg", "jpeg", "gif", "png", "bmp");
-		JSONObject json = UploadUtil.saveFile(request, user.getUserName(), user == null ? null : user.getUserName(), surfixList);
+		JSONObject json = UploadUtil.saveFile(request, user.getUsername(), user == null ? null : user.getUsername(), surfixList);
 		return json;
 	}
 	
@@ -40,7 +40,7 @@ public class UploadController extends XDAOSupport {
 	@ResponseBody
 	public Object uploadFile(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		UserEntity user = SessionUtil.getUser();
-		JSONObject json = UploadUtil.saveFile(request, user.getUserName(), user == null ? null : user.getUserName(), null);
+		JSONObject json = UploadUtil.saveFile(request, user.getUsername(), user == null ? null : user.getUsername(), null);
 		return json;
 	}
 	

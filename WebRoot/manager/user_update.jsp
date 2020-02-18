@@ -44,7 +44,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	                            <label class="col-sm-2 control-label"><font color="red">*</font>用户名</label>
 	                            <div class="col-sm-10">
 	                            	<input type="hidden" name="id" value="${user.id }">
-	                                <input type="text" class="form-control" name="userName" value="${user.userName }" readonly="readonly">
+	                                <input type="text" class="form-control" name="userName" value="${user.username }" readonly="readonly">
 	                            </div>
 	                        </div>
 	                        <div class="form-group">

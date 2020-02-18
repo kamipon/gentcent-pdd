@@ -33,7 +33,7 @@
         <property name="removeAbandonedTimeout" value="60"/>
         <property name="validationQuery" value="SELECT 1"/>
     </bean>
-    <bean id="sessionFactory"
+    <bean id="SessionFactory"
           class="org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean">
         <property name="dataSource" ref="dataSource"/>
         <property name="hibernateProperties">
@@ -51,33 +51,33 @@
         </property>
         <property name="packagesToScan">
             <list>
-                <value>com.keji09.model</value>
+                <value>com.keji09.erp.model</value>
             </list>
         </property>
 
     </bean>
 
     <!-- 模板 -->
-    <bean id="hibernateTemplate"
+    <bean id="HibernateTemplate"
           class="com.mezingr.hibernate.HibernateTemplateFactoryImpl">
-        <property name="sessionFactory" ref="sessionFactory"/>
+        <property name="sessionFactory" ref="SessionFactory"/>
     </bean>
 
     <!-- dao工厂 -->
     <bean id="hibernateDAOFactory"
           class="com.mezingr.dao.HibernateDAOFactory">
-        <property name="templateFactory" ref="hibernateTemplate"/>
+        <property name="templateFactory" ref="HibernateTemplate"/>
     </bean>
 
     <bean id="daoSupport"
-          class="com.keji09.model.support.XDAOSupport">
+          class="com.keji09.erp.model.support.XDAOSupport">
     </bean>
     <bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
         <property name="dataSource" ref="dataSource"/>
     </bean>
 
     <bean id="transactionManager" class="org.springframework.orm.hibernate3.HibernateTransactionManager">
-        <property name="sessionFactory" ref="sessionFactory"/>
+        <property name="sessionFactory" ref="SessionFactory"/>
     </bean>
     <!-- 配置事务异常封装 -->
     <bean id="persistenceExceptionTranslationPostProcessor"

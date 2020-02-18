@@ -2,13 +2,13 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:context="http://www.springframework.org/schema/context"
-       xmlns:task="http://www.springframework.org/schema/task"
+       xmlns:task="http://www.springframework.org/schema/task" xmlns:mvc="http://www.springframework.org/schema/mvc"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
 						http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
 						http://www.springframework.org/schema/context
 						http://www.springframework.org/schema/context/spring-context-3.0.xsd
 						http://www.springframework.org/schema/task
-                        http://www.springframework.org/schema/task/spring-task-3.0.xsd">
+                        http://www.springframework.org/schema/task/spring-task-3.0.xsd http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd">
 
 
     <!--SPRING START-->
@@ -49,4 +49,11 @@
         <constructor-arg index="0" value="${pdd.clientId}"/>
         <constructor-arg index="1" value="${pdd.clientSecret}"/>
     </bean>
+
+    <mvc:interceptors>
+        <mvc:interceptor>
+            <mvc:mapping path="/app*/**"/>
+            <bean id="tokenInterceptors" class="com.keji09.erp.api.filter.TokenInterceptors"/>
+        </mvc:interceptor>
+    </mvc:interceptors>
 </beans>

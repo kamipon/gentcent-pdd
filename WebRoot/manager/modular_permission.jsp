@@ -24,7 +24,7 @@
 		<link rel="stylesheet" href="${cp }/manager/css/zTreeStyle/zTreeStyle.css" type="text/css">
 		<script type="text/javascript" src="${cp }/manager/js/jquery1.9.1.js"></script>
 		<script type="text/javascript" src="${cp }/manager/js/jquery.ztree.core-3.5.js"></script>
-		<script type="text/javascript" src="${cp }/manager/js/jquery.ztree.excheck.min.js"></script>
+		<script type="text/javascript" src="${cp }/js/jquery.ztree.excheck.min.js"></script>
 		<link href="css/bootstrap.minb16a.css" rel="stylesheet">
 	    <link href="css/font-awesome.min93e3.css" rel="stylesheet">
 	    <link href="css/plugins/iCheck/custom.css" rel="stylesheet">
