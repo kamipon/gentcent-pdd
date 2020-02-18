@@ -1,5 +1,6 @@
 package com.keji09.erp.api.controller;
 
+import com.keji09.erp.model.MemberEntity;
 import com.keji09.erp.model.support.XDAOSupport;
 import com.keji09.erp.utils.Constants;
 import com.pdd.pop.sdk.common.util.JsonUtil;
@@ -30,8 +31,6 @@ import java.util.List;
 @Controller
 @RequestMapping("/app_goods")
 public class GoodsController extends XDAOSupport {
-
-	final static String PDD_PID = Constants.PDD_PID;
 
 	@Autowired
 	private PopHttpClient client;
@@ -95,11 +94,11 @@ public class GoodsController extends XDAOSupport {
 			@RequestParam(value = "id") String id,
 			HttpServletRequest req, HttpServletResponse resp
 			, ModelMap map){
+		MemberEntity member = (MemberEntity)req.getSession().getAttribute("member");
 		PddDdkGoodsPromotionUrlGenerateRequest request = new PddDdkGoodsPromotionUrlGenerateRequest();
 		List<Long> goodsIdList = new ArrayList<Long>();
 		goodsIdList.add(Long.valueOf(id));
-		System.out.println( PDD_PID);
-		request.setPId(PDD_PID);
+		request.setPId(member.getActivity().getPid());
 		request.setGoodsIdList(goodsIdList);
 		request.setGenerateWeiboappWebview(true);
 		request.setGenerateWeApp(true);
