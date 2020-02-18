@@ -133,6 +133,7 @@ public class GoodsController extends XDAOSupport {
 		request.setPage(pageIndex);
 		request.setPageSize(10);
 		request.setKeyword(keyword);
+		request.setWithCoupon(true);
 		request.setSortType(sortType);
 		request.setWithCoupon(true);
 		PddDdkGoodsSearchResponse response;

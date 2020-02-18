@@ -29,7 +29,7 @@ import com.mezingr.dao.PaginationList;
 @Controller
 @RequestMapping(value="/managerMsg")
 public class ManagerMsgController extends XDAOSupport{
-	
+
 	
 	@RequestMapping("/list")
 	public String list(
