@@ -38,9 +38,6 @@ public class GoodsController extends XDAOSupport {
 	@Autowired
 	private PopHttpClient client;
 
-	@Autowired
-	private PddCacheMap pddCacheMap;
-
 	/**
 	 * 商品详情 https://open.pinduoduo.com/#/apidocument/port?portId=pdd.ddk.goods.detail
 	 */
@@ -48,8 +45,7 @@ public class GoodsController extends XDAOSupport {
 	@ResponseBody
 	public Object getCaptcha(
 			@RequestParam(value = "id") Long id,
-			HttpServletRequest req, HttpServletResponse resp
-		, ModelMap map) {
+			ModelMap map) {
 		//id = 7440289L;
 		//id =86954697838L;
 		//resp.addHeader("Access-Control-Allow-Origin", "*");
@@ -121,7 +117,35 @@ public class GoodsController extends XDAOSupport {
 			e.printStackTrace();
 		}
 		return map;
-
 	}
+
+	@RequestMapping(value = "search", method = RequestMethod.GET)
+	@ResponseBody
+	public Object search(
+			@RequestParam(value = "keyword") String keyword,
+			@RequestParam(value = "sortType") Integer sortType,
+			@RequestParam(value = "pageIndex", defaultValue = "1") Integer pageIndex,
+			@RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize,
+			HttpServletRequest req, HttpServletResponse resp
+			, ModelMap map) {
+
+		PddDdkGoodsSearchRequest request = new PddDdkGoodsSearchRequest();
+		request.setPage(pageIndex);
+		request.setPageSize(10);
+		if(keyword!=null&&!keyword.equals("")){
+			request.setKeyword(keyword);
+		}
+		request.setSortType(sortType);
+		request.setWithCoupon(true);
+		PddDdkGoodsSearchResponse response;
+		try {
+			response = client.syncInvoke(request);
+			return JsonUtil.transferToJson(response);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return map;
+	}
+
 
 }
