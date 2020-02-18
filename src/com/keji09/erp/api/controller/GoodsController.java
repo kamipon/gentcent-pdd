@@ -132,8 +132,9 @@ public class GoodsController extends XDAOSupport {
 		PddDdkGoodsSearchRequest request = new PddDdkGoodsSearchRequest();
 		request.setPage(pageIndex);
 		request.setPageSize(10);
-		request.setKeyword(keyword);
-		request.setWithCoupon(true);
+		if(keyword!=null&&!keyword.equals("")){
+			request.setKeyword(keyword);
+		}
 		request.setSortType(sortType);
 		request.setWithCoupon(true);
 		PddDdkGoodsSearchResponse response;
