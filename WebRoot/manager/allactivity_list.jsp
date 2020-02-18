@@ -72,10 +72,8 @@
 					<tr>
 						<!--                                	 	<th style="width:100px;">活动图</th>-->
 						<th>名称</th>
-						<th>账号</th>
 						<th>联系方式</th>
 						<th>余额</th>
-						<th>支付宝账号</th>
 						<th>代理商</th>
 						<th>创建时间</th>
 						<th>操作</th>
@@ -91,23 +89,14 @@
 								<tr>
 							</c:otherwise>
 						</c:choose>
-						<!--	                            			<td>-->
-						<!--		                            			<img src="${items.picUrl }" style="width:50px;height:50px;">-->
-						<!--		                            		</td>-->
 						<td>
 								${items.activity.name }
 						</td>
 						<td>
-								${items.userName }
-						</td>
-						<td>
-								${items.activity.phone }
+								${items.activity.user.phone }
 						</td>
 						<td>
 							<fmt:formatNumber value="${items.restMoney }" pattern="0.00"/>
-						</td>
-						<td>
-								${items.activity.zfb }
 						</td>
 						<td>
 								${items.activity.terpoint.name}

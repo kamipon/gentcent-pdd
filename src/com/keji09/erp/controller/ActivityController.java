@@ -41,8 +41,6 @@ public class ActivityController extends XDAOSupport {
 	@Autowired
 	PermissionService permissionService;
 	@Autowired
-	PddService pddService;
-	@Autowired
 	SessionFactory sessionFactory;
 	
 	//查询商家 TODO
@@ -201,27 +199,6 @@ public class ActivityController extends XDAOSupport {
 			//给新增的商家设置商家角色
 			permissionService.setRole(user1.getId(), new String[]{"3"});
 			this.getActivityEntityDAO().create(entity);
-			
-			//创建推广位
-			PddDdkGoodsPidGenerateResponse response = pddService.pidGen("act_"+entity.getShotId());
-			if (response == null || response.getPIdGenerateResponse() == null) {
-				map.put("flag", false);
-				map.put("msg", "添加失败，创建推广位失败");
-				return map;
-			}
-			PIdGenerateResponsePIdListItem item = response.getPIdGenerateResponse().getPIdList().get(0);
-			Long createTime = item.getCreateTime();
-			String pId = item.getPId();
-			String pidName = item.getPidName();
-			PddPidEntity pddPidEntity = new PddPidEntity();
-			pddPidEntity.setPid(pId);
-			pddPidEntity.setPidName(pidName);
-			pddPidEntity.setAddTime(new Date(createTime));
-			pddPidEntity.setActivityId(entity.getId());
-			this.getPddPidEntityDAO().create(pddPidEntity);
-			
-			entity.setPid(pId);
-			this.getActivityEntityDAO().update(entity);
 			transaction.commit();
 			
 			map.put("flag", true);

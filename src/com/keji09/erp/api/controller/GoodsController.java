@@ -98,7 +98,7 @@ public class GoodsController extends XDAOSupport {
 		PddDdkGoodsPromotionUrlGenerateRequest request = new PddDdkGoodsPromotionUrlGenerateRequest();
 		List<Long> goodsIdList = new ArrayList<Long>();
 		goodsIdList.add(Long.valueOf(id));
-		request.setPId(member.getActivity().getPid());
+		request.setPId(member.getPid());
 		request.setGoodsIdList(goodsIdList);
 		request.setGenerateWeiboappWebview(true);
 		request.setGenerateWeApp(true);

@@ -132,6 +132,12 @@ public class MemberEntity implements Serializable {
 	@Column(name = "_desc")
 	private String desc;
 	
+	/**
+	 * 推广位
+	 */
+	@Column(name = "_pid")
+	private String pid;
+	
 	
 	public String getId() {
 		return id;
@@ -283,5 +289,13 @@ public class MemberEntity implements Serializable {
 	
 	public void setDesc(String desc) {
 		this.desc = desc;
+	}
+	
+	public String getPid() {
+		return pid;
+	}
+	
+	public void setPid(String pid) {
+		this.pid = pid;
 	}
 }

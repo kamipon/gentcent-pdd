@@ -83,12 +83,6 @@ public class ActivityEntity implements Serializable {
 	@Column(name = "_add_time")
 	private Date addTime = new Date();
 	
-	/**
-	 * 推广位
-	 */
-	@Column(name = "_pid")
-	private String pid;
-	
 	public String getShotId() {
 		return shotId;
 	}
@@ -183,13 +177,5 @@ public class ActivityEntity implements Serializable {
 	
 	public void setAddTime(Date addTime) {
 		this.addTime = addTime;
-	}
-	
-	public String getPid() {
-		return pid;
-	}
-	
-	public void setPid(String pid) {
-		this.pid = pid;
 	}
 }

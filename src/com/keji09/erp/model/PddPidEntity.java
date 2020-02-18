@@ -39,10 +39,10 @@ public class PddPidEntity implements Serializable {
 	@Column(name = "_add_time")
 	private Date addTime = new Date();
 	/**
-	 * 所属商家Id
+	 * 所属用户Id
 	 */
-	@Column(name = "_activity_id")
-	private String activityId;
+	@Column(name = "_member_id")
+	private String memberId;
 	
 	public String getId() {
 		return id;
@@ -76,11 +76,11 @@ public class PddPidEntity implements Serializable {
 		this.addTime = addTime;
 	}
 	
-	public String getActivityId() {
-		return activityId;
+	public String getMemberId() {
+		return memberId;
 	}
 	
-	public void setActivityId(String activityId) {
-		this.activityId = activityId;
+	public void setMemberId(String memberId) {
+		this.memberId = memberId;
 	}
 }

@@ -1,17 +1,20 @@
 package com.keji09.erp.api.controller;
 
+import com.keji09.erp.api.service.PddService;
 import com.keji09.erp.model.ActivityEntity;
 import com.keji09.erp.model.MemberEntity;
+import com.keji09.erp.model.PddPidEntity;
 import com.keji09.erp.model.TokenEntity;
 import com.keji09.erp.model.support.XDAOSupport;
+import com.mezingr.dao.DAOException;
 import com.mezingr.dao.HDaoUtils;
+import com.pdd.pop.sdk.http.api.response.PddDdkGoodsPidGenerateResponse;
 import org.apache.commons.lang.RandomStringUtils;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.classic.Session;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -30,12 +33,14 @@ public class MemberController extends XDAOSupport {
 	
 	@Autowired
 	SessionFactory sessionFactory;
+	@Autowired
+	PddService pddService;
 	
 	private static final long ONE_DAY = 60 * 60 * 24;
 	private static final long ONE_WEEK = ONE_DAY * 7;
 	
 	/**
-	 * 用户登录
+	 * 用户注册
 	 */
 	@RequestMapping(value = "register", method = RequestMethod.POST)
 	@ResponseBody
@@ -64,31 +69,55 @@ public class MemberController extends XDAOSupport {
 			return map;
 		}
 		
-		//注册
-		ActivityEntity act = this.getActivityEntityDAO().findUnique("shotId", invcode);
-		MemberEntity member = new MemberEntity();
-		member.setUsername(phone);
-		member.setPassword(password);
-		member.setNick("用户" + RandomStringUtils.randomNumeric(8));
-		member.setLoginLastTime(new Date());
-		member.setPicUrl("https://cdn2.jianshu.io/assets/default_avatar/2-9636b13945b9ccf345bc98d0d81074eb.jpg?imageMogr2/auto-orient/strip|imageView2/1/w/240/h/240");
-		member.setTerpointId(act.getTerpoint().getId());
-		member.setActivity(act);
-		this.getMemberEntityDAO().create(member);
-		
-		//登录
-		TokenEntity token = new TokenEntity(member.getId());
-		this.getTokenEntityDAO().create(token);
-		map.put("token", token.getId());
-		map.put("member", member);
-		map.put("errcode", 200);
-		return map;
+		//开启事务
+		Transaction transaction = sessionFactory.getCurrentSession().getTransaction();
+		transaction.begin();
+		try {
+			//注册
+			ActivityEntity act = this.getActivityEntityDAO().findUnique("shotId", invcode);
+			MemberEntity member = new MemberEntity();
+			member.setUsername(phone);
+			member.setPassword(password);
+			member.setNick("用户" + RandomStringUtils.randomNumeric(8));
+			member.setLoginLastTime(new Date());
+			member.setPicUrl("https://cdn2.jianshu.io/assets/default_avatar/2-9636b13945b9ccf345bc98d0d81074eb.jpg?imageMogr2/auto-orient/strip|imageView2/1/w/240/h/240");
+			member.setTerpointId(act.getTerpoint().getId());
+			member.setActivity(act);
+			this.getMemberEntityDAO().create(member);
+			//创建推广位
+			PddDdkGoodsPidGenerateResponse response = pddService.pidGen("member_shotid_" + member.getShotId());
+			PddDdkGoodsPidGenerateResponse.PIdGenerateResponsePIdListItem item = response.getPIdGenerateResponse().getPIdList().get(0);
+			Long createTime = item.getCreateTime();
+			String pId = item.getPId();
+			String pidName = item.getPidName();
+			PddPidEntity pddPidEntity = new PddPidEntity();
+			pddPidEntity.setPid(pId);
+			pddPidEntity.setPidName(pidName);
+			pddPidEntity.setAddTime(new Date(createTime));
+			pddPidEntity.setMemberId(member.getId());
+			this.getPddPidEntityDAO().create(pddPidEntity);
+			member.setPid(pId);
+			this.getMemberEntityDAO().update(member);
+			//登录
+			TokenEntity token = new TokenEntity(member.getId());
+			this.getTokenEntityDAO().create(token);
+			transaction.commit();
+			map.put("token", token.getId());
+			map.put("member", member);
+			map.put("errcode", 200);
+			return map;
+		} catch (Exception e) {
+			transaction.rollback();
+			e.printStackTrace();
+			map.put("msg", "系统内部错误");
+			map.put("errcode", 500);
+			return map;
+		}
 	}
 	
 	/**
 	 * 令牌登录
 	 */
-	@Transactional
 	@RequestMapping(value = "login_token", method = RequestMethod.POST)
 	@ResponseBody
 	public Object login(
@@ -220,9 +249,9 @@ public class MemberController extends XDAOSupport {
 	 */
 	@RequestMapping(value = "logout", method = RequestMethod.POST)
 	@ResponseBody
-	public Object logout(HttpServletRequest req,ModelMap map) {
+	public Object logout(HttpServletRequest req, ModelMap map) {
 		//登录
-		MemberEntity member = (MemberEntity)req.getSession().getAttribute("member");
+		MemberEntity member = (MemberEntity) req.getSession().getAttribute("member");
 		req.getSession().removeAttribute("member");
 		
 		String sql = "DELETE FROM pdd_token WHERE _member_id = ?";
