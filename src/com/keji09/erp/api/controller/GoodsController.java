@@ -8,9 +8,11 @@ import com.pdd.pop.sdk.http.PopHttpClient;
 import com.pdd.pop.sdk.http.api.request.PddDdkGoodsDetailRequest;
 import com.pdd.pop.sdk.http.api.request.PddDdkGoodsPromotionUrlGenerateRequest;
 import com.pdd.pop.sdk.http.api.request.PddDdkGoodsSearchRequest;
+import com.pdd.pop.sdk.http.api.request.PddGoodsCatsGetRequest;
 import com.pdd.pop.sdk.http.api.response.PddDdkGoodsDetailResponse;
 import com.pdd.pop.sdk.http.api.response.PddDdkGoodsPromotionUrlGenerateResponse;
 import com.pdd.pop.sdk.http.api.response.PddDdkGoodsSearchResponse;
+import com.pdd.pop.sdk.http.api.response.PddGoodsCatsGetResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -119,8 +121,9 @@ public class GoodsController extends XDAOSupport {
 	@RequestMapping(value = "search", method = RequestMethod.GET)
 	@ResponseBody
 	public Object search(
-			@RequestParam(value = "keyword") String keyword,
-			@RequestParam(value = "sortType") Integer sortType,
+			@RequestParam(value = "keyword" , required = false) String keyword, //关键词搜索
+			@RequestParam(value = "sortType") Integer sortType, //排序方式
+			@RequestParam(value = "catId" , required = false) Long catId, //分类搜索
 			@RequestParam(value = "pageIndex", defaultValue = "1") Integer pageIndex,
 			@RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize,
 			HttpServletRequest req, HttpServletResponse resp
@@ -131,6 +134,9 @@ public class GoodsController extends XDAOSupport {
 		request.setPageSize(10);
 		if(keyword!=null&&!keyword.equals("")){
 			request.setKeyword(keyword);
+		}
+		if(catId!=null){
+			request.setCatId(catId);
 		}
 		request.setSortType(sortType);
 		request.setWithCoupon(true);
@@ -144,5 +150,23 @@ public class GoodsController extends XDAOSupport {
 		return map;
 	}
 
-
+	/**
+	 * 商品分类 https://open.pinduoduo.com/#/apidocument/port?portId=pdd.goods.cats.get
+	 */
+	@RequestMapping(value = "cats", method = RequestMethod.GET)
+	@ResponseBody
+	public Object getCats(
+			@RequestParam(value = "id", defaultValue = "0") Long pageIndex,
+			HttpServletRequest req, HttpServletResponse resp
+			, ModelMap map) {
+		PddGoodsCatsGetRequest request = new PddGoodsCatsGetRequest();
+		request.setParentCatId(pageIndex);
+		try {
+			PddGoodsCatsGetResponse response = client.syncInvoke(request);
+			return JsonUtil.transferToJson(response);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return map;
+	}
 }
