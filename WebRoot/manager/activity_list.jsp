@@ -87,6 +87,7 @@
                         </c:if>
                         <th>状态</th>
                         <th>余额</th>
+                        <th>佣金比例</th>
                         <th>操作</th>
                     </tr>
                     </thead>
@@ -101,7 +102,7 @@
                             </c:otherwise>
                         </c:choose>
                         <td>
-                                ${items.name }
+                           ${items.name }
                         </td>
                         <td>
                                 ${items.phone }
@@ -125,8 +126,16 @@
                             <fmt:formatNumber value="${items.restMoney }" pattern="0.00"/>
                         </td>
                         <td>
-                            <a class="pn-opt" href="javascript:void(0);" onclick="del('${items.id}')">删除</a>|
-                            <a class="J_menuItem" href="activity/${items.id}">修改</a>
+                                ${items.dividend }%
+                        </td>
+                        <td>
+                            <c:if test="${items.status=='0'}">
+                                <a class="pn-opt" href="javascript:void(0);" onclick="frozen('${items.id}')">冻结</a>|
+                            </c:if>
+                            <c:if test="${items.status=='1'}">
+                                <a class="pn-opt" href="javascript:void(0);" onclick="thaw('${items.id}')">解冻</a>|
+                            </c:if>
+                            <a class="J_menuItem" href="/activity/updateActivity/${items.id}">修改</a>
                         </td>
                         </tr>
                     </c:forEach>
@@ -154,26 +163,51 @@
 <script type="text/javascript" src="js/plugins/sweetalert/sweetalert.min.js"></script>
 <script src="js/layer/layer.js"></script>
 <script type="text/javascript">
-    function del(id) {
+    function thaw(id) {
         swal({
-            title: "确定删除此商家？删除后无法恢复！",
+            title: "确定冻结此商家？！",
             type: "warning",
             showCancelButton: true,
             confirmButtonColor: "#DD6B55",
-            confirmButtonText: "删除",
+            confirmButtonText: "冻结",
             closeOnConfirm: false
         }, function (isConfirm) {
             if (isConfirm) {
                 $.ajax({
                     type: "post",
-                    url: "activity/" + id,
-                    data: {
-                        _method: "delete"
-                    },
+                    url: "activity/thaw/" + id,
                     dataType: "json",
                     success: function (data) {
                         if (data.flag) {
-                            swal({title: "删除成功！", type: "success"}, function () {
+                            swal({title: "已解冻！", type: "success"}, function () {
+                                window.location.reload();
+                            });
+                        } else {
+                            layer.msg(data.msg);
+                        }
+
+                    }
+                });
+            }
+        });
+    }
+    function frozen(id) {
+        swal({
+            title: "确定冻结此商家？！",
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#DD6B55",
+            confirmButtonText: "冻结",
+            closeOnConfirm: false
+        }, function (isConfirm) {
+            if (isConfirm) {
+                $.ajax({
+                    type: "post",
+                    url: "activity/frozen/" + id,
+                    dataType: "json",
+                    success: function (data) {
+                        if (data.flag) {
+                            swal({title: "已冻结！", type: "success"}, function () {
                                 window.location.reload();
                             });
                         } else {

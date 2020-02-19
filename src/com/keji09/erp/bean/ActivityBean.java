@@ -44,12 +44,15 @@ public class ActivityBean {
 	 * 余额
 	 */
 	private Float restMoney = 0.0f;
-	
+
+
 	private Boolean isOverTime;
 	
 	private ActivityEntity activity;
-	
-	
+
+	public Integer getDividend() {
+		return activity.getDividend();
+	}
 	public void setUserName(String userName) {
 		this.userName = userName;
 	}

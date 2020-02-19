@@ -20,10 +20,7 @@ import org.hibernate.criterion.Order;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
@@ -147,6 +144,22 @@ public class ActivityController extends XDAOSupport {
 		}
 		return "manager/activity_add";
 	}
+
+	/**
+	 * 修改商家
+	 */
+	@RequestMapping(value = "updateActivity/{id}", method = RequestMethod.GET)
+	public String updateActivity(
+			@PathVariable(value = "id") String id,
+			HttpServletRequest request, ModelMap map) {
+		UserEntity user = (UserEntity) request.getSession().getAttribute("loginUser");
+		if (user == null) {
+			return "login";
+		}
+		ActivityEntity activity = this.getActivityEntityDAO().get(id);
+		map.put("activity",activity);
+		return "manager/activity_update";
+	}
 	
 	/**
 	 * 添加商家
@@ -158,6 +171,7 @@ public class ActivityController extends XDAOSupport {
 			@RequestParam(value = "phone") String phone,
 			@RequestParam(value = "userName") String userName,
 			@RequestParam(value = "password") String password,
+			@RequestParam(value = "dividend") Integer dividend,
 			@RequestParam(value = "desc", required = false) String desc,
 			@RequestParam(value = "overTime", required = false) String overTime,
 			@RequestParam(value = "picUrl", required = false) String picUrl,
@@ -187,7 +201,7 @@ public class ActivityController extends XDAOSupport {
 			user1.setAddTime(new Date());
 			user1.setRoleName(this.getRoleEntityDAO().get("3"));
 			this.getUserEntityDAO().create(user1);
-			
+			entity.setDividend(dividend);
 			entity.setName(name);
 			entity.setDesc(desc);
 			entity.setCategoryt(0);
@@ -200,7 +214,7 @@ public class ActivityController extends XDAOSupport {
 			permissionService.setRole(user1.getId(), new String[]{"3"});
 			this.getActivityEntityDAO().create(entity);
 			transaction.commit();
-			
+
 			map.put("flag", true);
 			map.put("msg", "添加成功");
 		} catch (Exception e) {
@@ -211,4 +225,96 @@ public class ActivityController extends XDAOSupport {
 		}
 		return map;
 	}
+
+	/**
+	 * 修改
+	 */
+	@RequestMapping(value = "/update/{id}", method = RequestMethod.POST)
+	@ResponseBody
+	public Object update(
+			@PathVariable(value = "id") String id,
+			@RequestParam(value = "name") String name,
+			@RequestParam(value = "phone") String phone,
+			@RequestParam(value = "desc", required = false) String desc,
+			@RequestParam(value = "dividend") Integer dividend,
+			@RequestParam(value = "overTime", required = false) String overTime,
+			HttpServletRequest request, ModelMap map) {
+		Session session = sessionFactory.getCurrentSession();
+		Transaction transaction = session.getTransaction();
+		try {
+			transaction.begin();
+			ActivityEntity entity = this.getActivityEntityDAO().get(id);
+
+			UserEntity user1 = entity.getUser();
+			user1.setPhone(phone);
+			this.getUserEntityDAO().update(user1);
+			entity.setName(name);
+			entity.setDesc(desc);
+			entity.setDividend(dividend);
+			if (overTime != null) {
+				entity.setOverTime(DateUtil2.parseDateTime(overTime));
+			}
+			this.getActivityEntityDAO().update(entity);
+			transaction.commit();
+			map.put("flag", true);
+			map.put("msg", "修改成功");
+		} catch (Exception e) {
+			transaction.rollback();
+			// TODO: handle exception
+			map.put("flag", false);
+			map.put("msg", "修改失败!");
+		}
+		return map;
+	}
+
+	/**
+	 * 冻结
+	 */
+	@RequestMapping(value = "/frozen/{id}", method = RequestMethod.POST)
+	@ResponseBody
+	public Object update(
+			@PathVariable(value = "id") String id,
+			HttpServletRequest request, ModelMap map) {
+		Session session = sessionFactory.getCurrentSession();
+		Transaction transaction = session.getTransaction();
+		try {
+			transaction.begin();
+			ActivityEntity entity = this.getActivityEntityDAO().get(id);
+			entity.setStatus(1);
+			this.getActivityEntityDAO().update(entity);
+			transaction.commit();
+			map.put("flag", true);
+			map.put("msg", "操作成功!");
+		} catch (Exception e) {
+			transaction.rollback();
+			// TODO: handle exception
+			map.put("flag", false);
+			map.put("msg", "操作失败!");
+		}
+		return map;
+	}
+	@RequestMapping(value = "/thaw/{id}", method = RequestMethod.POST)
+	@ResponseBody
+	public Object thaw(
+			@PathVariable(value = "id") String id,
+			HttpServletRequest request, ModelMap map) {
+		Session session = sessionFactory.getCurrentSession();
+		Transaction transaction = session.getTransaction();
+		try {
+			transaction.begin();
+			ActivityEntity entity = this.getActivityEntityDAO().get(id);
+			entity.setStatus(0);
+			this.getActivityEntityDAO().update(entity);
+			transaction.commit();
+			map.put("flag", true);
+			map.put("msg", "操作成功!");
+		} catch (Exception e) {
+			transaction.rollback();
+			// TODO: handle exception
+			map.put("flag", false);
+			map.put("msg", "操作失败!");
+		}
+		return map;
+	}
+
 }

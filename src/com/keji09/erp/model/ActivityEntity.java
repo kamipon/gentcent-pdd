@@ -41,7 +41,7 @@ public class ActivityEntity implements Serializable {
 	@Column(name = "_desc")
 	private String desc;
 	/**
-	 * 状态（0.正常; -1.关闭; 13.已删除）
+	 * 状态（0.正常; -1.关闭; 1.冻结 13.已删除）
 	 */
 	@Column(name = "_status")
 	private Integer status = 0;
@@ -82,7 +82,23 @@ public class ActivityEntity implements Serializable {
 	 */
 	@Column(name = "_add_time")
 	private Date addTime = new Date();
-	
+
+	/**
+	 * 佣金提成 1=1%
+	 */
+	@Column(name = "_dividend")
+	private Integer dividend = 0;
+
+
+	public Integer getDividend() {
+		return dividend;
+	}
+
+	public void setDividend(Integer dividend) {
+		this.dividend = dividend;
+	}
+
+
 	public String getShotId() {
 		return shotId;
 	}

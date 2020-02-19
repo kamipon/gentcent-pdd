@@ -71,6 +71,13 @@
                                 <input type="text" class="form-control" name="desc">
                             </div>
                         </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">佣金提成(%)</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" name="dividend" value="0">
+                            </div>
+                        </div>
                         <div class="form-group">
                             <label class="col-sm-2 control-label">到期时间</label>
                             <div class="col-sm-10">
@@ -146,6 +153,8 @@
             var desc = $.trim($("input[name='desc']").val());
             //到期时间
             var overTime = $.trim($("input[name='overTime']").val());
+            //佣金提成
+            var dividend = $.trim($("input[name='dividend']").val());
 
             //商家类型*/
             var type = 1;
@@ -154,13 +163,15 @@
                 name, "请输入商家名称!",
                 userName, "请输入账号",
                 password, "请输入密码",
-                phone, "请输入联系方式"
+                phone, "请输入联系方式",
+                dividend, "请填写佣金提成"
             );
             if (flag) {
                 $.ajax({
                     url: "activity/add",
                     type: "post",
                     data: {
+                        dividend:dividend,
                         name: name,
                         phone: phone,
                         userName: userName,
@@ -183,7 +194,7 @@
             return false;
         });
 
-        function validate(date1, msg1, date2, msg2, date3, msg3, date4, msg4/*,date5,msg5,date6,msg6,date7,msg7,date8,msg8*/) {
+        function validate(date1, msg1, date2, msg2, date3, msg3, date4, msg4,date5,msg5/*,date6,msg6,date7,msg7,date8,msg8*/) {
             if (date1 == '') {
                 layer.msg(msg1);
                 return false;
@@ -195,6 +206,9 @@
                 return false;
             } else if (date4 == '') {
                 layer.msg(msg4);
+                return false;
+            } else if (date5 == '') {
+                layer.msg(msg5);
                 return false;
             }
             return true;

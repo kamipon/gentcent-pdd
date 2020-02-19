@@ -100,15 +100,14 @@ public class UserEntity implements Serializable {
 	 */
 	@Column(name = "_status")
 	private Integer status = 1;
-	
 	/**
 	 * 角色
 	 */
 	@ManyToOne
 	@JoinColumn(name = "_role")
 	private RoleEntity roleName;
-	
-	
+
+
 	public String getId() {
 		return id;
 	}
