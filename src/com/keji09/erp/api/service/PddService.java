@@ -1,13 +1,8 @@
 package com.keji09.erp.api.service;
 
-import com.keji09.erp.utils.Constants;
 import com.pdd.pop.sdk.http.PopHttpClient;
-import com.pdd.pop.sdk.http.api.request.PddDdkCmsPromUrlGenerateRequest;
-import com.pdd.pop.sdk.http.api.request.PddDdkGoodsPidGenerateRequest;
-import com.pdd.pop.sdk.http.api.request.PddDdkResourceUrlGenRequest;
-import com.pdd.pop.sdk.http.api.response.PddDdkCmsPromUrlGenerateResponse;
-import com.pdd.pop.sdk.http.api.response.PddDdkGoodsPidGenerateResponse;
-import com.pdd.pop.sdk.http.api.response.PddDdkResourceUrlGenResponse;
+import com.pdd.pop.sdk.http.api.request.*;
+import com.pdd.pop.sdk.http.api.response.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -24,16 +19,16 @@ public class PddService {
 	private PopHttpClient client;
 	
 	/**
-	 * 生成频道推广链接
+	 * 生成运营频道推广链接
 	 */
-	public PddDdkCmsPromUrlGenerateResponse promUrlGen(Integer channelType) {
+	public PddDdkCmsPromUrlGenerateResponse channelUrlGen(String pid, Integer channelType) {
 		
 		PddDdkCmsPromUrlGenerateRequest request = new PddDdkCmsPromUrlGenerateRequest();
 		request.setWeAppWebViewShortUrl(false);
 		request.setWeAppWebViewUrl(false);
 		request.setChannelType(channelType);
 		ArrayList<String> pids = new ArrayList<>();
-		pids.add(Constants.PDD_PID);
+		pids.add(pid);
 		request.setPIdList(pids);
 		try {
 			return client.syncInvoke(request);
@@ -45,10 +40,42 @@ public class PddService {
 	/**
 	 * 生成频道推广链接 2
 	 */
-	public PddDdkResourceUrlGenResponse resourceUrlGen(Integer resourceType) {
+	public PddDdkResourceUrlGenResponse resourceUrlGen(String pid, Integer resourceType) {
 		PddDdkResourceUrlGenRequest request = new PddDdkResourceUrlGenRequest();
-		request.setPid(Constants.PDD_PID);
+		request.setPid(pid);
 		request.setResourceType(resourceType);
+		try {
+			return client.syncInvoke(request);
+		} catch (Exception e) {
+			return null;
+		}
+	}
+	
+	/**
+	 * 生成主题推广链接
+	 */
+	public PddDdkThemePromUrlGenerateResponse themeUrlGen(String pid, Long themeId) {
+		
+		PddDdkThemePromUrlGenerateRequest request = new PddDdkThemePromUrlGenerateRequest();
+		request.setPid(pid);
+		List<Long> longs = new ArrayList<>();
+		longs.add(themeId);
+		request.setThemeIdList(longs);
+		try {
+			return client.syncInvoke(request);
+		} catch (Exception e) {
+			return null;
+		}
+	}
+	
+	/**
+	 * 运营频道商品
+	 */
+	public PddDdkGoodsRecommendGetResponse channelGoods(Integer channelType) {
+		PddDdkGoodsRecommendGetRequest request = new PddDdkGoodsRecommendGetRequest();
+		request.setOffset(0);
+		request.setLimit(20);
+		request.setChannelType(channelType);
 		try {
 			return client.syncInvoke(request);
 		} catch (Exception e) {
