@@ -45,6 +45,10 @@ public class XDAOSupport {
 	public HibernateDAO<UserEntity> getUserEntityDAO() {
 		return this.hibernateDAOFactory.getHibernateDAO(UserEntity.class);
 	}
+	//角色相关
+	public HibernateDAO<OrderEntity> getOrderEntityDAO() {
+		return this.hibernateDAOFactory.getHibernateDAO(OrderEntity.class);
+	}
 	
 	public HibernateDAO<RoleEntity> getRoleEntityDAO() {
 		return this.hibernateDAOFactory.getHibernateDAO(RoleEntity.class);
