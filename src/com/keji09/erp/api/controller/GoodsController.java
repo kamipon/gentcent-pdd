@@ -85,36 +85,36 @@ public class GoodsController extends XDAOSupport {
 		return map;
 	}
 
-	/**
-	 * https://open.pinduoduo.com/#/apidocument/port?portId=pdd.ddk.goods.promotion.url.generate
-	 */
-	@RequestMapping(value="generate",method = RequestMethod.GET)
-	@ResponseBody
-	public Object generate(
-			@RequestParam(value = "id") String id,
-			HttpServletRequest req, HttpServletResponse resp
-			, ModelMap map){
-		MemberEntity member = (MemberEntity)req.getSession().getAttribute("member");
-		PddDdkGoodsPromotionUrlGenerateRequest request = new PddDdkGoodsPromotionUrlGenerateRequest();
-		List<Long> goodsIdList = new ArrayList<Long>();
-		goodsIdList.add(Long.valueOf(id));
-		request.setPId(member.getPid());
-		request.setGoodsIdList(goodsIdList);
-		request.setGenerateWeiboappWebview(true);
-		request.setGenerateWeApp(true);
-		request.setGenerateWeiboappWebview(true);
-		request.setGenerateMallCollectCoupon(true);
-		request.setGenerateSchemaUrl(true);
-		request.setGenerateQqApp(true);
-		try{
-			PddDdkGoodsPromotionUrlGenerateResponse response = client.syncInvoke(request);
-			System.out.println( JsonUtil.transferToJson(response));
-			return  JsonUtil.transferToJson(response);
-		}catch (Exception e){
-			e.printStackTrace();
-		}
-		return map;
-	}
+//	/**
+//	 * https://open.pinduoduo.com/#/apidocument/port?portId=pdd.ddk.goods.promotion.url.generate
+//	 */
+//	@RequestMapping(value="generate",method = RequestMethod.GET)
+//	@ResponseBody
+//	public Object generate(
+//			@RequestParam(value = "id") String id,
+//			HttpServletRequest req, HttpServletResponse resp
+//			, ModelMap map){
+//		MemberEntity member = (MemberEntity)req.getSession().getAttribute("member");
+//		PddDdkGoodsPromotionUrlGenerateRequest request = new PddDdkGoodsPromotionUrlGenerateRequest();
+//		List<Long> goodsIdList = new ArrayList<Long>();
+//		goodsIdList.add(Long.valueOf(id));
+//		request.setPId(member.getPid());
+//		request.setGoodsIdList(goodsIdList);
+//		request.setGenerateWeiboappWebview(true);
+//		request.setGenerateWeApp(true);
+//		request.setGenerateWeiboappWebview(true);
+//		request.setGenerateMallCollectCoupon(true);
+//		request.setGenerateSchemaUrl(true);
+//		request.setGenerateQqApp(true);
+//		try{
+//			PddDdkGoodsPromotionUrlGenerateResponse response = client.syncInvoke(request);
+//			System.out.println( JsonUtil.transferToJson(response));
+//			return  JsonUtil.transferToJson(response);
+//		}catch (Exception e){
+//			e.printStackTrace();
+//		}
+//		return map;
+//	}
 
 	@RequestMapping(value = "search", method = RequestMethod.GET)
 	@ResponseBody

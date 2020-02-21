@@ -40,7 +40,10 @@ public class XDAOSupport {
 	public HibernateDAO<PddPidEntity> getPddPidEntityDAO() {
 		return this.hibernateDAOFactory.getHibernateDAO(PddPidEntity.class);
 	}
-	
+	public HibernateDAO<CouponEntity> getCouponEntityDAO() {
+		return this.hibernateDAOFactory.getHibernateDAO(CouponEntity.class);
+	}
+
 	//角色相关
 	public HibernateDAO<UserEntity> getUserEntityDAO() {
 		return this.hibernateDAOFactory.getHibernateDAO(UserEntity.class);

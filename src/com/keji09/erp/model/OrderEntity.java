@@ -25,7 +25,7 @@ public class OrderEntity implements Serializable {
     /**
      * 拼多多id
      */
-    @Column(name = "_goods_id" , unique = true)
+    @Column(name = "_goods_id")
     private Long goodsId;
 
     /**
