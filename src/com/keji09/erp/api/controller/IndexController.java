@@ -5,10 +5,7 @@ import com.keji09.erp.model.MemberEntity;
 import com.keji09.erp.model.support.XDAOSupport;
 import com.keji09.erp.utils.Constants;
 import com.pdd.pop.sdk.http.PopHttpClient;
-import com.pdd.pop.sdk.http.api.request.PddDdkGoodsRecommendGetRequest;
-import com.pdd.pop.sdk.http.api.request.PddDdkGoodsSearchRequest;
-import com.pdd.pop.sdk.http.api.request.PddDdkThemeListGetRequest;
-import com.pdd.pop.sdk.http.api.request.PddDdkTopGoodsListQueryRequest;
+import com.pdd.pop.sdk.http.api.request.*;
 import com.pdd.pop.sdk.http.api.response.*;
 import com.pdd.pop.sdk.http.api.response.PddDdkCmsPromUrlGenerateResponse.CmsPromotionUrlGenerateResponseUrlListItem;
 import com.pdd.pop.sdk.http.api.response.PddDdkGoodsRecommendGetResponse.GoodsBasicDetailResponseListItem;
@@ -22,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -177,12 +175,35 @@ public class IndexController extends XDAOSupport {
 			PddDdkGoodsRecommendGetResponse response1 = pddService.channelGoods(0);
 			List<GoodsBasicDetailResponseListItem> list1 = response1.getGoodsBasicDetailResponse().getList();
 			PddDdkGoodsRecommendGetResponse response2 = pddService.channelGoods(1);
-			List<GoodsBasicDetailResponseListItem> list2 = response1.getGoodsBasicDetailResponse().getList();
+			List<GoodsBasicDetailResponseListItem> list2 = response2.getGoodsBasicDetailResponse().getList();
 			PddDdkGoodsRecommendGetResponse response3 = pddService.channelGoods(2);
-			List<GoodsBasicDetailResponseListItem> list3 = response1.getGoodsBasicDetailResponse().getList();
+			List<GoodsBasicDetailResponseListItem> list3 = response3.getGoodsBasicDetailResponse().getList();
 			map.put("list1", list1);
 			map.put("list2", list2);
 			map.put("list3", list3);
+			map.put("errcode", 200);
+		} catch (Exception e) {
+			e.printStackTrace();
+			map.put("errcode", 500);
+			map.put("msg", "连接超时");
+		}
+		return map;
+	}
+	
+	/**
+	 * 多多客生成转盘抽免单url
+	 */
+	@RequestMapping(value = "lottery/gen", method = RequestMethod.POST)
+	@ResponseBody
+	public Object lotteryUrlGen(HttpServletRequest req, ModelMap map) {
+		MemberEntity member = (MemberEntity) req.getSession().getAttribute("member");
+		PddDdkLotteryUrlGenRequest request = new PddDdkLotteryUrlGenRequest();
+		List<String> pids = new ArrayList<>();
+		pids.add(member.getPid());
+		request.setPidList(pids);
+		try {
+			PddDdkLotteryUrlGenResponse response = client.syncInvoke(request);
+			map.put("data", response.getLotteryUrlResponse().getUrlList());
 			map.put("errcode", 200);
 		} catch (Exception e) {
 			e.printStackTrace();
