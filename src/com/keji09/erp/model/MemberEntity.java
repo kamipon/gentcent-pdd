@@ -26,7 +26,7 @@ public class MemberEntity implements Serializable {
 	 * shotID
 	 */
 	@Column(name = "_shot_id", unique = true)
-	private String shotId = RandomStringUtils.randomNumeric(7);
+	private String shotId = RandomStringUtils.randomNumeric(8);
 	
 	/**
 	 * 我的上级的shotId

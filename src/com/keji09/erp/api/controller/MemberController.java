@@ -46,7 +46,6 @@ public class MemberController extends XDAOSupport {
 	@ResponseBody
 	public Object register(
 			@RequestParam(value = "phone") String phone,
-			@RequestParam(value = "password") String password,
 			@RequestParam(value = "invcode") String invcode,
 			@RequestParam(value = "authcode") String authcode,
 			ModelMap map) {
@@ -62,11 +61,21 @@ public class MemberController extends XDAOSupport {
 			map.put("msg", "该手机号已经被注册");
 			return map;
 		}
-		boolean b = this.getActivityEntityDAO().exist("shotId", invcode);
-		if (!b) {
-			map.put("errcode", 10001);
-			map.put("msg", "邀请码错误");
-			return map;
+		MemberEntity  upMember = this.getMemberEntityDAO().findUnique(HDaoUtils.eq("shotId",invcode).toCondition());
+		String supShotId = null;
+
+		ActivityEntity act = null;
+		if(upMember==null){
+			act = this.getActivityEntityDAO().findUnique("shotId", invcode);
+			boolean b = this.getActivityEntityDAO().exist("shotId", invcode);
+			if (!b) {
+				map.put("errcode", 10001);
+				map.put("msg", "邀请码错误");
+				return map;
+			}
+		}else{
+			act = upMember.getActivity();
+			supShotId = upMember.getShotId();
 		}
 		
 		//开启事务
@@ -74,10 +83,9 @@ public class MemberController extends XDAOSupport {
 		transaction.begin();
 		try {
 			//注册
-			ActivityEntity act = this.getActivityEntityDAO().findUnique("shotId", invcode);
 			MemberEntity member = new MemberEntity();
 			member.setUsername(phone);
-			member.setPassword(password);
+			member.setSupShotId(supShotId);
 			member.setNick("用户" + RandomStringUtils.randomNumeric(8));
 			member.setLoginLastTime(new Date());
 			member.setPicUrl("https://cdn2.jianshu.io/assets/default_avatar/2-9636b13945b9ccf345bc98d0d81074eb.jpg?imageMogr2/auto-orient/strip|imageView2/1/w/240/h/240");
@@ -151,7 +159,7 @@ public class MemberController extends XDAOSupport {
 	@ResponseBody
 	public Object login(
 			@RequestParam(value = "phone") String phone,
-			@RequestParam(value = "password") String password,
+			@RequestParam(value = "code") String code,
 			ModelMap map) {
 		boolean exist1 = this.getMemberEntityDAO().exist("username", phone);
 		if (!exist1) {
@@ -159,10 +167,10 @@ public class MemberController extends XDAOSupport {
 			map.put("msg", "该手机号还未注册");
 			return map;
 		}
-		boolean exist2 = this.getMemberEntityDAO().exist(HDaoUtils.eq("username", phone).andEq("password", password).toCondition());
+		boolean exist2 =this.getSmsEntityDAO().exist(HDaoUtils.eq("code",code).andEq("phone",phone).toCondition());
 		if (!exist2) {
 			map.put("errcode", 10004);
-			map.put("msg", "密码错误");
+			map.put("msg", "验证码错误!");
 			return map;
 		}
 		

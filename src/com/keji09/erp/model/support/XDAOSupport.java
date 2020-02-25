@@ -52,7 +52,10 @@ public class XDAOSupport {
 	public HibernateDAO<OrderEntity> getOrderEntityDAO() {
 		return this.hibernateDAOFactory.getHibernateDAO(OrderEntity.class);
 	}
-	
+
+	public HibernateDAO<SmsEntity> getSmsEntityDAO() {
+		return this.hibernateDAOFactory.getHibernateDAO(SmsEntity.class);
+	}
 	public HibernateDAO<RoleEntity> getRoleEntityDAO() {
 		return this.hibernateDAOFactory.getHibernateDAO(RoleEntity.class);
 	}
