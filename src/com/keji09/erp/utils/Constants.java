@@ -6,7 +6,10 @@ package com.keji09.erp.utils;
  */
 public class Constants {
 	
-	
+	/**
+	 * 红包派接口地址
+	 */
+	public static final String redUrl = PropertiesUtil.getProperty("red.url");
 	/**
 	 * 拼多多测试推广位Id
 	 */

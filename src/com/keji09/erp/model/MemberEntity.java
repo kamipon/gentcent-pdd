@@ -26,7 +26,7 @@ public class MemberEntity implements Serializable {
 	 * shotID
 	 */
 	@Column(name = "_shot_id", unique = true)
-	private String shotId = RandomStringUtils.randomNumeric(8);
+	private String shotId = RandomStringUtils.randomAlphanumeric(6);
 	
 	/**
 	 * 我的上级的shotId
@@ -137,6 +137,12 @@ public class MemberEntity implements Serializable {
 	 */
 	@Column(name = "_pid")
 	private String pid;
+	
+	/**
+	 * 红包派项目的id
+	 */
+	@Column(name = "_red_id", unique = true)
+	private String redId;
 	
 	
 	public String getId() {
@@ -297,5 +303,13 @@ public class MemberEntity implements Serializable {
 	
 	public void setPid(String pid) {
 		this.pid = pid;
+	}
+	
+	public String getRedId() {
+		return redId;
+	}
+	
+	public void setRedId(String redId) {
+		this.redId = redId;
 	}
 }

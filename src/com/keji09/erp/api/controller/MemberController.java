@@ -6,7 +6,6 @@ import com.keji09.erp.model.MemberEntity;
 import com.keji09.erp.model.PddPidEntity;
 import com.keji09.erp.model.TokenEntity;
 import com.keji09.erp.model.support.XDAOSupport;
-import com.mezingr.dao.DAOException;
 import com.mezingr.dao.HDaoUtils;
 import com.pdd.pop.sdk.http.api.response.PddDdkGoodsPidGenerateResponse;
 import org.apache.commons.lang.RandomStringUtils;

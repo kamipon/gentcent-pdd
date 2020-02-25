@@ -1,9 +1,7 @@
 package com.keji09.erp.controller;
 
-import com.keji09.erp.api.service.PddService;
 import com.keji09.erp.bean.ActivityBean;
 import com.keji09.erp.model.ActivityEntity;
-import com.keji09.erp.model.PddPidEntity;
 import com.keji09.erp.model.TerPointEntity;
 import com.keji09.erp.model.role.UserEntity;
 import com.keji09.erp.model.support.XDAOSupport;
@@ -11,8 +9,6 @@ import com.keji09.erp.service.PermissionService;
 import com.keji09.erp.utils.DateUtil2;
 import com.mezingr.dao.HDaoUtils;
 import com.mezingr.dao.PaginationList;
-import com.pdd.pop.sdk.http.api.response.PddDdkGoodsPidGenerateResponse;
-import com.pdd.pop.sdk.http.api.response.PddDdkGoodsPidGenerateResponse.PIdGenerateResponsePIdListItem;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.classic.Session;

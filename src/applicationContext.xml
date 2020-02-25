@@ -49,6 +49,7 @@
         <constructor-arg index="0" value="${pdd.clientId}"/>
         <constructor-arg index="1" value="${pdd.clientSecret}"/>
     </bean>
+    <bean class="com.keji09.erp.utils.HttpClientUtil"/>
 
     <mvc:interceptors>
         <mvc:interceptor>

@@ -29,7 +29,7 @@ public class TerPointEntity implements Serializable {
 	 * shotID
 	 */
 	@Column(name = "_shot_id", unique = true)
-	private String shotId = RandomStringUtils.randomNumeric(7);
+	private String shotId = RandomStringUtils.randomAlphanumeric(6);
 	/**
 	 * 名称
 	 */
@@ -41,12 +41,22 @@ public class TerPointEntity implements Serializable {
 	@Column(name = "_desc")
 	private String desc;
 	/**
+	 * 省
+	 */
+	@Column(name = "_province")
+	private String province;
+	/**
+	 * 城市
+	 */
+	@Column(name = "_city")
+	private String city;
+	/**
 	 * 状态（0.正常; 1.关闭; 13.已删除）
 	 */
 	@Column(name = "_status")
 	private Integer status = 0;
 	/**
-	 * 余额
+	 * 余额(分单位)
 	 */
 	@Column(name = "_money")
 	private Integer money = 0;
@@ -77,6 +87,12 @@ public class TerPointEntity implements Serializable {
 	 */
 	@Column(name = "_over_time")
 	private Date overTime;
+	
+	/**
+	 * 红包派项目对应的TerpointId
+	 */
+	@Column(name = "_red_id", unique = true)
+	private String redId;
 	
 	
 	public String getShotId() {
@@ -165,5 +181,29 @@ public class TerPointEntity implements Serializable {
 	
 	public void setOverTime(Date overTime) {
 		this.overTime = overTime;
+	}
+	
+	public String getRedId() {
+		return redId;
+	}
+	
+	public void setRedId(String redId) {
+		this.redId = redId;
+	}
+	
+	public String getProvince() {
+		return province;
+	}
+	
+	public void setProvince(String province) {
+		this.province = province;
+	}
+	
+	public String getCity() {
+		return city;
+	}
+	
+	public void setCity(String city) {
+		this.city = city;
 	}
 }

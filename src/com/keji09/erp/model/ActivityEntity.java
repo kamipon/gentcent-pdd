@@ -29,7 +29,7 @@ public class ActivityEntity implements Serializable {
 	 * shotID
 	 */
 	@Column(name = "_shot_id", unique = true)
-	private String shotId = RandomStringUtils.randomNumeric(7);
+	private String shotId = RandomStringUtils.randomAlphanumeric(6);
 	/**
 	 * 名称
 	 */
@@ -68,7 +68,7 @@ public class ActivityEntity implements Serializable {
 	@JoinColumn(name = "_user")
 	private UserEntity user;
 	/**
-	 * 注册类型 0:代理商添加 1：自行注册
+	 * 注册类型 0:代理商添加 1：自行注册 2:红包派同步
 	 */
 	@Column(name = "_categoryt")
 	private Integer categoryt;
@@ -88,6 +88,12 @@ public class ActivityEntity implements Serializable {
 	 */
 	@Column(name = "_dividend")
 	private Integer dividend = 0;
+	
+	/**
+	 * 红包派项目对应的ActivityId
+	 */
+	@Column(name = "_red_id", unique = true)
+	private String redId;
 
 
 	public Integer getDividend() {
@@ -193,5 +199,13 @@ public class ActivityEntity implements Serializable {
 	
 	public void setAddTime(Date addTime) {
 		this.addTime = addTime;
+	}
+	
+	public String getRedId() {
+		return redId;
+	}
+	
+	public void setRedId(String redId) {
+		this.redId = redId;
 	}
 }

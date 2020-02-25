@@ -72,6 +72,18 @@ public class UserEntity implements Serializable {
 	private String weixin;
 	
 	/**
+	 * 邮箱
+	 */
+	@Column(name = "_email")
+	private String email;
+	
+	/**
+	 * 地址
+	 */
+	@Column(name = "_address")
+	private String address;
+	
+	/**
 	 * 电话号码
 	 */
 	@Column(name = "_phone")
@@ -106,8 +118,8 @@ public class UserEntity implements Serializable {
 	@ManyToOne
 	@JoinColumn(name = "_role")
 	private RoleEntity roleName;
-
-
+	
+	
 	public String getId() {
 		return id;
 	}
@@ -226,5 +238,21 @@ public class UserEntity implements Serializable {
 	
 	public void setWeixin(String weixin) {
 		this.weixin = weixin;
+	}
+	
+	public String getEmail() {
+		return email;
+	}
+	
+	public void setEmail(String email) {
+		this.email = email;
+	}
+	
+	public String getAddress() {
+		return address;
+	}
+	
+	public void setAddress(String address) {
+		this.address = address;
 	}
 }
