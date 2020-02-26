@@ -46,6 +46,10 @@ public class XDAOSupport {
 	public HibernateDAO<FavoritesEntity> getFavoritesEntityDAO() {
 		return this.hibernateDAOFactory.getHibernateDAO(FavoritesEntity.class);
 	}
+	public HibernateDAO<BillEntity> getBillEntityDAO() {
+		return this.hibernateDAOFactory.getHibernateDAO(BillEntity.class);
+	}
+
 
 	//角色相关
 	public HibernateDAO<UserEntity> getUserEntityDAO() {

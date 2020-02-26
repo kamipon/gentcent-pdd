@@ -1,5 +1,6 @@
 package com.keji09.erp.api.controller;
 
+import com.keji09.erp.model.BillEntity;
 import com.keji09.erp.model.CouponEntity;
 import com.keji09.erp.model.MemberEntity;
 import com.keji09.erp.model.OrderEntity;
@@ -78,17 +79,23 @@ public class CouponController extends XDAOSupport {
 		request.setGenerateMallCollectCoupon(true);
 		request.setGenerateSchemaUrl(true);
 		request.setGenerateQqApp(true);
-
 		CouponEntity coupon = new CouponEntity();
 		coupon.setMemberId(member.getId());
 		coupon.setGoodsId(id);
 		coupon.setMoney(money);
 		coupon.setGoodsName(name);
+		BillEntity bill = new BillEntity();
+		bill.setForm(2);
+		bill.setMemberId(member.getId());
+		bill.setActivityId(member.getActivity().getId());
+		bill.setType(6);
+		bill.setMoney(money);
 		try{
 			PddDdkGoodsPromotionUrlGenerateResponse response = client.syncInvoke(request);
 			coupon.setWebUrl(response.getGoodsPromotionUrlGenerateResponse().getGoodsPromotionUrlList().get(0).getMobileShortUrl());
 			this.getCouponEntityDAO().create(coupon);
 			this.getMemberEntityDAO().update(member);
+			this.getBillEntityDAO().create(bill);
 			System.out.println( JsonUtil.transferToJson(response));
 		}catch (Exception e){
 			map.put("flag",false);
