@@ -1,6 +1,5 @@
 package com.keji09.erp.model;
 
-import com.pdd.pop.sdk.http.api.response.PddDdkOrderListIncrementGetResponse;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;

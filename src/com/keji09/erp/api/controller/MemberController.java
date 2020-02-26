@@ -60,19 +60,15 @@ public class MemberController extends XDAOSupport {
 			map.put("msg", "该手机号已经被注册");
 			return map;
 		}
-		MemberEntity  upMember = this.getMemberEntityDAO().findUnique(HDaoUtils.eq("shotId",invcode).toCondition());
+		MemberEntity upMember = this.getMemberEntityDAO().findUnique(HDaoUtils.eq("shotId", invcode).toCondition());
 		String supShotId = null;
-
+		
 		ActivityEntity act = null;
-		if(upMember==null){
-			act = this.getActivityEntityDAO().findUnique("shotId", invcode);
-			boolean b = this.getActivityEntityDAO().exist("shotId", invcode);
-			if (!b) {
-				map.put("errcode", 10001);
-				map.put("msg", "邀请码错误");
-				return map;
-			}
-		}else{
+		if (upMember == null) {
+			map.put("errcode", 10001);
+			map.put("msg", "邀请码错误");
+			return map;
+		} else {
 			act = upMember.getActivity();
 			supShotId = upMember.getShotId();
 		}
@@ -166,7 +162,7 @@ public class MemberController extends XDAOSupport {
 			map.put("msg", "该手机号还未注册");
 			return map;
 		}
-		boolean exist2 =this.getSmsEntityDAO().exist(HDaoUtils.eq("code",code).andEq("phone",phone).toCondition());
+		boolean exist2 = this.getSmsEntityDAO().exist(HDaoUtils.eq("code", code).andEq("phone", phone).toCondition());
 		if (!exist2) {
 			map.put("errcode", 10004);
 			map.put("msg", "验证码错误!");

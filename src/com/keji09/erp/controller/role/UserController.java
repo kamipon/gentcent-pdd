@@ -66,13 +66,7 @@ public class UserController extends XDAOSupport {
 					return "redirect:/visit/manager";
 				}
 			} else {
-				ActivityEntity act = this.getActivityEntityDAO().findUnique(HDaoUtils.eq("user", user).andEq("hx_password", password).toCondition());
-				if (act != null) {
-					map.put("act", act.getId());
-					return "/manager/hx";
-				} else {
-					map.put("message", "登录密码错误！");
-				}
+				map.put("message", "登录密码错误！");
 			}
 		} else {
 			map.put("message", "账户不存在或已被冻结！");

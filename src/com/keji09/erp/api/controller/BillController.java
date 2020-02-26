@@ -1,9 +1,9 @@
 package com.keji09.erp.api.controller;
 
-import com.keji09.erp.model.MemberEntity;
 import com.keji09.erp.model.BillEntity;
+import com.keji09.erp.model.MemberEntity;
 import com.keji09.erp.model.support.XDAOSupport;
-import com.pdd.pop.sdk.http.PopHttpClient;
+import com.keji09.erp.service.RedpacketService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -16,32 +16,31 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- *
- *充值
+ * 充值
  */
 @Controller
 @RequestMapping("/app_recharge")
 public class BillController extends XDAOSupport {
-
+	
 	@Autowired
-	private PopHttpClient client;
-
+	private RedpacketService redpacketService;
+	
 	/**
 	 * red  给红包派调用
 	 */
-	@RequestMapping(value="redRecharge",method = RequestMethod.GET)
+	@RequestMapping(value = "redRecharge", method = RequestMethod.GET)
 	@ResponseBody
 	public Object redRecharge(
-			@RequestParam(value = "id") String id,//用户id
+			@RequestParam(value = "id") String id,//红包派的用户id
 			@RequestParam(value = "money") Integer money,//金额 单位分
 			HttpServletRequest req, HttpServletResponse resp
-			, ModelMap map){
-		MemberEntity member = this.getMemberEntityDAO().get(id);
-		if(member==null){
-			map.put("flag",false);
+			, ModelMap map) {
+		MemberEntity member = redpacketService.getMember(id);
+		if (member == null) {
+			map.put("flag", false);
 			return map;
 		}
-		member.setMoney(member.getMoney()+money);
+		member.setMoney(member.getMoney() + money);
 		BillEntity recharge = new BillEntity();
 		recharge.setMoney(money);
 		recharge.setType(1);
@@ -50,8 +49,8 @@ public class BillController extends XDAOSupport {
 		recharge.setActivityId(member.getActivity().getId());
 		this.getBillEntityDAO().create(recharge);
 		this.getMemberEntityDAO().update(member);
-		map.put("flag",true);
+		map.put("flag", true);
 		return map;
 	}
-
+	
 }

@@ -48,7 +48,7 @@ public class SmsController extends XDAOSupport {
 			HttpServletRequest req, HttpServletResponse resp
 			, ModelMap map){
 		SmsEntity sms = new SmsEntity();
-		boolean register =  this.getMemberEntityDAO().exist(HDaoUtils.eq("username",phone+"").toCondition());
+		boolean register =  this.getMemberEntityDAO().exist(HDaoUtils.eq("username",phone).toCondition());
 		//sms.setCode((int)((Math.random()*9+1)*100000)+"");
 		sms.setCode("1234");
 		sms.setPhone(phone);
