@@ -51,7 +51,7 @@ public class RedMemberBean {
 	 * 上级商家Id
 	 */
 	//TODO
-	private String redActId = "40285581707b4e2701707b4f02c40002";
+	private String redActId = "000000005cab0386015cab201335001a";
 	
 	
 	public String getId() {

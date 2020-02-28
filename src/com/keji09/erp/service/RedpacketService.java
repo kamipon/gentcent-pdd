@@ -286,13 +286,18 @@ public class RedpacketService extends XDAOSupport {
 	}
 	
 	//-------------------------------------------------用户-------------------------------------------------
+	
 	/**
 	 * 获取指定用户
 	 */
 	public MemberEntity getMember(String redId) {
 		boolean exist = this.getMemberEntityDAO().exist("redId", redId);
 		if (exist) {
-			return this.getMemberEntityDAO().findUnique("redId", redId);
+			MemberEntity m = this.getMemberEntityDAO().findUnique("redId", redId);
+			String username = m.getUsername();
+			if (username != null && !"".equals(username)) {
+				return m;
+			}
 		}
 		HashMap<String, String> map = new HashMap<>();
 		map.put("id", redId);
@@ -311,37 +316,43 @@ public class RedpacketService extends XDAOSupport {
 	 * 红包派bean转entity
 	 */
 	public MemberEntity createMember(RedMemberBean bean) {
+		boolean exist = this.getMemberEntityDAO().exist("redId", bean.getId());
 		Transaction transaction = sessionFactory.getCurrentSession().getTransaction();
 		try {
 			transaction.begin();
 			ActivityEntity activity = getActivity(bean.getRedActId());
 			TerPointEntity terpoint = activity.getTerpoint();
-			MemberEntity member = new MemberEntity();
-			member.setShotId(bean.getShotId());
-			member.setUsername(bean.getUsername());
-			member.setNick(bean.getNick());
-			member.setRealName(bean.getRealName());
-			member.setSex(bean.getSex());
-			member.setPicUrl(bean.getPicUrl());
-			member.setAddTime(bean.getAddTime());
-			member.setTerpointId(terpoint.getId());
-			member.setActivity(activity);
-			member.setRedId(bean.getId());
-			this.getMemberEntityDAO().create(member);
-			
-			//创建推广位
-			PddDdkGoodsPidGenerateResponse response = pddService.pidGen("member_shotid_" + member.getShotId());
-			PddDdkGoodsPidGenerateResponse.PIdGenerateResponsePIdListItem item = response.getPIdGenerateResponse().getPIdList().get(0);
-			Long createTime = item.getCreateTime();
-			String pId = item.getPId();
-			String pidName = item.getPidName();
-			PddPidEntity pddPidEntity = new PddPidEntity();
-			pddPidEntity.setPid(pId);
-			pddPidEntity.setPidName(pidName);
-			pddPidEntity.setAddTime(new Date(createTime));
-			pddPidEntity.setMemberId(member.getId());
-			this.getPddPidEntityDAO().create(pddPidEntity);
-			member.setPid(pId);
+			MemberEntity member;
+			if (exist) {
+				member = this.getMemberEntityDAO().findUnique("redId", bean.getId());
+				member.setUsername(bean.getUsername());
+			} else {
+				member = new MemberEntity();
+				member.setShotId(bean.getShotId());
+				member.setUsername(bean.getUsername());
+				member.setNick(bean.getNick());
+				member.setRealName(bean.getRealName());
+				member.setSex(bean.getSex());
+				member.setPicUrl(bean.getPicUrl());
+				member.setAddTime(bean.getAddTime());
+				member.setTerpointId(terpoint.getId());
+				member.setActivity(activity);
+				member.setRedId(bean.getId());
+				this.getMemberEntityDAO().create(member);
+				//创建推广位
+				PddDdkGoodsPidGenerateResponse response = pddService.pidGen("member_shotid_" + member.getShotId());
+				PddDdkGoodsPidGenerateResponse.PIdGenerateResponsePIdListItem item = response.getPIdGenerateResponse().getPIdList().get(0);
+				Long createTime = item.getCreateTime();
+				String pId = item.getPId();
+				String pidName = item.getPidName();
+				PddPidEntity pddPidEntity = new PddPidEntity();
+				pddPidEntity.setPid(pId);
+				pddPidEntity.setPidName(pidName);
+				pddPidEntity.setAddTime(new Date(createTime));
+				pddPidEntity.setMemberId(member.getId());
+				this.getPddPidEntityDAO().create(pddPidEntity);
+				member.setPid(pId);
+			}
 			this.getMemberEntityDAO().update(member);
 			transaction.commit();
 			return member;

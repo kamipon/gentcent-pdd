@@ -6,6 +6,7 @@ import com.keji09.erp.model.MemberEntity;
 import com.keji09.erp.model.PddPidEntity;
 import com.keji09.erp.model.TokenEntity;
 import com.keji09.erp.model.support.XDAOSupport;
+import com.keji09.erp.service.RedpacketService;
 import com.mezingr.dao.HDaoUtils;
 import com.pdd.pop.sdk.http.api.response.PddDdkGoodsPidGenerateResponse;
 import org.apache.commons.lang.RandomStringUtils;
@@ -34,6 +35,8 @@ public class MemberController extends XDAOSupport {
 	SessionFactory sessionFactory;
 	@Autowired
 	PddService pddService;
+	@Autowired
+	private RedpacketService redpacketService;
 	
 	private static final long ONE_DAY = 60 * 60 * 24;
 	private static final long ONE_WEEK = ONE_DAY * 7;
@@ -119,11 +122,114 @@ public class MemberController extends XDAOSupport {
 	}
 	
 	/**
+	 * 红包派登录
+	 */
+	@RequestMapping(value = "login_red", method = RequestMethod.POST)
+	@ResponseBody
+	public Object loginRed(
+			@RequestParam(value = "redId") String redId,
+			ModelMap map) {
+		MemberEntity member = redpacketService.getMember(redId);
+		if (member == null) {
+			map.put("msg", "用户登录失败");
+			map.put("errcode", 10007);
+			return map;
+		}
+		if (member.getUsername() == null || "".equals(member.getUsername())) {
+			map.put("msg", "用户登录失败，请绑定手机号");
+			map.put("errcode", 10008);
+			return map;
+		}
+		//登录
+		String sql = "DELETE FROM pdd_token WHERE _member_id = ?";
+		TokenEntity token = null;
+		
+		Session session = sessionFactory.getCurrentSession();
+		Transaction transaction = session.getTransaction();
+		try {
+			transaction.begin();
+			session.createSQLQuery(sql).setString(0, member.getId()).executeUpdate();
+			token = new TokenEntity(member.getId());
+			this.getTokenEntityDAO().create(token);
+			member.setLoginLastTime(new Date());
+			this.getMemberEntityDAO().update(member);
+			transaction.commit();
+		} catch (Exception e) {
+			e.printStackTrace();
+			transaction.rollback();
+			map.put("msg", "系统内部错误");
+			map.put("errcode", 500);
+			return map;
+		}
+		map.put("member", member);
+		map.put("token", token.getId());
+		map.put("errcode", 200);
+		return map;
+	}
+	
+	/**
+	 * 绑定手机号并登录
+	 */
+	@RequestMapping(value = "bind_phone", method = RequestMethod.POST)
+	@ResponseBody
+	public Object loginAndBindPhone(
+			@RequestParam(value = "phone") String phone,
+			@RequestParam(value = "redId") String redId,
+			@RequestParam(value = "authcode") String authcode,
+			ModelMap map) {
+		if (!"1234".equals(authcode)) {
+			map.put("errcode", 10003);
+			map.put("msg", "验证码错误");
+			return map;
+		}
+		MemberEntity member;
+		boolean ex = this.getMemberEntityDAO().exist("username", phone);
+		if(ex){
+			member = this.getMemberEntityDAO().findUnique("username", phone);
+		}else{
+			member = redpacketService.getMember(redId);
+			if (member == null) {
+				map.put("msg", "用户登录失败");
+				map.put("errcode", 10007);
+				return map;
+			}
+			member.setUsername(phone);
+			this.getMemberEntityDAO().update(member);
+		}
+		
+		//登录
+		String sql = "DELETE FROM pdd_token WHERE _member_id = ?";
+		TokenEntity token = null;
+		
+		Session session = sessionFactory.getCurrentSession();
+		Transaction transaction = session.getTransaction();
+		try {
+			transaction.begin();
+			session.createSQLQuery(sql).setString(0, member.getId()).executeUpdate();
+			token = new TokenEntity(member.getId());
+			this.getTokenEntityDAO().create(token);
+			member.setLoginLastTime(new Date());
+			this.getMemberEntityDAO().update(member);
+			transaction.commit();
+		} catch (Exception e) {
+			e.printStackTrace();
+			transaction.rollback();
+			map.put("msg", "系统内部错误");
+			map.put("errcode", 500);
+			return map;
+		}
+		map.put("member", member);
+		map.put("token", token.getId());
+		map.put("errcode", 200);
+		return map;
+	}
+	
+	/**
 	 * 令牌登录
 	 */
 	@RequestMapping(value = "login_token", method = RequestMethod.POST)
 	@ResponseBody
-	public Object login(
+	public Object loginToken(
 			@RequestParam(value = "token") String tokenId,
 			ModelMap map) {
 		boolean b = this.getTokenEntityDAO().exist("id", tokenId);
