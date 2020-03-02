@@ -25,7 +25,7 @@ public class OrderTask extends XDAOSupport {
     public OrderTask() {
 
         timer = new Timer();
-        //timer.schedule(new RemindTask(),10*1000, 100*1000);
+//        timer.schedule(new RemindTask(),10*1000, 100*1000);
         System.out.println("定时任务启动,准备更新订单！");
     }
 

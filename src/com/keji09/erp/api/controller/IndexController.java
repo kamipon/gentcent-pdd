@@ -134,7 +134,7 @@ public class IndexController extends XDAOSupport {
 		MemberEntity member = (MemberEntity) req.getSession().getAttribute("member");
 		PddDdkResourceUrlGenResponse response = pddService.resourceUrlGen(member.getPid(), type);
 		try {
-			ResourceUrlResponseSingleUrlList item = response.getResourceUrlResponse().getSingleUrlList();
+			PddDdkResourceUrlGenResponse.ResourceUrlResponse item = response.getResourceUrlResponse();
 			map.put("data", item);
 			map.put("errcode", 200);
 		} catch (Exception e) {
@@ -198,12 +198,13 @@ public class IndexController extends XDAOSupport {
 	public Object lotteryUrlGen(HttpServletRequest req, ModelMap map) {
 		MemberEntity member = (MemberEntity) req.getSession().getAttribute("member");
 		PddDdkLotteryUrlGenRequest request = new PddDdkLotteryUrlGenRequest();
+		request.setGenerateWeApp(true);
 		List<String> pids = new ArrayList<>();
 		pids.add(member.getPid());
 		request.setPidList(pids);
 		try {
 			PddDdkLotteryUrlGenResponse response = client.syncInvoke(request);
-			map.put("data", response.getLotteryUrlResponse().getUrlList());
+			map.put("data", response.getLotteryUrlResponse().getUrlList().get(0));
 			map.put("errcode", 200);
 		} catch (Exception e) {
 			e.printStackTrace();

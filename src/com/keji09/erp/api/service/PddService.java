@@ -22,7 +22,6 @@ public class PddService {
 	 * 生成运营频道推广链接
 	 */
 	public PddDdkCmsPromUrlGenerateResponse channelUrlGen(String pid, Integer channelType) {
-		
 		PddDdkCmsPromUrlGenerateRequest request = new PddDdkCmsPromUrlGenerateRequest();
 		request.setWeAppWebViewShortUrl(false);
 		request.setWeAppWebViewUrl(false);
@@ -42,6 +41,7 @@ public class PddService {
 	 */
 	public PddDdkResourceUrlGenResponse resourceUrlGen(String pid, Integer resourceType) {
 		PddDdkResourceUrlGenRequest request = new PddDdkResourceUrlGenRequest();
+		request.setGenerateWeApp(true);
 		request.setPid(pid);
 		request.setResourceType(resourceType);
 		try {
@@ -55,7 +55,6 @@ public class PddService {
 	 * 生成主题推广链接
 	 */
 	public PddDdkThemePromUrlGenerateResponse themeUrlGen(String pid, Long themeId) {
-		
 		PddDdkThemePromUrlGenerateRequest request = new PddDdkThemePromUrlGenerateRequest();
 		request.setPid(pid);
 		List<Long> longs = new ArrayList<>();
