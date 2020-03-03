@@ -1,10 +1,7 @@
 package com.keji09.erp.api.controller;
 
 import com.keji09.erp.api.service.PddService;
-import com.keji09.erp.model.ActivityEntity;
-import com.keji09.erp.model.MemberEntity;
-import com.keji09.erp.model.PddPidEntity;
-import com.keji09.erp.model.TokenEntity;
+import com.keji09.erp.model.*;
 import com.keji09.erp.model.support.XDAOSupport;
 import com.keji09.erp.service.RedpacketService;
 import com.mezingr.dao.HDaoUtils;
@@ -50,7 +47,23 @@ public class MemberController extends XDAOSupport {
 			@RequestParam(value = "phone") String phone,
 			@RequestParam(value = "invcode") String invcode,
 			@RequestParam(value = "authcode") String authcode,
+			@RequestParam(value = "wxMember",required = false) String wxMember,
 			ModelMap map) {
+		WXMemberEntity wxm;
+		MemberEntity member = new MemberEntity();
+		if(wxMember!=null && !"".equals(wxMember)){
+			wxm = this.getWXMemberEntityDAO().get(wxMember);
+			if(wxm!=null){
+				member.setSex(wxm.getGender());
+				member.setPicUrl(wxm.getAvatarUrl());
+				member.setNick(wxm.getNickName());
+				member.setWxMember(wxm.getId());
+			}else{
+				map.put("errcode", 10000);
+				map.put("msg", "数据错误");
+				return map;
+			}
+		}
 		//TODO
 		if (!"1234".equals(authcode)) {
 			map.put("errcode", 10003);
@@ -81,7 +94,6 @@ public class MemberController extends XDAOSupport {
 		transaction.begin();
 		try {
 			//注册
-			MemberEntity member = new MemberEntity();
 			member.setUsername(phone);
 			member.setSupShotId(supShotId);
 			member.setNick("用户" + RandomStringUtils.randomNumeric(8));
@@ -176,7 +188,9 @@ public class MemberController extends XDAOSupport {
 			@RequestParam(value = "phone") String phone,
 			@RequestParam(value = "redId") String redId,
 			@RequestParam(value = "authcode") String authcode,
+			@RequestParam(value = "wxMember",required = false) String wxMember,
 			ModelMap map) {
+
 		if (!"1234".equals(authcode)) {
 			map.put("errcode", 10003);
 			map.put("msg", "验证码错误");
@@ -195,6 +209,20 @@ public class MemberController extends XDAOSupport {
 			}
 			member.setUsername(phone);
 			this.getMemberEntityDAO().update(member);
+		}
+		WXMemberEntity wxm;
+		if(wxMember!=null && !"".equals(wxMember)){
+			wxm = this.getWXMemberEntityDAO().get(wxMember);
+			if(wxm!=null){
+				member.setSex(wxm.getGender());
+				member.setPicUrl(wxm.getAvatarUrl());
+				member.setNick(wxm.getNickName());
+				member.setWxMember(wxm.getId());
+			}else{
+				map.put("errcode", 10000);
+				map.put("msg", "数据错误");
+				return map;
+			}
 		}
 		
 		//登录
@@ -259,24 +287,46 @@ public class MemberController extends XDAOSupport {
 	@RequestMapping(value = "login", method = RequestMethod.POST)
 	@ResponseBody
 	public Object login(
-			@RequestParam(value = "phone") String phone,
-			@RequestParam(value = "code") String code,
+			@RequestParam(value = "phone",required = false) String phone,
+			@RequestParam(value = "code",required = false) String code,
+			@RequestParam(value = "wxMember",required = false) String wxMember,
 			ModelMap map) {
-		boolean exist1 = this.getMemberEntityDAO().exist("username", phone);
-		if (!exist1) {
-			map.put("errcode", 10005);
-			map.put("msg", "该手机号还未注册");
-			return map;
+		WXMemberEntity wxm;
+		MemberEntity member;
+		if(wxMember!=null && !"".equals(wxMember)){//微信登录
+			wxm = this.getWXMemberEntityDAO().get(wxMember);
+			member = this.getMemberEntityDAO().findUnique(HDaoUtils.eq("wxMember",wxm.getId()).toCondition());
+			if(member==null){
+				map.put("errcode", 10000);
+				map.put("msg", "数据错误");
+				return map;
+			}
+			if(wxm!=null){
+				member.setSex(wxm.getGender());
+				member.setPicUrl(wxm.getAvatarUrl());
+				member.setNick(wxm.getNickName());
+				member.setWxMember(wxm.getId());
+			}else{
+				map.put("errcode", 10000);
+				map.put("msg", "数据错误");
+				return map;
+			}
+		}else{//账号登录
+			boolean exist1 = this.getMemberEntityDAO().exist("username", phone);
+			if (!exist1) {
+				map.put("errcode", 10005);
+				map.put("msg", "该手机号还未注册");
+				return map;
+			}
+			boolean exist2 = this.getSmsEntityDAO().exist(HDaoUtils.eq("code", code).andEq("phone", phone).toCondition());
+			if (!exist2 && (wxMember==null || wxMember.equals(""))) {
+				map.put("errcode", 10004);
+				map.put("msg", "验证码错误!");
+				return map;
+			}
+			//登录
+			member = this.getMemberEntityDAO().findUnique("username", phone);
 		}
-		boolean exist2 = this.getSmsEntityDAO().exist(HDaoUtils.eq("code", code).andEq("phone", phone).toCondition());
-		if (!exist2) {
-			map.put("errcode", 10004);
-			map.put("msg", "验证码错误!");
-			return map;
-		}
-		
-		//登录
-		MemberEntity member = this.getMemberEntityDAO().findUnique("username", phone);
 		String sql = "DELETE FROM pdd_token WHERE _member_id = ?";
 		TokenEntity token = null;
 		

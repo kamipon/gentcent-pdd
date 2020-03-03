@@ -49,6 +49,9 @@ public class XDAOSupport {
 	public HibernateDAO<BillEntity> getBillEntityDAO() {
 		return this.hibernateDAOFactory.getHibernateDAO(BillEntity.class);
 	}
+	public HibernateDAO<WXMemberEntity> getWXMemberEntityDAO() {
+		return this.hibernateDAOFactory.getHibernateDAO(WXMemberEntity.class);
+	}
 
 
 	//角色相关

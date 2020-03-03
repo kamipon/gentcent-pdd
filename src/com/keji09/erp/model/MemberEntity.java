@@ -39,7 +39,7 @@ public class MemberEntity implements Serializable {
 	 */
 	@Column(name = "u_username", unique = true)
 	private String username;
-	
+
 	/**
 	 * 密码
 	 */
@@ -143,8 +143,18 @@ public class MemberEntity implements Serializable {
 	 */
 	@Column(name = "_red_id", unique = true)
 	private String redId;
-	
-	
+
+	@Column(name = "_wx_member", unique = true)
+	private String wxMember;
+
+	public String getWxMember() {
+		return wxMember;
+	}
+
+	public void setWxMember(String wxMember) {
+		this.wxMember = wxMember;
+	}
+
 	public String getId() {
 		return id;
 	}

@@ -56,7 +56,45 @@ public class CouponEntity implements Serializable {
 	@Column(name = "_add_time")
 	private Date addTime = new Date();
 
+	/**
+	 * 微信小程序来源名称
+	 */
+	@Column(name = "_we_app_info_source_display_name")
+	private String weAppInfoSourceDisplayName;
+	/**
+	 * 微信小程序参数
+	 */
+	@Column(name = "_we_app_info_page_path")
+	private String weAppInfoAppId;
+	//微信小程序appid
+	@Column(name = "_we_app_info_app_id")
+	private String weAppInfoPagePath;
+
 	public CouponEntity() {
+	}
+
+	public String getWeAppInfoSourceDisplayName() {
+		return weAppInfoSourceDisplayName;
+	}
+
+	public void setWeAppInfoSourceDisplayName(String weAppInfoSourceDisplayName) {
+		this.weAppInfoSourceDisplayName = weAppInfoSourceDisplayName;
+	}
+
+	public String getWeAppInfoAppId() {
+		return weAppInfoAppId;
+	}
+
+	public void setWeAppInfoAppId(String weAppInfoAppId) {
+		this.weAppInfoAppId = weAppInfoAppId;
+	}
+
+	public String getWeAppInfoPagePath() {
+		return weAppInfoPagePath;
+	}
+
+	public void setWeAppInfoPagePath(String weAppInfoPagePath) {
+		this.weAppInfoPagePath = weAppInfoPagePath;
 	}
 
 	public String getWebUrl() {

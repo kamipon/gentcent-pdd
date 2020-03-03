@@ -93,6 +93,9 @@ public class CouponController extends XDAOSupport {
 		try{
 			PddDdkGoodsPromotionUrlGenerateResponse response = client.syncInvoke(request);
 			coupon.setWebUrl(response.getGoodsPromotionUrlGenerateResponse().getGoodsPromotionUrlList().get(0).getMobileShortUrl());
+			coupon.setWeAppInfoAppId(response.getGoodsPromotionUrlGenerateResponse().getGoodsPromotionUrlList().get(0).getWeAppInfo().getAppId());
+			coupon.setWeAppInfoPagePath(response.getGoodsPromotionUrlGenerateResponse().getGoodsPromotionUrlList().get(0).getWeAppInfo().getPagePath());
+			coupon.setWeAppInfoSourceDisplayName(response.getGoodsPromotionUrlGenerateResponse().getGoodsPromotionUrlList().get(0).getWeAppInfo().getSourceDisplayName());
 			this.getCouponEntityDAO().create(coupon);
 			this.getMemberEntityDAO().update(member);
 			this.getBillEntityDAO().create(bill);
