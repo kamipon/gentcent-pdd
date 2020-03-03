@@ -69,6 +69,7 @@ public class CouponController extends XDAOSupport {
 		}
 		member.setMoney(member.getMoney()-money);
 		PddDdkGoodsPromotionUrlGenerateRequest request = new PddDdkGoodsPromotionUrlGenerateRequest();
+		request.setGenerateWeApp(true);
 		List<Long> goodsIdList = new ArrayList<Long>();
 		goodsIdList.add(id);
 		request.setPId(member.getPid());

@@ -23,8 +23,6 @@ public class PddService {
 	 */
 	public PddDdkCmsPromUrlGenerateResponse channelUrlGen(String pid, Integer channelType) {
 		PddDdkCmsPromUrlGenerateRequest request = new PddDdkCmsPromUrlGenerateRequest();
-		request.setWeAppWebViewShortUrl(false);
-		request.setWeAppWebViewUrl(false);
 		request.setChannelType(channelType);
 		ArrayList<String> pids = new ArrayList<>();
 		pids.add(pid);
@@ -56,6 +54,7 @@ public class PddService {
 	 */
 	public PddDdkThemePromUrlGenerateResponse themeUrlGen(String pid, Long themeId) {
 		PddDdkThemePromUrlGenerateRequest request = new PddDdkThemePromUrlGenerateRequest();
+		request.setGenerateWeApp(true);
 		request.setPid(pid);
 		List<Long> longs = new ArrayList<>();
 		longs.add(themeId);
@@ -74,6 +73,21 @@ public class PddService {
 		PddDdkGoodsRecommendGetRequest request = new PddDdkGoodsRecommendGetRequest();
 		request.setOffset(0);
 		request.setLimit(20);
+		request.setChannelType(channelType);
+		try {
+			return client.syncInvoke(request);
+		} catch (Exception e) {
+			return null;
+		}
+	}
+	
+	/**
+	 * 运营频道商品
+	 */
+	public PddDdkGoodsRecommendGetResponse channelGoods(Integer channelType, Integer pageIndex, Integer pageSize) {
+		PddDdkGoodsRecommendGetRequest request = new PddDdkGoodsRecommendGetRequest();
+		request.setOffset((pageIndex - 1) * pageSize);
+		request.setLimit(pageSize);
 		request.setChannelType(channelType);
 		try {
 			return client.syncInvoke(request);

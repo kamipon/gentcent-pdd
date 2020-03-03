@@ -1,5 +1,6 @@
 package com.keji09.erp.api.controller;
 
+import com.keji09.erp.api.service.PddService;
 import com.keji09.erp.model.DictionaryEntity;
 import com.keji09.erp.model.MemberEntity;
 import com.keji09.erp.model.OrderEntity;
@@ -34,6 +35,9 @@ public class GoodsController extends XDAOSupport {
 
 	@Autowired
 	private PopHttpClient client;
+	
+	@Autowired
+	private PddService pddService;
 
 	/**
 	 * 商品详情 https://open.pinduoduo.com/#/apidocument/port?portId=pdd.ddk.goods.detail
@@ -164,6 +168,29 @@ public class GoodsController extends XDAOSupport {
 			return JsonUtil.transferToJson(response);
 		} catch (Exception e) {
 			e.printStackTrace();
+		}
+		return map;
+	}
+	
+	/**
+	 * 运营频道商品
+	 */
+	@RequestMapping(value = "goods/channel", method = RequestMethod.GET)
+	@ResponseBody
+	public Object channelGoods(
+			@RequestParam(value = "pageIndex", defaultValue = "1") Integer pageIndex,
+			@RequestParam(value = "pageSize", defaultValue = "40") Integer pageSize,
+			@RequestParam(value = "channelType",defaultValue = "1") Integer channelType, //0, "1.9包邮", 1, "今日爆款", 2, "品牌清仓", 非必填 ,默认是1
+			ModelMap map) {
+		try {
+			PddDdkGoodsRecommendGetResponse response = pddService.channelGoods(channelType,pageIndex,pageSize);
+			PddDdkGoodsRecommendGetResponse.GoodsBasicDetailResponse item = response.getGoodsBasicDetailResponse();
+			map.put("data", item);
+			map.put("errcode", 200);
+		} catch (Exception e) {
+			e.printStackTrace();
+			map.put("errcode", 500);
+			map.put("msg", "连接超时");
 		}
 		return map;
 	}
