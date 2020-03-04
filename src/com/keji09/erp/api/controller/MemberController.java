@@ -293,6 +293,7 @@ public class MemberController extends XDAOSupport {
 			ModelMap map) {
 		WXMemberEntity wxm;
 		MemberEntity member;
+		System.out.println(wxMember);
 		if(wxMember!=null && !"".equals(wxMember)){//微信登录
 			wxm = this.getWXMemberEntityDAO().get(wxMember);
 			member = this.getMemberEntityDAO().findUnique(HDaoUtils.eq("wxMember",wxm.getId()).toCondition());
@@ -306,6 +307,7 @@ public class MemberController extends XDAOSupport {
 				member.setPicUrl(wxm.getAvatarUrl());
 				member.setNick(wxm.getNickName());
 				member.setWxMember(wxm.getId());
+				this.getMemberEntityDAO().update(member);
 			}else{
 				map.put("errcode", 10000);
 				map.put("msg", "数据错误");
