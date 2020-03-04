@@ -293,7 +293,6 @@ public class MemberController extends XDAOSupport {
 			ModelMap map) {
 		WXMemberEntity wxm;
 		MemberEntity member;
-		System.out.println(wxMember);
 		if(wxMember!=null && !"".equals(wxMember)){//微信登录
 			wxm = this.getWXMemberEntityDAO().get(wxMember);
 			member = this.getMemberEntityDAO().findUnique(HDaoUtils.eq("wxMember",wxm.getId()).toCondition());
@@ -430,6 +429,20 @@ public class MemberController extends XDAOSupport {
 			return map;
 		}
 		map.put("errcode", 200);
+		return map;
+	}
+	
+	/**
+	 * 查询优惠券个数
+	 */
+	@RequestMapping(value = "couponNum", method = RequestMethod.GET)
+	@ResponseBody
+	public Object couponNum(HttpServletRequest req, ModelMap map) {
+		//登录
+		MemberEntity member = (MemberEntity) req.getSession().getAttribute("member");
+		int num = this.getCouponEntityDAO().count(HDaoUtils.eq("memberId", member.getId()).toCondition());
+		map.put("errcode", 200);
+		map.put("num", num);
 		return map;
 	}
 	

@@ -19,6 +19,7 @@ import com.pdd.pop.sdk.http.api.response.PddDdkGoodsPromotionUrlGenerateResponse
 import com.pdd.pop.sdk.http.api.response.PddDdkGoodsSearchResponse;
 import com.pdd.pop.sdk.http.api.response.PddGoodsCatsGetResponse;
 import org.hibernate.criterion.Criterion;
+import org.hibernate.criterion.Order;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -100,7 +101,6 @@ public class CouponController extends XDAOSupport {
 			this.getCouponEntityDAO().create(coupon);
 			this.getMemberEntityDAO().update(member);
 			this.getBillEntityDAO().create(bill);
-			System.out.println( JsonUtil.transferToJson(response));
 		}catch (Exception e){
 			map.put("flag",false);
 			map.put("msg","创建失败,请刷新页面后重新尝试!");
@@ -124,7 +124,7 @@ public class CouponController extends XDAOSupport {
 			ModelMap map) {
 		MemberEntity member = (MemberEntity)req.getSession().getAttribute("member");
 		Exp<Criterion> exp =  HDaoUtils.eq("memberId",member.getId());
-		PaginationList<CouponEntity> orderList = this.getCouponEntityDAO().list(exp.toCondition(),pageIndex,pageSize);
+		PaginationList<CouponEntity> orderList = this.getCouponEntityDAO().list(exp.toCondition(),pageIndex,pageSize,Order.desc("addTime"));
 		map.put("couponList",orderList.getItems());
 		map.put("total",orderList.getTotalCount());//总条数
 		return map;

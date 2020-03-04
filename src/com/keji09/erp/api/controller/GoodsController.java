@@ -57,8 +57,6 @@ public class GoodsController extends XDAOSupport {
 			//goodsIdList.add(86954697838L);
 			request.setGoodsIdList(goodsIdList);
 			PddDdkGoodsDetailResponse response = client.syncInvoke(request);
-			System.out.println( "-------");
-			System.out.println( JsonUtil.transferToJson(response));
 			return  JsonUtil.transferToJson(response);
 			//msg+=JsonUtil.transferToJson(response);
 		}catch (Exception e){
