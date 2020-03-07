@@ -20,7 +20,7 @@ public class HttpClientUtil {
 		client = HttpClients.createDefault();
 	}
 	
-	public JSONObject doGet(String url, Map<String, String> params) {
+	public  JSONObject doGet(String url, Map<String, String> params) {
 		try {
 			URIBuilder uriBuilder = new URIBuilder(url);
 			for (String key : params.keySet()) {
