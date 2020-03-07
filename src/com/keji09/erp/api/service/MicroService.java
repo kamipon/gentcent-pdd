@@ -38,7 +38,7 @@ public class MicroService {
 	/**
 	 * 数据缓存
 	 */
-	public static Map<String,Object> timeQuotation = new HashMap<>();
+	public static Map<String,JSONArray> timeQuotation = new HashMap<>();
 
 	Timer timer;
 	public MicroService() {
@@ -52,7 +52,7 @@ public class MicroService {
 			//System.out.println("更新行情");
 			for (String code: symbolList) {
 				for (String t: timelist) {
-					JSONArray data = timeQuotation(code,t,500);
+					JSONArray data = timeQuotation(code,t,1000);
 					timeQuotation.put(code+"_"+t,data);
 				}
 

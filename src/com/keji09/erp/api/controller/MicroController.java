@@ -5,17 +5,10 @@ import com.keji09.erp.model.BillEntity;
 import com.keji09.erp.model.MemberEntity;
 import com.keji09.erp.model.support.XDAOSupport;
 import net.sf.json.JSONArray;
-import org.apache.commons.lang.StringUtils;
-import org.apache.http.util.EntityUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -26,11 +19,6 @@ import javax.servlet.http.HttpServletResponse;
 @Controller
 @RequestMapping("/micro_data")
 public class MicroController extends XDAOSupport {
-    private static List<String> symbolList = new ArrayList<>();
-    /**
-     * 数据缓存
-     */
-    private static Map<String,Object> timeQuotation = new HashMap<>();
 
     @RequestMapping(value = "getTimeQuotation", method = RequestMethod.GET)
     @ResponseBody
@@ -48,9 +36,9 @@ public class MicroController extends XDAOSupport {
             if(time.equals("1W")||time.equals("1M")){
                 time="1D";
             }
-            MicroService.timeQuotation.get(symbol+"_"+time);
+            data = MicroService.timeQuotation.get(symbol+"_"+time);
         }else{//加入缓存列表 通过接口返回数据
-            symbolList.add(symbol);
+            MicroService.symbolList.add(symbol);
             data = MicroService.timeQuotation(symbol,time,count);
         }
         map.put("data", data);
