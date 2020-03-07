@@ -50,9 +50,10 @@ public class MicroService {
 	class RemindTask extends TimerTask {
 		public void run() {
 			//System.out.println("更新行情");
-			for (String code: symbolList) {
+			Object list[] = symbolList.toArray();
+			for (Object code: list) {
 				for (String t: timeList) {
-					JSONArray data = timeQuotation(code,t,1000);
+					JSONArray data = timeQuotation(code.toString(),t,1000);
 					timeQuotation.put(code+"_"+t,data);
 				}
 
