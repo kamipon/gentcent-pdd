@@ -60,7 +60,7 @@ public class WXLoginController extends XDAOSupport {
 			String params = "appid=" + appid+ "&secret=" + secret + "&js_code=" + code + "&grant_type=authorization_code";
 			// 发送请求
 			String urlNameString = getPageOpenidUrl + "?" + params;
-			JSONObject jsonObject = temp(urlNameString);;
+			JSONObject jsonObject = doGet(urlNameString);;
 			Object wxOpenId = jsonObject.get("openid");
 			Object wxSessionKey = jsonObject.get("session_key");
 			if(wxOpenId==null || wxSessionKey ==null){
@@ -102,7 +102,7 @@ public class WXLoginController extends XDAOSupport {
 		}
 
 	}
-	public static JSONObject temp(String temp) throws IOException {
+	public static JSONObject doGet(String temp) throws IOException {
 		try {
 			// 1.URL类封装了大量复杂的实现细节，这里将一个字符串构造成一个URL对象
 			URL url = new URL(temp);
