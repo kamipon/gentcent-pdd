@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.List;
 
 @Controller
 @RequestMapping("/micro_data")
@@ -31,17 +32,21 @@ public class MicroController extends XDAOSupport {
         if(symbol.equals("")){
             return map;
         }
-        JSONArray data = null;
         if(MicroService.symbolList.contains(symbol)){
             if(time.equals("1W")||time.equals("1M")){
                 time="1D";
             }
-            data = MicroService.timeQuotation.get(symbol+"_"+time);
+            if(count>=MicroService.timeQuotation.size()){
+                map.put("data", MicroService.timeQuotation.get(symbol+"_"+time));
+            }else{
+                List data = MicroService.timeQuotation.get(symbol+"_"+time).subList(0,count);
+                map.put("data", data);
+            }
         }else{//加入缓存列表 通过接口返回数据
             MicroService.symbolList.add(symbol);
-            data = MicroService.timeQuotation(symbol,time,count);
+            JSONArray data  = MicroService.timeQuotation(symbol,time,count);
+            map.put("data", data);
         }
-        map.put("data", data);
         return map;
     }
 }
