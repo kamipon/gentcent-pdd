@@ -30,8 +30,8 @@ import java.util.*;
 @Service
 public class MicroService {
 
-	public static List<String> symbolList = new ArrayList<>();
-	private static String[] timelist ={"1","5","15","30","60","1D"} ;
+	public static List<String> symbolList = Collections.synchronizedList(new ArrayList<String>());
+	private final static String[] timeList ={"1","5","15","30","60","1D"} ;
 	private static String BASE_URL ="http://ds.cnshuhai.com";
 	private static String appId = "xbd144";
 	private static String appSecret = "q237788284";
@@ -51,7 +51,7 @@ public class MicroService {
 		public void run() {
 			//System.out.println("更新行情");
 			for (String code: symbolList) {
-				for (String t: timelist) {
+				for (String t: timeList) {
 					JSONArray data = timeQuotation(code,t,1000);
 					timeQuotation.put(code+"_"+t,data);
 				}
