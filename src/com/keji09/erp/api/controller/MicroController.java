@@ -43,8 +43,8 @@ public class MicroController extends XDAOSupport {
     @RequestMapping(value = "getTimeQuotation", method = RequestMethod.GET)
     @ResponseBody
     public Object getTimeQuotation(
-            @RequestParam(value = "sym bol") String symbol,//商品代码
-            @RequestParam(value = "time",defaultValue = "1") Integer time,//时间间隔
+            @RequestParam(value = "symbol") String symbol,//商品代码
+            @RequestParam(value = "time",defaultValue = "1") String time,//时间间隔
             @RequestParam(value = "count",defaultValue = "100") Integer count,//条数
             HttpServletRequest req, HttpServletResponse resp
             , ModelMap map) {
@@ -58,38 +58,30 @@ public class MicroController extends XDAOSupport {
             @RequestParam(value = "symbol") String symbol,//商品代码
             HttpServletRequest req, HttpServletResponse resp
             , ModelMap map) {
-        if(symbolList.contains(symbol)){
 
-        }else{
-            symbolList.add(symbol);
-        }
+        JSONArray data = nowQuotation(symbol);
+        map.put("data", data.get(0));
         return map;
     }
 
 
-    public static JSONArray timeQuotation(String code,Integer time, Integer count)
+    public static JSONArray timeQuotation(String code,String time, Integer count)
     {
         List list = new ArrayList();
         String url = BASE_URL + "/stock.php?type=kline&num=" + count + "&line=min," + time + "&symbol=" + code + "&u=" + appId + "&p=" + appSecret;
-        if (time.intValue() == 1440) {
+        if (time.equals("1D")||time.equals("1W")||time.equals("1M")) {
             url = BASE_URL + "/stock.php?type=kline&num=" + count + "&line=day&symbol=" + code + "&u=" + appId + "&p=" + appSecret;
         }
         String result = doGet(url, null, "UTF-8");
-
         JSONArray array= JSONArray.fromObject(result);
         return array;
     }
 
-    public static JSONArray nowQuotation(String market,String symbol)throws Exception{
-        market = "HB";
-        for (int zz = 0; zz <10 ; zz++) {
-            String url=BASE_URL+"/stock.php?type=stock&market="+market+"&u="+appId+"&p="+appSecret+"&limit=" + zz * 200 + ",200";;
-            String result=doGet(url,null,"UTF-8");
-            JSONArray array= JSONArray.fromObject(result);
-        }
-        SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        System.out.println("123");
-        return null;
+    public static JSONArray nowQuotation(String symbol){
+        String url=BASE_URL+"/stock.php?type=stock&symbol="+symbol+"&u="+appId+"&p="+appSecret+"&limit=0,200";;
+        String result=doGet(url,null,"UTF-8");
+        JSONArray array= JSONArray.fromObject(result);
+        return array;
     }
 
 
