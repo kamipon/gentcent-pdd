@@ -80,7 +80,7 @@ public class MicroController extends XDAOSupport {
     public static JSONArray nowQuotation(String symbol){
         String url=BASE_URL+"/stock.php?type=stock&symbol="+symbol+"&u="+appId+"&p="+appSecret+"&limit=0,200";;
         String result=doGet(url,null,"UTF-8");
-        JSONArray array= JSONArray.fromObject(result);
+         JSONArray array= JSONArray.fromObject(result);
         return array;
     }
 
