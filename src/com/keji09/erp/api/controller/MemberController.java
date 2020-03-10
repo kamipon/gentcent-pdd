@@ -440,7 +440,10 @@ public class MemberController extends XDAOSupport {
 	public Object couponNum(HttpServletRequest req, ModelMap map) {
 		//登录
 		MemberEntity member = (MemberEntity) req.getSession().getAttribute("member");
-		int num = this.getCouponEntityDAO().count(HDaoUtils.eq("memberId", member.getId()).toCondition());
+		Integer num = this.getCouponEntityDAO().count(HDaoUtils.eq("memberId", member.getId()).toCondition());
+		if(num==null){
+			num = 0;
+		}
 		map.put("errcode", 200);
 		map.put("num", num);
 		return map;
