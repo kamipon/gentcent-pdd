@@ -92,7 +92,7 @@ public class MemberEntity implements Serializable {
 	 * 余额
 	 */
 	@Column(name = "_money")
-	private Integer money = 0;
+	private Integer money = 50000;
 	/**
 	 * 冻结金额
 	 */

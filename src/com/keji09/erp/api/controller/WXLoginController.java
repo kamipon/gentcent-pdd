@@ -7,6 +7,7 @@ import com.keji09.erp.model.MemberEntity;
 import com.keji09.erp.model.WXMemberEntity;
 import com.keji09.erp.model.support.XDAOSupport;
 import com.keji09.erp.service.RedpacketService;
+import com.keji09.erp.utils.WxDataUtil;
 import com.mezingr.dao.HDaoUtils;
 import com.pdd.pop.ext.apache.http.client.methods.HttpGet;
 import com.pdd.pop.ext.fasterxml.jackson.databind.util.JSONPObject;
@@ -43,9 +44,38 @@ public class WXLoginController extends XDAOSupport {
 	public  final static  String appid = "wxabbd08f9d6260357";
 
 	public  final static  String secret = "c0f9cc70d74b23cf9df48ecae7be08b5";
-
+	
 	/**
-	 * red  给红包派调用
+	 * 解密微信手机号
+	 */
+	@RequestMapping(value = "wxPhone", method = RequestMethod.POST)
+	@ResponseBody
+	public Object wxPhone(
+			@RequestParam(value = "code") String code,
+			@RequestParam(value = "encryptedData") String encryptedData,
+			@RequestParam(value = "iv") String iv,
+			HttpServletRequest req, ModelMap map) {
+		try {
+			String params = "appid=" + appid+ "&secret=" + secret + "&js_code=" + code + "&grant_type=authorization_code";
+			// 发送请求
+			String urlNameString = getPageOpenidUrl + "?" + params;
+			JSONObject jsonObject = doGet(urlNameString);
+			Object wxSessionKey = jsonObject.get("session_key");
+			String jsonString = WxDataUtil.decryptData(encryptedData, (String) wxSessionKey, iv);
+			JSONObject jsonObject1 = JSONObject.parseObject(jsonString);
+			map.put("errcode", 200);
+			map.put("phoneNumber", jsonObject1.getString("phoneNumber"));
+		} catch (IOException e) {
+			e.printStackTrace();
+			map.put("errcode", 500);
+		}
+		
+		
+		return map;
+	}
+	
+	/**
+	 *
 	 */
 	@RequestMapping(value = "login", method = RequestMethod.GET)
 	@ResponseBody

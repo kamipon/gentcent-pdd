@@ -44,6 +44,12 @@ public class WXMemberEntity implements Serializable {
 	 */
 	@Column(name = "_avatarUrl")
 	private String avatarUrl;
+	
+	/**
+	 * 添加时间
+	 */
+	@Column(name = "_add_time")
+	private Date addTime = new Date();
 
 	public String getId() {
 		return id;
@@ -83,5 +89,13 @@ public class WXMemberEntity implements Serializable {
 
 	public void setAvatarUrl(String avatarUrl) {
 		this.avatarUrl = avatarUrl;
+	}
+	
+	public Date getAddTime() {
+		return addTime;
+	}
+	
+	public void setAddTime(Date addTime) {
+		this.addTime = addTime;
 	}
 }
