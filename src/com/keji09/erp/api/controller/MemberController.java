@@ -106,7 +106,7 @@ public class MemberController extends XDAOSupport {
 				member.setNick(wxm.getNickName());
 				member.setWxMember(wxm.getId());
 			}
-			
+			member.setMoney(50000);
 			this.getMemberEntityDAO().create(member);
 			//创建推广位
 			PddDdkGoodsPidGenerateResponse response = pddService.pidGen("member_shotid_" + member.getShotId());
